@@ -137,6 +137,16 @@ export default function GroupDetail() {
     }
   };
 
+  const handleUnbuyGift = async (giftId) => {
+    if (!confirm('¿Quieres desmarcar este regalo como comprado?')) return;
+    try {
+      await giftAPI.unmarkAsBought(giftId);
+      loadWishlist();
+    } catch (error) {
+      alert(error.response?.data?.error || 'Error al desmarcar como comprado');
+    }
+  };
+
   const copyInviteLink = async () => {
     const link = `${window.location.origin}/group/${codigoUrl}`;
 
@@ -306,6 +316,7 @@ export default function GroupDetail() {
                         key={gift.id}
                         gift={gift}
                         onBuy={handleBuyGift}
+                        onUnbuy={handleUnbuyGift}
                       />
                     ))}
                   </div>

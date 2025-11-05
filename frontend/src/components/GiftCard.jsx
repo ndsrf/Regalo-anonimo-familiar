@@ -1,6 +1,6 @@
 import { useTheme } from '../context/ThemeContext';
 
-export default function GiftCard({ gift, onEdit, onDelete, onBuy, showActions = true }) {
+export default function GiftCard({ gift, onEdit, onDelete, onBuy, onUnbuy, showActions = true }) {
   const { theme } = useTheme();
   const isPurchasedByMe = gift.comprador_id !== null && gift.comprador_id !== undefined;
 
@@ -63,11 +63,10 @@ export default function GiftCard({ gift, onEdit, onDelete, onBuy, showActions = 
             )}
             {onBuy && (
               <button
-                onClick={() => !isPurchasedByMe && onBuy(gift.id)}
-                disabled={isPurchasedByMe}
-                className={`${isPurchasedByMe ? 'bg-gray-400 cursor-not-allowed' : theme.primary} text-white px-4 py-2 rounded font-medium w-full`}
+                onClick={() => isPurchasedByMe ? onUnbuy(gift.id) : onBuy(gift.id)}
+                className={`${isPurchasedByMe ? 'bg-yellow-500 hover:bg-yellow-600' : theme.primary} text-white px-4 py-2 rounded font-medium w-full`}
               >
-                {isPurchasedByMe ? 'Ya lo compraste' : 'Marcar como comprado'}
+                {isPurchasedByMe ? 'Desmarcar como comprado' : 'Marcar como comprado'}
               </button>
             )}
           </div>

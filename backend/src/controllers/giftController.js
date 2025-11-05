@@ -273,3 +273,35 @@ export async function markAsBought(req, res) {
     res.status(500).json({ error: 'Error al marcar como comprado' });
   }
 }
+
+export async function unmarkAsBought(req, res) {
+  try {
+    const { giftId } = req.params;
+    const userId = req.user.id;
+
+    // Find gift
+    const giftResult = await query('SELECT * FROM gifts WHERE id = $1', [giftId]);
+
+    if (giftResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Regalo no encontrado' });
+    }
+
+    const gift = giftResult.rows[0];
+
+    // Check if the gift was bought by the current user
+    if (gift.comprador_id !== userId) {
+      return res.status(403).json({ error: 'Solo puedes desmarcar regalos que tú compraste' });
+    }
+
+    // Unmark as bought
+    const result = await query(
+      'UPDATE gifts SET comprador_id = NULL, fecha_compra = NULL WHERE id = $1 RETURNING *',
+      [giftId]
+    );
+
+    res.json({ gift: result.rows[0] });
+  } catch (error) {
+    console.error('Unmark as bought error:', error);
+    res.status(500).json({ error: 'Error al desmarcar como comprado' });
+  }
+}

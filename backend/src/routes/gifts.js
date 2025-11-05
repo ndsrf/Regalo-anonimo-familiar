@@ -6,6 +6,7 @@ import {
   updateGift,
   deleteGift,
   markAsBought,
+  unmarkAsBought,
 } from '../controllers/giftController.js';
 import { requireAuth } from '../middleware/auth.js';
 
@@ -21,5 +22,6 @@ router.get('/group/:grupoId/wishlist', getGroupWishlist);
 router.put('/:giftId', updateGift);
 router.delete('/:giftId', deleteGift);
 router.put('/:giftId/buy', markAsBought);
+router.put('/:giftId/unbuy', unmarkAsBought);
 
 export default router;
