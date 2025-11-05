@@ -80,6 +80,8 @@ services:
       retries: 5
     networks:
       - wishlist-network
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
 
   backend:
     image: ghcr.io/ndsrf/regalo-anonimo-familiar/backend:latest
@@ -111,6 +113,8 @@ services:
       start_period: 10s
     networks:
       - wishlist-network
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
 
   frontend:
     image: ghcr.io/ndsrf/regalo-anonimo-familiar/frontend:latest
@@ -129,6 +133,23 @@ services:
       start_period: 5s
     networks:
       - wishlist-network
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: secret-wishlist-watchtower
+    environment:
+      WATCHTOWER_CLEANUP: "true"
+      WATCHTOWER_LABEL_ENABLE: "true"
+      WATCHTOWER_INCLUDE_RESTARTING: "true"
+      WATCHTOWER_POLL_INTERVAL: 300
+      TZ: Europe/Madrid
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - wishlist-network
+    restart: unless-stopped
 
 volumes:
   postgres_data:
@@ -138,6 +159,24 @@ networks:
   wishlist-network:
     driver: bridge
 ```
+
+#### Watchtower - Automatic Container Updates
+
+The docker-compose configuration includes **Watchtower**, which automatically updates your containers when new images are available in GitHub Container Registry.
+
+**Configuration:**
+- **WATCHTOWER_CLEANUP**: Removes old images after updating
+- **WATCHTOWER_LABEL_ENABLE**: Only monitors containers with the `com.centurylinklabs.watchtower.enable=true` label
+- **WATCHTOWER_POLL_INTERVAL**: Checks for updates every 300 seconds (5 minutes)
+- **WATCHTOWER_INCLUDE_RESTARTING**: Updates containers even if they're restarting
+
+All application containers (postgres, backend, frontend) are labeled for automatic updates. When new images are pushed to GHCR via GitHub Actions, Watchtower will:
+1. Pull the new image
+2. Stop the old container
+3. Start a new container with the updated image
+4. Remove the old image
+
+This ensures your deployment always runs the latest version without manual intervention.
 
 #### Environment Variables Setup
 
@@ -149,6 +188,7 @@ Before running docker-compose, make sure to update the following values in the `
    - Replace `your_google_client_id` with your Google OAuth Client ID
    - Replace `your_google_client_secret` with your Google OAuth Client Secret
    - Update `GOOGLE_CALLBACK_URL` if deploying to a different domain
+4. **Timezone (Optional)**: Update `TZ` in the watchtower service to match your timezone (default: Europe/Madrid)
 
 #### Running the Application
 
@@ -159,8 +199,16 @@ docker-compose pull
 # Start all services
 docker-compose up -d
 
-# View logs
+# View logs (all services)
 docker-compose logs -f
+
+# View logs for specific service
+docker-compose logs -f backend
+docker-compose logs -f frontend
+docker-compose logs -f watchtower
+
+# Check Watchtower activity
+docker-compose logs watchtower
 
 # Stop all services
 docker-compose down
