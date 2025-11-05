@@ -26,7 +26,11 @@ export async function initializeDatabase() {
       console.log('Users table does not exist. Initializing database schema...');
 
       // Read and execute the init.sql file
-      const initSqlPath = path.join(__dirname, '../../../database/init.sql');
+      // In Docker: /app/database/init.sql
+      // In development: ../../../database/init.sql
+      const initSqlPath = process.env.NODE_ENV === 'production'
+        ? path.join(__dirname, '../../database/init.sql')
+        : path.join(__dirname, '../../../database/init.sql');
       const initSql = fs.readFileSync(initSqlPath, 'utf8');
 
       await pool.query(initSql);
