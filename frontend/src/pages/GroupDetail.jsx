@@ -2,11 +2,14 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { groupAPI, giftAPI } from '../services/api';
 import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
 import GiftCard from '../components/GiftCard';
+import ThemeDecorations from '../components/ThemeDecorations';
 
 export default function GroupDetail() {
   const { codigoUrl } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [group, setGroup] = useState(null);
   const [activeTab, setActiveTab] = useState('wishlist');
   const [myGifts, setMyGifts] = useState([]);
@@ -20,6 +23,13 @@ export default function GroupDetail() {
     url: '',
   });
   const [wishlistMessage, setWishlistMessage] = useState('');
+  const [copySuccess, setCopySuccess] = useState(false);
+  const [showEditGroup, setShowEditGroup] = useState(false);
+  const [groupFormData, setGroupFormData] = useState({
+    nombreGrupo: '',
+    tipoCelebracion: '',
+    fechaInicio: '',
+  });
   const { theme, setTheme } = useTheme();
 
   useEffect(() => {
@@ -127,10 +137,59 @@ export default function GroupDetail() {
     }
   };
 
-  const copyInviteLink = () => {
+  const copyInviteLink = async () => {
     const link = `${window.location.origin}/group/${codigoUrl}`;
-    navigator.clipboard.writeText(link);
-    alert('Enlace copiado al portapapeles');
+
+    try {
+      // Try using the modern clipboard API
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(link);
+        setCopySuccess(true);
+        setTimeout(() => setCopySuccess(false), 3000);
+      } else {
+        // Fallback method for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = link;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        try {
+          document.execCommand('copy');
+          setCopySuccess(true);
+          setTimeout(() => setCopySuccess(false), 3000);
+        } catch (err) {
+          alert('Error al copiar el enlace. Por favor, cópialo manualmente: ' + link);
+        }
+
+        document.body.removeChild(textArea);
+      }
+    } catch (error) {
+      console.error('Error copying to clipboard:', error);
+      alert('Error al copiar el enlace. Por favor, cópialo manualmente: ' + link);
+    }
+  };
+
+  const handleEditGroup = () => {
+    setGroupFormData({
+      nombreGrupo: group.nombre_grupo,
+      tipoCelebracion: group.tipo_celebracion,
+      fechaInicio: new Date(group.fecha_inicio).toISOString().split('T')[0],
+    });
+    setShowEditGroup(true);
+  };
+
+  const handleUpdateGroup = async (e) => {
+    e.preventDefault();
+    try {
+      await groupAPI.update(group.id, groupFormData);
+      setShowEditGroup(false);
+      loadGroup(); // Reload to get updated data
+    } catch (error) {
+      alert(error.response?.data?.error || 'Error al actualizar grupo');
+    }
   };
 
   if (loading) {
@@ -169,8 +228,9 @@ export default function GroupDetail() {
   }
 
   return (
-    <div className={`min-h-screen ${theme.bg} py-8`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className={`min-h-screen ${theme.bg} py-8 relative`}>
+      <ThemeDecorations icons={theme.icons} bgStyle={theme.bgStyle} />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
           <div className="flex justify-between items-start">
@@ -182,12 +242,22 @@ export default function GroupDetail() {
               </p>
               <p className="text-gray-500 text-sm">Miembros: {group.member_count}</p>
             </div>
-            <button
-              onClick={copyInviteLink}
-              className={`${theme.secondary} text-white px-4 py-2 rounded-md text-sm`}
-            >
-              📋 Copiar enlace de invitación
-            </button>
+            <div className="flex gap-2">
+              {user && user.id === group.creator_id && (
+                <button
+                  onClick={handleEditGroup}
+                  className={`${theme.primary} text-white px-4 py-2 rounded-md text-sm transition-colors`}
+                >
+                  ✏️ Editar Grupo
+                </button>
+              )}
+              <button
+                onClick={copyInviteLink}
+                className={`${copySuccess ? 'bg-green-600 hover:bg-green-700' : theme.secondary} text-white px-4 py-2 rounded-md text-sm transition-colors`}
+              >
+                {copySuccess ? '✓ Enlace copiado!' : '📋 Copiar enlace de invitación'}
+              </button>
+            </div>
           </div>
         </div>
 
@@ -344,6 +414,80 @@ export default function GroupDetail() {
                     className={`flex-1 ${theme.primary} text-white px-4 py-2 rounded-md font-medium`}
                   >
                     {editingGift ? 'Guardar' : 'Añadir'}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* Edit Group Modal */}
+        {showEditGroup && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                Editar Grupo
+              </h2>
+
+              <form onSubmit={handleUpdateGroup} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Nombre del Grupo *
+                  </label>
+                  <input
+                    type="text"
+                    value={groupFormData.nombreGrupo}
+                    onChange={(e) => setGroupFormData({ ...groupFormData, nombreGrupo: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Tipo de Celebración *
+                  </label>
+                  <select
+                    value={groupFormData.tipoCelebracion}
+                    onChange={(e) => setGroupFormData({ ...groupFormData, tipoCelebracion: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  >
+                    <option value="">Seleccionar...</option>
+                    <option value="Navidad">🎄 Navidad</option>
+                    <option value="Reyes Magos">👑 Reyes Magos</option>
+                    <option value="Boda">💒 Boda</option>
+                    <option value="Cumpleaños">🎂 Cumpleaños</option>
+                    <option value="Otro">🎁 Otro</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Fecha de Inicio *
+                  </label>
+                  <input
+                    type="date"
+                    value={groupFormData.fechaInicio}
+                    onChange={(e) => setGroupFormData({ ...groupFormData, fechaInicio: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  />
+                </div>
+
+                <div className="flex gap-2 mt-6">
+                  <button
+                    type="button"
+                    onClick={() => setShowEditGroup(false)}
+                    className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md font-medium"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="submit"
+                    className={`flex-1 ${theme.primary} text-white px-4 py-2 rounded-md font-medium`}
+                  >
+                    Guardar Cambios
                   </button>
                 </div>
               </form>

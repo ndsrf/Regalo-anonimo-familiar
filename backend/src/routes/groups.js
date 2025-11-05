@@ -5,6 +5,7 @@ import {
   joinGroup,
   getUserGroups,
   getGroupMembers,
+  updateGroup,
 } from '../controllers/groupController.js';
 import { requireAuth } from '../middleware/auth.js';
 
@@ -19,5 +20,6 @@ router.get('/my-groups', getUserGroups);
 router.get('/:codigoUrl', getGroupByCode);
 router.post('/:codigoUrl/join', joinGroup);
 router.get('/:grupoId/members', getGroupMembers);
+router.put('/:grupoId/update', updateGroup);
 
 export default router;
