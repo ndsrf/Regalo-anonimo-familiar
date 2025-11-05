@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { authAPI } from '../services/api';
 
@@ -10,6 +10,10 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  // Get the return URL from query params
+  const returnTo = searchParams.get('returnTo');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,7 +22,9 @@ export default function Login() {
 
     try {
       await login({ email, password });
-      navigate('/groups');
+      // Redirect to returnTo if available, otherwise to /groups
+      const destination = returnTo ? decodeURIComponent(returnTo) : '/groups';
+      navigate(destination);
     } catch (err) {
       setError(err.response?.data?.error || 'Error al iniciar sesión');
     } finally {
@@ -27,6 +33,10 @@ export default function Login() {
   };
 
   const handleGoogleLogin = () => {
+    // Save returnTo in sessionStorage for Google OAuth callback
+    if (returnTo) {
+      sessionStorage.setItem('returnTo', returnTo);
+    }
     authAPI.googleLogin();
   };
 
@@ -118,7 +128,10 @@ export default function Login() {
 
         <p className="mt-6 text-center text-sm text-gray-600">
           ¿No tienes cuenta?{' '}
-          <Link to="/register" className="text-blue-600 hover:underline font-medium">
+          <Link
+            to={returnTo ? `/register?returnTo=${returnTo}` : '/register'}
+            className="text-blue-600 hover:underline font-medium"
+          >
             Regístrate aquí
           </Link>
         </p>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 export default function Register() {
@@ -13,6 +13,10 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
   const { register } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  // Get the return URL from query params
+  const returnTo = searchParams.get('returnTo');
 
   const handleChange = (e) => {
     setFormData({
@@ -43,7 +47,9 @@ export default function Register() {
         email: formData.email,
         password: formData.password,
       });
-      navigate('/groups');
+      // Redirect to returnTo if available, otherwise to /groups
+      const destination = returnTo ? decodeURIComponent(returnTo) : '/groups';
+      navigate(destination);
     } catch (err) {
       setError(err.response?.data?.error || 'Error al registrarse');
     } finally {
@@ -134,7 +140,10 @@ export default function Register() {
 
         <p className="mt-6 text-center text-sm text-gray-600">
           ¿Ya tienes cuenta?{' '}
-          <Link to="/login" className="text-blue-600 hover:underline font-medium">
+          <Link
+            to={returnTo ? `/login?returnTo=${returnTo}` : '/login'}
+            className="text-blue-600 hover:underline font-medium"
+          >
             Inicia sesión aquí
           </Link>
         </p>

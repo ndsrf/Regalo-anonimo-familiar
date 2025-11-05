@@ -16,7 +16,14 @@ export default function GoogleCallback() {
         // Wait for user to be loaded before navigating
         const success = await handleGoogleCallback(token);
         if (success) {
-          navigate('/groups');
+          // Check for returnTo in sessionStorage
+          const returnTo = sessionStorage.getItem('returnTo');
+          if (returnTo) {
+            sessionStorage.removeItem('returnTo');
+            navigate(decodeURIComponent(returnTo));
+          } else {
+            navigate('/groups');
+          }
         } else {
           navigate('/login');
         }
