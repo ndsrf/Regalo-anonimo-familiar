@@ -22,8 +22,12 @@ Aplicación web para gestionar listas de deseos anónimas en grupos familiares o
 
 ### Base de Datos
 
-1. Crear una base de datos PostgreSQL
-2. Ejecutar el script `database/init.sql`
+La base de datos se inicializa automáticamente cuando el backend arranca. El sistema de migraciones:
+- Crea todas las tablas necesarias en el primer arranque
+- Ejecuta migraciones pendientes automáticamente
+- Mantiene un registro de versiones aplicadas
+
+No es necesario ejecutar scripts SQL manualmente. Ver [Documentación de Migraciones](backend/src/migrations/README.md) para más detalles.
 
 ### Backend
 
@@ -33,6 +37,12 @@ npm install
 cp .env.example .env
 # Configurar las variables de entorno
 npm run dev
+```
+
+Para crear una nueva migración de base de datos:
+```bash
+npm run migration:create <description>
+# Ejemplo: npm run migration:create add_user_avatar
 ```
 
 ### Frontend

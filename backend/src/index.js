@@ -6,6 +6,7 @@ import authRoutes from './routes/auth.js';
 import groupRoutes from './routes/groups.js';
 import giftRoutes from './routes/gifts.js';
 import notificationRoutes from './routes/notifications.js';
+import { runMigrations, getCurrentVersion } from './config/migrationRunner.js';
 
 // Load environment variables
 dotenv.config();
@@ -47,9 +48,24 @@ app.use((req, res) => {
 });
 
 // Start server
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`📝 Environment: ${process.env.NODE_ENV || 'development'}`);
-});
+async function startServer() {
+  try {
+    // Run database migrations
+    await runMigrations();
+
+    const version = await getCurrentVersion();
+    console.log(`📊 Database schema version: ${version || 'none'}`);
+
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+      console.log(`📝 Environment: ${process.env.NODE_ENV || 'development'}`);
+    });
+  } catch (error) {
+    console.error('Failed to start server:', error);
+    process.exit(1);
+  }
+}
+
+startServer();
 
 export default app;
