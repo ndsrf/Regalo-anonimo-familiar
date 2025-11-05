@@ -8,17 +8,26 @@ export default function GoogleCallback() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = searchParams.get('token');
-    const error = searchParams.get('error');
+    const processCallback = async () => {
+      const token = searchParams.get('token');
+      const error = searchParams.get('error');
 
-    if (token) {
-      handleGoogleCallback(token);
-      navigate('/groups');
-    } else if (error) {
-      alert('Error al iniciar sesión con Google');
-      navigate('/login');
-    }
-  }, [searchParams]);
+      if (token) {
+        // Wait for user to be loaded before navigating
+        const success = await handleGoogleCallback(token);
+        if (success) {
+          navigate('/groups');
+        } else {
+          navigate('/login');
+        }
+      } else if (error) {
+        alert('Error al iniciar sesión con Google');
+        navigate('/login');
+      }
+    };
+
+    processCallback();
+  }, [searchParams, handleGoogleCallback, navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center">

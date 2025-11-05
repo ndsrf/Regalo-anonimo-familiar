@@ -28,8 +28,9 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
+      // Let AuthContext handle logout and redirect
+      // Don't use hard redirect here to avoid breaking React state
       localStorage.removeItem('token');
-      window.location.href = '/login';
     }
     return Promise.reject(error);
   }
