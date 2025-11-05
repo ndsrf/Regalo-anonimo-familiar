@@ -251,5 +251,6 @@ The project includes a GitHub Actions workflow that automatically builds and pus
 
 Images are tagged as:
 - `latest` - Latest build from the main branch
-- `<branch-name>` - Builds from specific branches
-- `<sha>` - Builds with commit SHA tags
+- `<branch-name>` - Builds from specific branches (e.g., `main`, `develop`)
+- `sha-<commit-sha>` - Builds tagged with commit SHA (e.g., `sha-195eee0`)
+- `pr-<number>` - Builds from pull requests
