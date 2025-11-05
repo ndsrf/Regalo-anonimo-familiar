@@ -98,7 +98,7 @@ services:
       JWT_EXPIRES_IN: 7d
       GOOGLE_CLIENT_ID: your_google_client_id
       GOOGLE_CLIENT_SECRET: your_google_client_secret
-      GOOGLE_CALLBACK_URL: http://localhost:5000/auth/google/callback
+      GOOGLE_CALLBACK_URL: http://localhost/auth/google/callback
       FRONTEND_URL: http://localhost
     ports:
       - "5000:5000"
@@ -119,8 +119,6 @@ services:
   frontend:
     image: ghcr.io/ndsrf/regalo-anonimo-familiar/frontend:latest
     container_name: secret-wishlist-frontend
-    environment:
-      VITE_API_URL: http://localhost:5000
     ports:
       - "80:80"
     depends_on:
@@ -160,6 +158,16 @@ networks:
     driver: bridge
 ```
 
+**Important Notes:**
+
+- **API Proxy Configuration**: The frontend uses nginx as a reverse proxy. All requests to `/api/*` and `/auth/*` are automatically forwarded to the backend container. This means:
+  - The frontend doesn't need to know the backend URL
+  - No CORS configuration needed between services
+  - The application works seamlessly when accessed from any domain
+  - If deploying to a custom domain (e.g., `https://yourdomain.com`), update both `GOOGLE_CALLBACK_URL` and `FRONTEND_URL` accordingly
+
+- **Backend Port Exposure**: The backend port `5000` is exposed for direct access if needed, but the frontend communicates with it through the nginx proxy on port 80.
+
 #### Watchtower - Automatic Container Updates
 
 The docker-compose configuration includes **Watchtower**, which automatically updates your containers when new images are available in GitHub Container Registry.
@@ -187,7 +195,7 @@ Before running docker-compose, make sure to update the following values in the `
 3. **Google OAuth Credentials**:
    - Replace `your_google_client_id` with your Google OAuth Client ID
    - Replace `your_google_client_secret` with your Google OAuth Client Secret
-   - Update `GOOGLE_CALLBACK_URL` if deploying to a different domain
+   - Update `GOOGLE_CALLBACK_URL` and `FRONTEND_URL` if deploying to a different domain (e.g., `https://yourdomain.com/auth/google/callback`)
 4. **Timezone (Optional)**: Update `TZ` in the watchtower service to match your timezone (default: Europe/Madrid)
 
 #### Running the Application
@@ -219,7 +227,8 @@ docker compose down -v
 
 The application will be accessible at:
 - **Frontend**: http://localhost
-- **Backend API**: http://localhost:5000
+- **Backend API** (via nginx proxy): http://localhost/api
+- **Backend API** (direct): http://localhost:5000
 - **PostgreSQL**: localhost:5432
 
 ### Building Images Locally
