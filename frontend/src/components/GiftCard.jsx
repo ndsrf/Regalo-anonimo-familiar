@@ -2,14 +2,23 @@ import { useTheme } from '../context/ThemeContext';
 
 export default function GiftCard({ gift, onEdit, onDelete, onBuy, showActions = true }) {
   const { theme } = useTheme();
+  const isPurchasedByMe = gift.comprador_id !== null && gift.comprador_id !== undefined;
 
   return (
-    <div className={`${theme.card} border rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow`}>
+    <div className={`${theme.card} border rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow ${isPurchasedByMe ? 'relative' : ''}`}>
+      {isPurchasedByMe && (
+        <div className="absolute top-2 right-2 z-10">
+          <span className="bg-green-500 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-lg">
+            ✓ Comprado por mí
+          </span>
+        </div>
+      )}
+
       {gift.image_url && (
         <img
           src={gift.image_url}
           alt={gift.nombre}
-          className="w-full h-48 object-cover"
+          className={`w-full h-48 object-cover ${isPurchasedByMe ? 'opacity-75' : ''}`}
           onError={(e) => {
             e.target.style.display = 'none';
           }}
@@ -54,10 +63,11 @@ export default function GiftCard({ gift, onEdit, onDelete, onBuy, showActions = 
             )}
             {onBuy && (
               <button
-                onClick={() => onBuy(gift.id)}
-                className={`${theme.primary} text-white px-4 py-2 rounded font-medium w-full`}
+                onClick={() => !isPurchasedByMe && onBuy(gift.id)}
+                disabled={isPurchasedByMe}
+                className={`${isPurchasedByMe ? 'bg-gray-400 cursor-not-allowed' : theme.primary} text-white px-4 py-2 rounded font-medium w-full`}
               >
-                Marcar como comprado
+                {isPurchasedByMe ? 'Ya lo compraste' : 'Marcar como comprado'}
               </button>
             )}
           </div>
