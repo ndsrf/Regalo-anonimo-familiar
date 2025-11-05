@@ -54,6 +54,7 @@ export const groupAPI = {
   getByCode: (codigoUrl) => api.get(`/api/groups/${codigoUrl}`),
   join: (codigoUrl) => api.post(`/api/groups/${codigoUrl}/join`),
   getMembers: (grupoId) => api.get(`/api/groups/${grupoId}/members`),
+  update: (grupoId, data) => api.put(`/api/groups/${grupoId}/update`, data),
 };
 
 // Gift endpoints

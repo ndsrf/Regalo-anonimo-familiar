@@ -180,3 +180,49 @@ export async function getGroupMembers(req, res) {
     res.status(500).json({ error: 'Error al obtener miembros' });
   }
 }
+
+export async function updateGroup(req, res) {
+  try {
+    const { grupoId } = req.params;
+    const { nombreGrupo, tipoCelebracion, fechaInicio } = req.body;
+    const userId = req.user.id;
+
+    // Validate input
+    if (!nombreGrupo || !tipoCelebracion || !fechaInicio) {
+      return res.status(400).json({ error: 'Todos los campos son requeridos' });
+    }
+
+    // Validate celebration type
+    const validTypes = ['Navidad', 'Reyes Magos', 'Boda', 'Cumpleaños', 'Otro'];
+    if (!validTypes.includes(tipoCelebracion)) {
+      return res.status(400).json({ error: 'Tipo de celebración inválido' });
+    }
+
+    // Check if group exists and user is the creator
+    const groupResult = await query(
+      'SELECT creator_id FROM groups WHERE id = $1',
+      [grupoId]
+    );
+
+    if (groupResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Grupo no encontrado' });
+    }
+
+    const group = groupResult.rows[0];
+
+    if (group.creator_id !== userId) {
+      return res.status(403).json({ error: 'Solo el creador puede editar el grupo' });
+    }
+
+    // Update group
+    const updateResult = await query(
+      'UPDATE groups SET nombre_grupo = $1, tipo_celebracion = $2, fecha_inicio = $3 WHERE id = $4 RETURNING *',
+      [nombreGrupo, tipoCelebracion, fechaInicio, grupoId]
+    );
+
+    res.json({ group: updateResult.rows[0] });
+  } catch (error) {
+    console.error('Update group error:', error);
+    res.status(500).json({ error: 'Error al actualizar grupo' });
+  }
+}
