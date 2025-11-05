@@ -121,6 +121,7 @@ services:
       timeout: 3s
       retries: 3
       start_period: 10s
+    restart: unless-stopped
     networks:
       - wishlist-network
     labels:
@@ -139,6 +140,7 @@ services:
       timeout: 3s
       retries: 3
       start_period: 5s
+    restart: unless-stopped
     networks:
       - wishlist-network
     labels:
@@ -152,6 +154,7 @@ services:
       WATCHTOWER_LABEL_ENABLE: "true"
       WATCHTOWER_INCLUDE_RESTARTING: "true"
       WATCHTOWER_POLL_INTERVAL: 300
+      WATCHTOWER_ROLLING_RESTART: "true"
       TZ: Europe/Madrid
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -187,6 +190,7 @@ The docker-compose configuration includes **Watchtower**, which automatically up
 - **WATCHTOWER_LABEL_ENABLE**: Only monitors containers with the `com.centurylinklabs.watchtower.enable=true` label
 - **WATCHTOWER_POLL_INTERVAL**: Checks for updates every 300 seconds (5 minutes)
 - **WATCHTOWER_INCLUDE_RESTARTING**: Updates containers even if they're restarting
+- **WATCHTOWER_ROLLING_RESTART**: Updates containers one at a time to ensure service availability
 
 All application containers (postgres, backend, frontend) are labeled for automatic updates. When new images are pushed to GHCR via GitHub Actions, Watchtower will:
 1. Pull the new image
@@ -195,6 +199,8 @@ All application containers (postgres, backend, frontend) are labeled for automat
 4. Remove the old image
 
 This ensures your deployment always runs the latest version without manual intervention.
+
+**Note on Container Updates**: The frontend uses nginx with Docker's internal DNS resolver, which allows it to start even if the backend is temporarily unavailable during updates. Combined with restart policies (`restart: unless-stopped`), this ensures the application recovers automatically from transient failures during Watchtower updates.
 
 #### Environment Variables Setup
 
