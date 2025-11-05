@@ -49,6 +49,8 @@ Ver `backend/.env.example` para las variables requeridas.
 
 ## Docker Deployment
 
+> **Note**: This project uses Docker Compose v2 syntax. Make sure you have Docker Compose v2 installed. You can verify with `docker compose version`. If you're using the older v1, please upgrade or use `docker-compose` commands instead.
+
 ### Using Pre-built Images from GitHub Container Registry
 
 The project automatically builds Docker images via GitHub Actions and publishes them to GitHub Container Registry (ghcr.io).
@@ -58,8 +60,6 @@ The project automatically builds Docker images via GitHub Actions and publishes 
 Create a `docker-compose.yml` file in the root directory with the following content:
 
 ```yaml
-version: '3.8'
-
 services:
   postgres:
     image: postgres:16-alpine
@@ -194,27 +194,27 @@ Before running docker-compose, make sure to update the following values in the `
 
 ```bash
 # Pull the latest images
-docker-compose pull
+docker compose pull
 
 # Start all services
-docker-compose up -d
+docker compose up -d
 
 # View logs (all services)
-docker-compose logs -f
+docker compose logs -f
 
 # View logs for specific service
-docker-compose logs -f backend
-docker-compose logs -f frontend
-docker-compose logs -f watchtower
+docker compose logs -f backend
+docker compose logs -f frontend
+docker compose logs -f watchtower
 
 # Check Watchtower activity
-docker-compose logs watchtower
+docker compose logs watchtower
 
 # Stop all services
-docker-compose down
+docker compose down
 
 # Stop and remove volumes (WARNING: This will delete all data)
-docker-compose down -v
+docker compose down -v
 ```
 
 The application will be accessible at:
@@ -228,7 +228,7 @@ If you prefer to build the Docker images locally instead of using pre-built ones
 
 ```bash
 # Build and run with local images
-docker-compose -f docker-compose.local.yml up -d --build
+docker compose -f docker-compose.local.yml up -d --build
 ```
 
 Create a `docker-compose.local.yml` file with the same content as above, but replace the `image` lines with:
