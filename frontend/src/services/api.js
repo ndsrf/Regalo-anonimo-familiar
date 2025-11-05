@@ -65,6 +65,7 @@ export const giftAPI = {
   update: (giftId, data) => api.put(`/api/gifts/${giftId}`, data),
   delete: (giftId) => api.delete(`/api/gifts/${giftId}`),
   markAsBought: (giftId) => api.put(`/api/gifts/${giftId}/buy`),
+  unmarkAsBought: (giftId) => api.put(`/api/gifts/${giftId}/unbuy`),
 };
 
 // Notification endpoints
