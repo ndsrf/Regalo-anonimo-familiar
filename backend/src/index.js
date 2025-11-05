@@ -6,7 +6,7 @@ import authRoutes from './routes/auth.js';
 import groupRoutes from './routes/groups.js';
 import giftRoutes from './routes/gifts.js';
 import notificationRoutes from './routes/notifications.js';
-import { initializeDatabase } from './config/initDatabase.js';
+import { runMigrations, getCurrentVersion } from './config/migrationRunner.js';
 
 // Load environment variables
 dotenv.config();
@@ -50,8 +50,11 @@ app.use((req, res) => {
 // Start server
 async function startServer() {
   try {
-    // Initialize database schema if needed
-    await initializeDatabase();
+    // Run database migrations
+    await runMigrations();
+
+    const version = await getCurrentVersion();
+    console.log(`📊 Database schema version: ${version || 'none'}`);
 
     app.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);

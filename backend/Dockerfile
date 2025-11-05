@@ -20,9 +20,6 @@ COPY --from=builder /app/node_modules ./node_modules
 # Copy application source
 COPY . .
 
-# Copy database initialization script from parent directory
-COPY ../database/init.sql ./database/init.sql
-
 # Create non-root user
 RUN addgroup -g 1001 -S nodejs && \
     adduser -S nodejs -u 1001 && \
