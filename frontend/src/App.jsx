@@ -23,7 +23,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/auth/callback" element={<GoogleCallback />} />
+              <Route path="/oauth-callback" element={<GoogleCallback />} />
               <Route
                 path="/groups"
                 element={
