@@ -105,13 +105,12 @@ export async function getGroupWishlist(req, res) {
 
     // Get anonymous wishlist
     // Exclude: own gifts, deleted gifts
-    // Include: gifts not purchased OR purchased by current user
+    // Include: ALL gifts from other users (showing purchase status)
     const result = await query(
       `SELECT id, nombre, descripcion, url, image_url, created_at, comprador_id
        FROM gifts
        WHERE grupo_id = $1
        AND solicitante_id != $2
-       AND (comprador_id IS NULL OR comprador_id = $2)
        AND is_deleted_by_solicitante = false
        ORDER BY RANDOM()`,
       [grupoId, userId]
