@@ -246,7 +246,6 @@ export default function Groups() {
                       className="p-3 bg-gray-50 rounded-md hover:bg-gray-100"
                     >
                       <p className="font-medium text-gray-900">{member.nombre}</p>
-                      <p className="text-sm text-gray-500">{member.email}</p>
                     </div>
                   ))}
                 </div>
