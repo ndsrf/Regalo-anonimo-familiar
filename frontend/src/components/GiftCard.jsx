@@ -1,8 +1,8 @@
 import { useTheme } from '../context/ThemeContext';
 
-export default function GiftCard({ gift, onEdit, onDelete, onBuy, onUnbuy, showActions = true }) {
+export default function GiftCard({ gift, onEdit, onDelete, onBuy, onUnbuy, showActions = true, currentUserId }) {
   const { theme } = useTheme();
-  const isPurchasedByMe = gift.comprador_id !== null && gift.comprador_id !== undefined;
+  const isPurchasedByMe = gift.comprador_id && gift.comprador_id === currentUserId;
 
   return (
     <div className={`${theme.card} border rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow ${isPurchasedByMe ? 'relative' : ''}`}>
