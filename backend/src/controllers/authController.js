@@ -109,8 +109,15 @@ export function googleCallback(req, res) {
       expiresIn: process.env.JWT_EXPIRES_IN,
     });
 
-    // Redirect to frontend with token
-    res.redirect(`${process.env.FRONTEND_URL}/oauth-callback?token=${token}`);
+    // Get returnTo from state parameter
+    const returnTo = req.query.state || '';
+
+    // Redirect to frontend with token and returnTo
+    let redirectUrl = `${process.env.FRONTEND_URL}/oauth-callback?token=${token}`;
+    if (returnTo) {
+      redirectUrl += `&returnTo=${encodeURIComponent(returnTo)}`;
+    }
+    res.redirect(redirectUrl);
   } catch (error) {
     console.error('Google callback error:', error);
     res.redirect(`${process.env.FRONTEND_URL}/login?error=auth_failed`);
@@ -127,8 +134,15 @@ export function metaCallback(req, res) {
       expiresIn: process.env.JWT_EXPIRES_IN,
     });
 
-    // Redirect to frontend with token
-    res.redirect(`${process.env.FRONTEND_URL}/oauth-callback-meta?token=${token}`);
+    // Get returnTo from state parameter
+    const returnTo = req.query.state || '';
+
+    // Redirect to frontend with token and returnTo
+    let redirectUrl = `${process.env.FRONTEND_URL}/oauth-callback-meta?token=${token}`;
+    if (returnTo) {
+      redirectUrl += `&returnTo=${encodeURIComponent(returnTo)}`;
+    }
+    res.redirect(redirectUrl);
   } catch (error) {
     console.error('Meta callback error:', error);
     res.redirect(`${process.env.FRONTEND_URL}/login?error=auth_failed`);

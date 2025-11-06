@@ -16,8 +16,12 @@ export default function GoogleCallback() {
         // Wait for user to be loaded before navigating
         const success = await handleGoogleCallback(token);
         if (success) {
-          // Check for returnTo in sessionStorage
-          const returnTo = sessionStorage.getItem('returnTo');
+          // Check for returnTo in URL first (from OAuth state), then sessionStorage as fallback
+          let returnTo = searchParams.get('returnTo');
+          if (!returnTo) {
+            returnTo = sessionStorage.getItem('returnTo');
+          }
+
           if (returnTo) {
             sessionStorage.removeItem('returnTo');
             navigate(decodeURIComponent(returnTo));

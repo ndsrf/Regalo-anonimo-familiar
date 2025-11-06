@@ -10,13 +10,15 @@ router.post('/register', register);
 router.post('/login', login);
 
 // Google OAuth
-router.get(
-  '/google',
+router.get('/google', (req, res, next) => {
+  // Capture returnTo from query string and pass it as state
+  const returnTo = req.query.returnTo || '';
   passport.authenticate('google', {
     scope: ['profile', 'email'],
     session: false,
-  })
-);
+    state: returnTo,
+  })(req, res, next);
+});
 
 router.get(
   '/google/callback',
@@ -25,13 +27,15 @@ router.get(
 );
 
 // Meta (Facebook/Instagram) OAuth
-router.get(
-  '/meta',
+router.get('/meta', (req, res, next) => {
+  // Capture returnTo from query string and pass it as state
+  const returnTo = req.query.returnTo || '';
   passport.authenticate('facebook', {
     scope: ['email'],
     session: false,
-  })
-);
+    state: returnTo,
+  })(req, res, next);
+});
 
 router.get(
   '/meta/callback',

@@ -61,21 +61,23 @@ export default function Register() {
   const handleGoogleLogin = () => {
     // Clear any existing auth state before OAuth flow
     localStorage.removeItem('token');
-    // Save returnTo in sessionStorage for Google OAuth callback
+    // Save returnTo in sessionStorage as fallback for Google OAuth callback
     if (returnTo) {
       sessionStorage.setItem('returnTo', returnTo);
     }
-    authAPI.googleLogin();
+    // Pass returnTo as URL parameter to backend
+    authAPI.googleLogin(returnTo);
   };
 
   const handleMetaLogin = () => {
     // Clear any existing auth state before OAuth flow
     localStorage.removeItem('token');
-    // Save returnTo in sessionStorage for Meta OAuth callback
+    // Save returnTo in sessionStorage as fallback for Meta OAuth callback
     if (returnTo) {
       sessionStorage.setItem('returnTo', returnTo);
     }
-    authAPI.metaLogin();
+    // Pass returnTo as URL parameter to backend
+    authAPI.metaLogin(returnTo);
   };
 
   return (
