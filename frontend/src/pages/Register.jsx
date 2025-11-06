@@ -59,6 +59,8 @@ export default function Register() {
   };
 
   const handleGoogleLogin = () => {
+    // Clear any existing auth state before OAuth flow
+    localStorage.removeItem('token');
     // Save returnTo in sessionStorage for Google OAuth callback
     if (returnTo) {
       sessionStorage.setItem('returnTo', returnTo);
@@ -67,6 +69,8 @@ export default function Register() {
   };
 
   const handleMetaLogin = () => {
+    // Clear any existing auth state before OAuth flow
+    localStorage.removeItem('token');
     // Save returnTo in sessionStorage for Meta OAuth callback
     if (returnTo) {
       sessionStorage.setItem('returnTo', returnTo);
