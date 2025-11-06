@@ -7,11 +7,11 @@ Aplicación web para gestionar listas de deseos anónimas en grupos familiares o
 - **Frontend:** React + Vite + Tailwind CSS
 - **Backend:** Node.js + Express
 - **Base de Datos:** PostgreSQL
-- **Autenticación:** JWT + Google OAuth 2.0
+- **Autenticación:** JWT + Google OAuth 2.0 + Meta (Instagram) OAuth
 
 ## Características
 
-- Autenticación con email/contraseña y Google OAuth
+- Autenticación con email/contraseña, Google OAuth y Meta (Instagram) OAuth
 - Creación y gestión de grupos
 - Listas de deseos anónimas
 - Sistema de notificaciones
@@ -109,6 +109,9 @@ services:
       GOOGLE_CLIENT_ID: your_google_client_id
       GOOGLE_CLIENT_SECRET: your_google_client_secret
       GOOGLE_CALLBACK_URL: http://localhost/auth/google/callback
+      META_APP_ID: your_meta_app_id
+      META_APP_SECRET: your_meta_app_secret
+      META_CALLBACK_URL: http://localhost/auth/meta/callback
       FRONTEND_URL: http://localhost
     ports:
       - "5000:5000"
@@ -211,8 +214,13 @@ Before running docker-compose, make sure to update the following values in the `
 3. **Google OAuth Credentials**:
    - Replace `your_google_client_id` with your Google OAuth Client ID
    - Replace `your_google_client_secret` with your Google OAuth Client Secret
-   - Update `GOOGLE_CALLBACK_URL` and `FRONTEND_URL` if deploying to a different domain (e.g., `https://yourdomain.com/auth/google/callback`)
-4. **Timezone (Optional)**: Update `TZ` in the watchtower service to match your timezone (default: Europe/Madrid)
+   - Update `GOOGLE_CALLBACK_URL` if deploying to a different domain (e.g., `https://yourdomain.com/auth/google/callback`)
+4. **Meta (Instagram) OAuth Credentials**:
+   - Replace `your_meta_app_id` with your Meta App ID
+   - Replace `your_meta_app_secret` with your Meta App Secret
+   - Update `META_CALLBACK_URL` if deploying to a different domain (e.g., `https://yourdomain.com/auth/meta/callback`)
+5. **Frontend URL**: Update `FRONTEND_URL` if deploying to a different domain (e.g., `https://yourdomain.com`)
+6. **Timezone (Optional)**: Update `TZ` in the watchtower service to match your timezone (default: Europe/Madrid)
 
 #### Running the Application
 

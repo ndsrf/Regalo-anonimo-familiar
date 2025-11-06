@@ -40,6 +40,14 @@ export default function Login() {
     authAPI.googleLogin();
   };
 
+  const handleMetaLogin = () => {
+    // Save returnTo in sessionStorage for Meta OAuth callback
+    if (returnTo) {
+      sessionStorage.setItem('returnTo', returnTo);
+    }
+    authAPI.metaLogin();
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50 px-4">
       <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8">
@@ -123,6 +131,25 @@ export default function Login() {
               />
             </svg>
             Google
+          </button>
+
+          <button
+            onClick={handleMetaLogin}
+            className="mt-3 w-full flex items-center justify-center gap-2 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium py-2 rounded-md"
+          >
+            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none">
+              <radialGradient id="instagramGradient" cx="30%" cy="107%" r="150%">
+                <stop offset="0%" stopColor="#fdf497" />
+                <stop offset="5%" stopColor="#fdf497" />
+                <stop offset="45%" stopColor="#fd5949" />
+                <stop offset="60%" stopColor="#d6249f" />
+                <stop offset="90%" stopColor="#285AEB" />
+              </radialGradient>
+              <rect x="2" y="2" width="20" height="20" rx="5" stroke="url(#instagramGradient)" strokeWidth="2" fill="none"/>
+              <circle cx="12" cy="12" r="4" stroke="url(#instagramGradient)" strokeWidth="2" fill="none"/>
+              <circle cx="17.5" cy="6.5" r="1.5" fill="url(#instagramGradient)"/>
+            </svg>
+            Instagram
           </button>
         </div>
 
