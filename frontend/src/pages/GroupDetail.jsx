@@ -30,6 +30,9 @@ export default function GroupDetail() {
     tipoCelebracion: '',
     fechaInicio: '',
   });
+  const [showMembersModal, setShowMembersModal] = useState(false);
+  const [members, setMembers] = useState([]);
+  const [loadingMembers, setLoadingMembers] = useState(false);
   const { theme, setTheme } = useTheme();
 
   useEffect(() => {
@@ -77,6 +80,25 @@ export default function GroupDetail() {
     } catch (error) {
       console.error('Failed to load wishlist:', error);
     }
+  };
+
+  const handleShowMembers = async () => {
+    if (!group) return;
+    setShowMembersModal(true);
+    setLoadingMembers(true);
+    try {
+      const response = await groupAPI.getMembers(group.id);
+      setMembers(response.data.members);
+    } catch (error) {
+      console.error('Failed to load members:', error);
+      alert('Error al cargar miembros');
+    } finally {
+      setLoadingMembers(false);
+    }
+  };
+
+  const handleRefresh = () => {
+    window.location.reload();
   };
 
   const handleJoinGroup = async () => {
@@ -250,7 +272,15 @@ export default function GroupDetail() {
               <p className="text-gray-500 text-sm">
                 Fecha: {new Date(group.fecha_inicio).toLocaleDateString('es-ES')}
               </p>
-              <p className="text-gray-500 text-sm">Miembros: {group.member_count}</p>
+              <p className="text-gray-500 text-sm">
+                Miembros:{' '}
+                <button
+                  onClick={handleShowMembers}
+                  className="text-blue-600 hover:text-blue-800 underline"
+                >
+                  {group.member_count}
+                </button>
+              </p>
             </div>
             <div className="flex gap-2">
               {user && user.id === group.creator_id && (
@@ -266,6 +296,12 @@ export default function GroupDetail() {
                 className={`${copySuccess ? 'bg-green-600 hover:bg-green-700' : theme.secondary} text-white px-4 py-2 rounded-md text-sm transition-colors`}
               >
                 {copySuccess ? '✓ Enlace copiado!' : '📋 Copiar enlace de invitación'}
+              </button>
+              <button
+                onClick={handleRefresh}
+                className="text-gray-600 hover:text-gray-800 border border-gray-300 bg-white px-4 py-2 rounded-md text-sm transition-colors"
+              >
+                🔄 Refrescar
               </button>
             </div>
           </div>
@@ -505,6 +541,48 @@ export default function GroupDetail() {
                   </button>
                 </div>
               </form>
+            </div>
+          </div>
+        )}
+
+        {/* Members Modal */}
+        {showMembersModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                Miembros del Grupo
+              </h2>
+              {group && (
+                <p className="text-gray-600 mb-4">{group.nombre_grupo}</p>
+              )}
+
+              {loadingMembers ? (
+                <div className="text-center py-8">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+                  <p className="mt-2 text-gray-600">Cargando...</p>
+                </div>
+              ) : (
+                <div className="space-y-2 max-h-96 overflow-y-auto">
+                  {members.map((member) => (
+                    <div
+                      key={member.id}
+                      className="p-3 bg-gray-50 rounded-md hover:bg-gray-100"
+                    >
+                      <p className="font-medium text-gray-900">{member.nombre}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <button
+                onClick={() => {
+                  setShowMembersModal(false);
+                  setMembers([]);
+                }}
+                className="w-full mt-6 bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md font-medium"
+              >
+                Cerrar
+              </button>
             </div>
           </div>
         )}

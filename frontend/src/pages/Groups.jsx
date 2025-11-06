@@ -50,12 +50,6 @@ export default function Groups() {
     }
   };
 
-  const handleRefresh = async (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    await loadGroups();
-  };
-
   const handleCreateGroup = async (e) => {
     e.preventDefault();
     try {
@@ -109,42 +103,35 @@ export default function Groups() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {groups.map((group) => (
-              <div key={group.id} className="flex flex-col">
-                <Link
-                  to={`/group/${group.codigo_url}`}
-                  className={`${theme.card} border rounded-lg p-6 hover:shadow-lg transition-shadow`}
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <h2 className="text-xl font-semibold text-gray-900">{group.nombre_grupo}</h2>
-                    <span className={`text-2xl`}>
-                      {group.tipo_celebracion === 'Navidad' && '🎄'}
-                      {group.tipo_celebracion === 'Reyes Magos' && '👑'}
-                      {group.tipo_celebracion === 'Boda' && '💒'}
-                      {group.tipo_celebracion === 'Cumpleaños' && '🎂'}
-                      {group.tipo_celebracion === 'Otro' && '🎁'}
-                    </span>
-                  </div>
-                  <p className="text-gray-600 text-sm mb-2">{group.tipo_celebracion}</p>
-                  <p className="text-gray-500 text-sm">
-                    Fecha: {new Date(group.fecha_inicio).toLocaleDateString('es-ES')}
-                  </p>
-                  <p className="text-gray-500 text-sm">
-                    Miembros:{' '}
-                    <button
-                      onClick={(e) => handleShowMembers(group, e)}
-                      className="text-blue-600 hover:text-blue-800 underline"
-                    >
-                      {group.member_count}
-                    </button>
-                  </p>
-                </Link>
-                <button
-                  onClick={handleRefresh}
-                  className="mt-2 text-sm text-gray-600 hover:text-gray-800 border border-gray-300 rounded-md py-1 px-3 hover:bg-gray-50 transition-colors"
-                >
-                  🔄 Refrescar
-                </button>
-              </div>
+              <Link
+                key={group.id}
+                to={`/group/${group.codigo_url}`}
+                className={`${theme.card} border rounded-lg p-6 hover:shadow-lg transition-shadow`}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <h2 className="text-xl font-semibold text-gray-900">{group.nombre_grupo}</h2>
+                  <span className={`text-2xl`}>
+                    {group.tipo_celebracion === 'Navidad' && '🎄'}
+                    {group.tipo_celebracion === 'Reyes Magos' && '👑'}
+                    {group.tipo_celebracion === 'Boda' && '💒'}
+                    {group.tipo_celebracion === 'Cumpleaños' && '🎂'}
+                    {group.tipo_celebracion === 'Otro' && '🎁'}
+                  </span>
+                </div>
+                <p className="text-gray-600 text-sm mb-2">{group.tipo_celebracion}</p>
+                <p className="text-gray-500 text-sm">
+                  Fecha: {new Date(group.fecha_inicio).toLocaleDateString('es-ES')}
+                </p>
+                <p className="text-gray-500 text-sm">
+                  Miembros:{' '}
+                  <button
+                    onClick={(e) => handleShowMembers(group, e)}
+                    className="text-blue-600 hover:text-blue-800 underline"
+                  >
+                    {group.member_count}
+                  </button>
+                </p>
+              </Link>
             ))}
           </div>
         )}
