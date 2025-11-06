@@ -130,6 +130,26 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <footer className="bg-white border-t border-gray-200 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center text-gray-600 space-y-2">
+            <div className="flex justify-center gap-6 text-sm">
+              <Link to="/terms-of-service" className="hover:text-purple-600">
+                Condiciones del Servicio
+              </Link>
+              <span>•</span>
+              <Link to="/privacy-policy" className="hover:text-purple-600">
+                Política de Privacidad
+              </Link>
+            </div>
+            <p className="text-sm">
+              © {new Date().getFullYear()} Lista de Deseos Secreta. Todos los derechos reservados.
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

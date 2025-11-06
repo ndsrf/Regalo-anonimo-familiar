@@ -11,6 +11,8 @@ import GoogleCallback from './pages/GoogleCallback';
 import MetaCallback from './pages/MetaCallback';
 import Groups from './pages/Groups';
 import GroupDetail from './pages/GroupDetail';
+import TermsOfService from './pages/TermsOfService';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 
 function App() {
   return (
@@ -42,6 +44,8 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+              <Route path="/terms-of-service" element={<TermsOfService />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </div>
