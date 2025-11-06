@@ -53,6 +53,12 @@ export const AuthProvider = ({ children }) => {
   };
 
   const handleGoogleCallback = async (tokenFromUrl) => {
+    // Clear any existing state before setting new token
+    setUser(null);
+    setToken(null);
+    localStorage.removeItem('token');
+
+    // Now set the new token
     localStorage.setItem('token', tokenFromUrl);
     setToken(tokenFromUrl);
 
@@ -71,6 +77,12 @@ export const AuthProvider = ({ children }) => {
   };
 
   const handleMetaCallback = async (tokenFromUrl) => {
+    // Clear any existing state before setting new token
+    setUser(null);
+    setToken(null);
+    localStorage.removeItem('token');
+
+    // Now set the new token
     localStorage.setItem('token', tokenFromUrl);
     setToken(tokenFromUrl);
 
