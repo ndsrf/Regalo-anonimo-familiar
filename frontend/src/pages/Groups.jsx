@@ -7,6 +7,10 @@ export default function Groups() {
   const [groups, setGroups] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showMembersModal, setShowMembersModal] = useState(false);
+  const [selectedGroup, setSelectedGroup] = useState(null);
+  const [members, setMembers] = useState([]);
+  const [loadingMembers, setLoadingMembers] = useState(false);
   const [formData, setFormData] = useState({
     nombreGrupo: '',
     tipoCelebracion: 'Navidad',
@@ -27,6 +31,29 @@ export default function Groups() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleShowMembers = async (group, e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setSelectedGroup(group);
+    setShowMembersModal(true);
+    setLoadingMembers(true);
+    try {
+      const response = await groupAPI.getMembers(group.id);
+      setMembers(response.data.members);
+    } catch (error) {
+      console.error('Failed to load members:', error);
+      alert('Error al cargar miembros');
+    } finally {
+      setLoadingMembers(false);
+    }
+  };
+
+  const handleRefresh = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    await loadGroups();
   };
 
   const handleCreateGroup = async (e) => {
@@ -82,29 +109,42 @@ export default function Groups() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {groups.map((group) => (
-              <Link
-                key={group.id}
-                to={`/group/${group.codigo_url}`}
-                className={`${theme.card} border rounded-lg p-6 hover:shadow-lg transition-shadow`}
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <h2 className="text-xl font-semibold text-gray-900">{group.nombre_grupo}</h2>
-                  <span className={`text-2xl`}>
-                    {group.tipo_celebracion === 'Navidad' && '🎄'}
-                    {group.tipo_celebracion === 'Reyes Magos' && '👑'}
-                    {group.tipo_celebracion === 'Boda' && '💒'}
-                    {group.tipo_celebracion === 'Cumpleaños' && '🎂'}
-                    {group.tipo_celebracion === 'Otro' && '🎁'}
-                  </span>
-                </div>
-                <p className="text-gray-600 text-sm mb-2">{group.tipo_celebracion}</p>
-                <p className="text-gray-500 text-sm">
-                  Fecha: {new Date(group.fecha_inicio).toLocaleDateString('es-ES')}
-                </p>
-                <p className="text-gray-500 text-sm">
-                  Miembros: {group.member_count}
-                </p>
-              </Link>
+              <div key={group.id} className="flex flex-col">
+                <Link
+                  to={`/group/${group.codigo_url}`}
+                  className={`${theme.card} border rounded-lg p-6 hover:shadow-lg transition-shadow`}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <h2 className="text-xl font-semibold text-gray-900">{group.nombre_grupo}</h2>
+                    <span className={`text-2xl`}>
+                      {group.tipo_celebracion === 'Navidad' && '🎄'}
+                      {group.tipo_celebracion === 'Reyes Magos' && '👑'}
+                      {group.tipo_celebracion === 'Boda' && '💒'}
+                      {group.tipo_celebracion === 'Cumpleaños' && '🎂'}
+                      {group.tipo_celebracion === 'Otro' && '🎁'}
+                    </span>
+                  </div>
+                  <p className="text-gray-600 text-sm mb-2">{group.tipo_celebracion}</p>
+                  <p className="text-gray-500 text-sm">
+                    Fecha: {new Date(group.fecha_inicio).toLocaleDateString('es-ES')}
+                  </p>
+                  <p className="text-gray-500 text-sm">
+                    Miembros:{' '}
+                    <button
+                      onClick={(e) => handleShowMembers(group, e)}
+                      className="text-blue-600 hover:text-blue-800 underline"
+                    >
+                      {group.member_count}
+                    </button>
+                  </p>
+                </Link>
+                <button
+                  onClick={handleRefresh}
+                  className="mt-2 text-sm text-gray-600 hover:text-gray-800 border border-gray-300 rounded-md py-1 px-3 hover:bg-gray-50 transition-colors"
+                >
+                  🔄 Refrescar
+                </button>
+              </div>
             ))}
           </div>
         )}
@@ -178,6 +218,50 @@ export default function Groups() {
                   </button>
                 </div>
               </form>
+            </div>
+          </div>
+        )}
+
+        {/* Members Modal */}
+        {showMembersModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                Miembros del Grupo
+              </h2>
+              {selectedGroup && (
+                <p className="text-gray-600 mb-4">{selectedGroup.nombre_grupo}</p>
+              )}
+
+              {loadingMembers ? (
+                <div className="text-center py-8">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+                  <p className="mt-2 text-gray-600">Cargando...</p>
+                </div>
+              ) : (
+                <div className="space-y-2 max-h-96 overflow-y-auto">
+                  {members.map((member) => (
+                    <div
+                      key={member.id}
+                      className="p-3 bg-gray-50 rounded-md hover:bg-gray-100"
+                    >
+                      <p className="font-medium text-gray-900">{member.nombre}</p>
+                      <p className="text-sm text-gray-500">{member.email}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <button
+                onClick={() => {
+                  setShowMembersModal(false);
+                  setMembers([]);
+                  setSelectedGroup(null);
+                }}
+                className="w-full mt-6 bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md font-medium"
+              >
+                Cerrar
+              </button>
             </div>
           </div>
         )}
