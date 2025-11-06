@@ -1,20 +1,23 @@
 import { useTheme } from '../context/ThemeContext';
 
-export default function GiftCard({ gift, onEdit, onDelete, onBuy, onUnbuy, showActions = true, currentUserId }) {
+export default function GiftCard({ gift, onEdit, onDelete, onBuy, onUnbuy, showActions = true, currentUserId, isWishlistView = false }) {
   const { theme } = useTheme();
   const isPurchasedByMe = gift.comprador_id && gift.comprador_id === currentUserId;
   const isPurchasedByOther = gift.comprador_id && gift.comprador_id !== currentUserId;
 
+  // Solo mostrar tags en la wishlist, nunca en "Mis Regalos"
+  const showPurchaseTags = isWishlistView;
+
   return (
-    <div className={`${theme.card} border rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow ${(isPurchasedByMe || isPurchasedByOther) ? 'relative' : ''}`}>
-      {isPurchasedByMe && (
+    <div className={`${theme.card} border rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow ${(showPurchaseTags && (isPurchasedByMe || isPurchasedByOther)) ? 'relative' : ''}`}>
+      {showPurchaseTags && isPurchasedByMe && (
         <div className="absolute top-2 right-2 z-10">
           <span className="bg-green-500 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-lg">
             ✓ Comprado por mí
           </span>
         </div>
       )}
-      {isPurchasedByOther && (
+      {showPurchaseTags && isPurchasedByOther && (
         <div className="absolute top-2 right-2 z-10">
           <span className="bg-orange-500 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-lg">
             ✓ Comprado por otro/a
@@ -26,7 +29,7 @@ export default function GiftCard({ gift, onEdit, onDelete, onBuy, onUnbuy, showA
         <img
           src={gift.image_url}
           alt={gift.nombre}
-          className={`w-full h-48 object-cover ${(isPurchasedByMe || isPurchasedByOther) ? 'opacity-75' : ''}`}
+          className={`w-full h-48 object-cover ${(showPurchaseTags && (isPurchasedByMe || isPurchasedByOther)) ? 'opacity-75' : ''}`}
           onError={(e) => {
             e.target.style.display = 'none';
           }}
@@ -69,7 +72,7 @@ export default function GiftCard({ gift, onEdit, onDelete, onBuy, onUnbuy, showA
                 Eliminar
               </button>
             )}
-            {onBuy && !isPurchasedByOther && (
+            {onBuy && !(showPurchaseTags && isPurchasedByOther) && (
               <button
                 onClick={() => isPurchasedByMe ? onUnbuy(gift.id) : onBuy(gift.id)}
                 className={`${isPurchasedByMe ? 'bg-yellow-500 hover:bg-yellow-600' : theme.primary} text-white px-4 py-2 rounded font-medium w-full`}

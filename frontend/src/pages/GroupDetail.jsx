@@ -318,6 +318,7 @@ export default function GroupDetail() {
                         onBuy={handleBuyGift}
                         onUnbuy={handleUnbuyGift}
                         currentUserId={user?.id}
+                        isWishlistView={true}
                       />
                     ))}
                   </div>
