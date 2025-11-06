@@ -317,6 +317,7 @@ export default function GroupDetail() {
                         gift={gift}
                         onBuy={handleBuyGift}
                         onUnbuy={handleUnbuyGift}
+                        currentUserId={user?.id}
                       />
                     ))}
                   </div>
@@ -350,6 +351,7 @@ export default function GroupDetail() {
                         gift={gift}
                         onEdit={handleEditGift}
                         onDelete={handleDeleteGift}
+                        currentUserId={user?.id}
                       />
                     ))}
                   </div>
