@@ -5,6 +5,7 @@ import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import GiftCard from '../components/GiftCard';
 import ThemeDecorations from '../components/ThemeDecorations';
+import EmailVerificationBanner from '../components/EmailVerificationBanner';
 
 export default function GroupDetail() {
   const { codigoUrl } = useParams();
@@ -124,7 +125,17 @@ export default function GroupDetail() {
       loadMyGifts();
       loadWishlist();
     } catch (error) {
-      alert(error.response?.data?.error || 'Error al guardar regalo');
+      const errorMessage = error.response?.data?.error || 'Error al guardar regalo';
+      const errorCode = error.response?.data?.code;
+
+      if (errorCode === 'EMAIL_NOT_VERIFIED') {
+        alert(
+          errorMessage +
+            '\n\nRevisa tu correo electrónico para verificar tu cuenta o solicita un nuevo email de verificación en la parte superior de esta página.'
+        );
+      } else {
+        alert(errorMessage);
+      }
     }
   };
 
@@ -364,6 +375,7 @@ export default function GroupDetail() {
 
             {activeTab === 'myGifts' && (
               <div>
+                <EmailVerificationBanner user={user} />
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-2xl font-bold text-gray-900">Mis Regalos</h2>
                   <button

@@ -12,9 +12,14 @@ Aplicación web para gestionar listas de deseos anónimas en grupos familiares o
 ## Características
 
 - Autenticación con email/contraseña, Google OAuth y Meta (Instagram) OAuth
+- **Verificación de email para usuarios locales (opcional)**: Los usuarios que se registran con email/contraseña deben verificar su correo antes de agregar regalos
 - Creación y gestión de grupos
 - Listas de deseos anónimas
-- Sistema de notificaciones
+- Sistema de notificaciones en la aplicación y por email
+- **Notificaciones por email con Mailgun (opcional)**:
+  - Email de bienvenida con enlace de verificación para nuevos usuarios
+  - Notificaciones cuando alguien cambia o borra un regalo que compraste
+  - Notificaciones cuando llega la fecha del evento
 - Tematización según tipo de celebración
 - Scraping automático de imágenes de productos
 
@@ -55,7 +60,31 @@ npm run dev
 
 ## Variables de Entorno
 
-Ver `backend/.env.example` para las variables requeridas.
+Ver `backend/.env.example` para todas las variables disponibles.
+
+### Configuración de Mailgun (Opcional)
+
+Las notificaciones por email son **opcionales**. Si no se configuran las variables de Mailgun, la aplicación funcionará normalmente pero:
+- No se enviarán emails de verificación (usuarios locales podrán agregar regalos inmediatamente)
+- No se enviarán notificaciones por email (solo notificaciones en la aplicación)
+
+Para habilitar las notificaciones por email:
+
+1. Crea una cuenta en [Mailgun](https://www.mailgun.com/)
+2. Obtén tu API Key y dominio verificado
+3. Añade las siguientes variables al archivo `.env`:
+
+```env
+MAILGUN_API_KEY=tu_api_key_de_mailgun
+MAILGUN_DOMAIN=tu_dominio.com
+MAILGUN_FROM_EMAIL=noreply@tu_dominio.com  # Opcional, por defecto usa noreply@MAILGUN_DOMAIN
+```
+
+**Tipos de emails enviados:**
+- **Email de verificación**: Se envía automáticamente cuando un usuario se registra con email/contraseña (válido por 24 horas)
+- **Notificación de cambio de regalo**: Se envía cuando alguien modifica un regalo que compraste
+- **Notificación de eliminación de regalo**: Se envía cuando alguien elimina un regalo que compraste
+- **Notificación de fecha del evento**: Se envía a todos los miembros del grupo el día del evento
 
 ## Docker Deployment
 
@@ -113,6 +142,10 @@ services:
       META_APP_SECRET: your_meta_app_secret
       META_CALLBACK_URL: http://localhost/auth/meta/callback
       FRONTEND_URL: http://localhost
+      # Mailgun (Optional - comment out if not using)
+      # MAILGUN_API_KEY: your_mailgun_api_key
+      # MAILGUN_DOMAIN: your_mailgun_domain.com
+      # MAILGUN_FROM_EMAIL: noreply@your_mailgun_domain.com
     ports:
       - "5000:5000"
     depends_on:
@@ -220,7 +253,12 @@ Before running docker-compose, make sure to update the following values in the `
    - Replace `your_meta_app_secret` with your Meta App Secret
    - Update `META_CALLBACK_URL` if deploying to a different domain (e.g., `https://yourdomain.com/auth/meta/callback`)
 5. **Frontend URL**: Update `FRONTEND_URL` if deploying to a different domain (e.g., `https://yourdomain.com`)
-6. **Timezone (Optional)**: Update `TZ` in the watchtower service to match your timezone (default: Europe/Madrid)
+6. **Mailgun Email Configuration (Optional)**: If you want to enable email notifications:
+   - Uncomment the Mailgun environment variables in the backend service
+   - Replace `your_mailgun_api_key` with your Mailgun API key
+   - Replace `your_mailgun_domain.com` with your Mailgun domain
+   - Replace `noreply@your_mailgun_domain.com` with your desired sender email
+7. **Timezone (Optional)**: Update `TZ` in the watchtower service to match your timezone (default: Europe/Madrid)
 
 #### Running the Application
 

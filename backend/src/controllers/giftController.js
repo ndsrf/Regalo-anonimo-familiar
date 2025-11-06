@@ -1,5 +1,6 @@
 import { query } from '../config/database.js';
 import { scrapeImageFromUrl } from '../utils/imageScraper.js';
+import emailService from '../services/emailService.js';
 
 export async function createGift(req, res) {
   try {
@@ -86,13 +87,17 @@ export async function getGroupWishlist(req, res) {
     }
 
     // Check if fecha_inicio has passed
-    const groupResult = await query('SELECT fecha_inicio FROM groups WHERE id = $1', [grupoId]);
+    const groupResult = await query(
+      'SELECT fecha_inicio, nombre_grupo, tipo_celebracion FROM groups WHERE id = $1',
+      [grupoId]
+    );
 
     if (groupResult.rows.length === 0) {
       return res.status(404).json({ error: 'Grupo no encontrado' });
     }
 
-    const fechaInicio = new Date(groupResult.rows[0].fecha_inicio);
+    const group = groupResult.rows[0];
+    const fechaInicio = new Date(group.fecha_inicio);
     const now = new Date();
 
     if (now < fechaInicio) {
@@ -101,6 +106,55 @@ export async function getGroupWishlist(req, res) {
         message: 'La lista estará disponible a partir de la fecha de inicio',
         fecha_inicio: fechaInicio,
       });
+    }
+
+    // Check if we need to send event date notification
+    // Only send if fecha_inicio is today and we haven't sent it yet
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const fechaInicioDate = new Date(group.fecha_inicio);
+    fechaInicioDate.setHours(0, 0, 0, 0);
+
+    if (today.getTime() === fechaInicioDate.getTime()) {
+      // Check if we already sent notification for this user
+      const membershipResult = await query(
+        'SELECT last_event_notification_sent FROM memberships WHERE usuario_id = $1 AND grupo_id = $2',
+        [userId, grupoId]
+      );
+
+      if (
+        membershipResult.rows.length > 0 &&
+        membershipResult.rows[0].last_event_notification_sent !== fechaInicioDate.toISOString().split('T')[0]
+      ) {
+        // Get all members to send notifications
+        const membersResult = await query(
+          `SELECT u.id, u.email, u.nombre
+           FROM users u
+           JOIN memberships m ON u.id = m.usuario_id
+           WHERE m.grupo_id = $1`,
+          [grupoId]
+        );
+
+        // Send email notifications to all members (fire and forget)
+        membersResult.rows.forEach(member => {
+          // Update last notification sent
+          query(
+            'UPDATE memberships SET last_event_notification_sent = $1 WHERE usuario_id = $2 AND grupo_id = $3',
+            [fechaInicioDate.toISOString().split('T')[0], member.id, grupoId]
+          ).catch(err => console.error('Error actualizando fecha de notificación:', err));
+
+          // Send email
+          emailService
+            .sendEventDateNotification({
+              to: member.email,
+              name: member.nombre,
+              groupName: group.nombre_grupo,
+              eventDate: group.fecha_inicio,
+              eventType: group.tipo_celebracion,
+            })
+            .catch(err => console.error('Error enviando email de fecha de evento:', err));
+        });
+      }
     }
 
     // Get anonymous wishlist
@@ -155,6 +209,28 @@ export async function updateGift(req, res) {
           gift.nombre,
         ]
       );
+
+      // Send email notification
+      const compradorResult = await query(
+        'SELECT email, nombre FROM users WHERE id = $1',
+        [gift.comprador_id]
+      );
+      const grupoResult = await query(
+        'SELECT nombre_grupo FROM groups WHERE id = $1',
+        [gift.grupo_id]
+      );
+
+      if (compradorResult.rows.length > 0 && grupoResult.rows.length > 0) {
+        emailService
+          .sendGiftChangeNotification({
+            to: compradorResult.rows[0].email,
+            name: compradorResult.rows[0].nombre,
+            giftName: gift.nombre,
+            action: 'updated',
+            groupName: grupoResult.rows[0].nombre_grupo,
+          })
+          .catch(err => console.error('Error enviando email de cambio de regalo:', err));
+      }
     }
 
     // Scrape new image if URL changed
@@ -211,6 +287,28 @@ export async function deleteGift(req, res) {
           gift.nombre,
         ]
       );
+
+      // Send email notification
+      const compradorResult = await query(
+        'SELECT email, nombre FROM users WHERE id = $1',
+        [gift.comprador_id]
+      );
+      const grupoResult = await query(
+        'SELECT nombre_grupo FROM groups WHERE id = $1',
+        [gift.grupo_id]
+      );
+
+      if (compradorResult.rows.length > 0 && grupoResult.rows.length > 0) {
+        emailService
+          .sendGiftChangeNotification({
+            to: compradorResult.rows[0].email,
+            name: compradorResult.rows[0].nombre,
+            giftName: gift.nombre,
+            action: 'deleted',
+            groupName: grupoResult.rows[0].nombre_grupo,
+          })
+          .catch(err => console.error('Error enviando email de eliminación de regalo:', err));
+      }
 
       // Soft delete
       await query('UPDATE gifts SET is_deleted_by_solicitante = true WHERE id = $1', [giftId]);

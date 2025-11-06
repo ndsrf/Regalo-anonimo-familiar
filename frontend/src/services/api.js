@@ -41,6 +41,8 @@ export const authAPI = {
   register: (data) => api.post('/auth/register', data),
   login: (data) => api.post('/auth/login', data),
   getMe: () => api.get('/auth/me'),
+  verifyEmail: (token) => api.post('/auth/verify-email', { token }),
+  resendVerification: () => api.post('/auth/resend-verification'),
   googleLogin: (returnTo) => {
     let url = API_URL ? `${API_URL}/auth/google` : '/auth/google';
     if (returnTo) {
