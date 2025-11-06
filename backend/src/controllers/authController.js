@@ -117,6 +117,24 @@ export function googleCallback(req, res) {
   }
 }
 
+export function metaCallback(req, res) {
+  try {
+    // User is authenticated by passport
+    const user = req.user;
+
+    // Generate JWT
+    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_EXPIRES_IN,
+    });
+
+    // Redirect to frontend with token
+    res.redirect(`${process.env.FRONTEND_URL}/oauth-callback-meta?token=${token}`);
+  } catch (error) {
+    console.error('Meta callback error:', error);
+    res.redirect(`${process.env.FRONTEND_URL}/login?error=auth_failed`);
+  }
+}
+
 export async function getMe(req, res) {
   try {
     const result = await query('SELECT id, email, nombre FROM users WHERE id = $1', [req.user.id]);

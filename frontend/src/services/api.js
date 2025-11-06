@@ -45,6 +45,10 @@ export const authAPI = {
     const url = API_URL ? `${API_URL}/auth/google` : '/auth/google';
     window.location.href = url;
   },
+  metaLogin: () => {
+    const url = API_URL ? `${API_URL}/auth/meta` : '/auth/meta';
+    window.location.href = url;
+  },
 };
 
 // Group endpoints

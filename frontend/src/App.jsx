@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import GoogleCallback from './pages/GoogleCallback';
+import MetaCallback from './pages/MetaCallback';
 import Groups from './pages/Groups';
 import GroupDetail from './pages/GroupDetail';
 
@@ -24,6 +25,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/oauth-callback" element={<GoogleCallback />} />
+              <Route path="/oauth-callback-meta" element={<MetaCallback />} />
               <Route
                 path="/groups"
                 element={

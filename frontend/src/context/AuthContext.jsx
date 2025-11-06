@@ -70,6 +70,24 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const handleMetaCallback = async (tokenFromUrl) => {
+    localStorage.setItem('token', tokenFromUrl);
+    setToken(tokenFromUrl);
+
+    // Load user data immediately to avoid race conditions
+    try {
+      const response = await authAPI.getMe();
+      setUser(response.data.user);
+      setLoading(false);
+      return true; // Success
+    } catch (error) {
+      console.error('Failed to load user after Meta callback:', error);
+      logout();
+      setLoading(false);
+      return false; // Failure
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -79,6 +97,7 @@ export const AuthProvider = ({ children }) => {
         register,
         logout,
         handleGoogleCallback,
+        handleMetaCallback,
         isAuthenticated: !!user,
       }}
     >
