@@ -41,12 +41,18 @@ export const authAPI = {
   register: (data) => api.post('/auth/register', data),
   login: (data) => api.post('/auth/login', data),
   getMe: () => api.get('/auth/me'),
-  googleLogin: () => {
-    const url = API_URL ? `${API_URL}/auth/google` : '/auth/google';
+  googleLogin: (returnTo) => {
+    let url = API_URL ? `${API_URL}/auth/google` : '/auth/google';
+    if (returnTo) {
+      url += `?returnTo=${encodeURIComponent(returnTo)}`;
+    }
     window.location.href = url;
   },
-  metaLogin: () => {
-    const url = API_URL ? `${API_URL}/auth/meta` : '/auth/meta';
+  metaLogin: (returnTo) => {
+    let url = API_URL ? `${API_URL}/auth/meta` : '/auth/meta';
+    if (returnTo) {
+      url += `?returnTo=${encodeURIComponent(returnTo)}`;
+    }
     window.location.href = url;
   },
 };

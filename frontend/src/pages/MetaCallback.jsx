@@ -16,8 +16,12 @@ export default function MetaCallback() {
         // Wait for user to be loaded before navigating
         const success = await handleMetaCallback(token);
         if (success) {
-          // Check for returnTo in sessionStorage
-          const returnTo = sessionStorage.getItem('returnTo');
+          // Check for returnTo in URL first (from OAuth state), then sessionStorage as fallback
+          let returnTo = searchParams.get('returnTo');
+          if (!returnTo) {
+            returnTo = sessionStorage.getItem('returnTo');
+          }
+
           if (returnTo) {
             sessionStorage.removeItem('returnTo');
             navigate(decodeURIComponent(returnTo));
