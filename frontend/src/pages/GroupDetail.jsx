@@ -267,6 +267,17 @@ export default function GroupDetail() {
     }
   };
 
+  const handleArchiveGroup = async () => {
+    if (!confirm('¿Estás seguro de archivar este grupo? Una vez archivado, no se podrán hacer más cambios (añadir o modificar regalos).')) return;
+    try {
+      await groupAPI.archive(group.id);
+      alert('Grupo archivado exitosamente');
+      navigate('/groups');
+    } catch (error) {
+      alert(error.response?.data?.error || 'Error al archivar grupo');
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -363,13 +374,26 @@ export default function GroupDetail() {
                   {loadingPairings ? 'Realizando sorteo...' : '🎭 Realizar Sorteo'}
                 </button>
               )}
-              {user && user.id === group.creator_id && (
-                <button
-                  onClick={handleEditGroup}
-                  className={`${theme.primary} text-white px-4 py-2 rounded-md text-sm transition-colors`}
-                >
-                  ✏️ Editar Grupo
-                </button>
+              {user && user.id === group.creator_id && !group.archived && (
+                <>
+                  <button
+                    onClick={handleEditGroup}
+                    className={`${theme.primary} text-white px-4 py-2 rounded-md text-sm transition-colors`}
+                  >
+                    ✏️ Editar Grupo
+                  </button>
+                  <button
+                    onClick={handleArchiveGroup}
+                    className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md text-sm transition-colors"
+                  >
+                    📦 Archivar Grupo
+                  </button>
+                </>
+              )}
+              {group.archived && (
+                <div className="bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-2 rounded-md text-sm font-medium">
+                  📦 Grupo Archivado
+                </div>
               )}
               <button
                 onClick={copyInviteLink}
@@ -476,8 +500,8 @@ export default function GroupDetail() {
                       <GiftCard
                         key={gift.id}
                         gift={gift}
-                        onBuy={handleBuyGift}
-                        onUnbuy={handleUnbuyGift}
+                        onBuy={!group.archived ? handleBuyGift : undefined}
+                        onUnbuy={!group.archived ? handleUnbuyGift : undefined}
                         currentUserId={user?.id}
                         isWishlistView={true}
                       />
@@ -492,16 +516,18 @@ export default function GroupDetail() {
                 <EmailVerificationBanner user={user} />
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-2xl font-bold text-gray-900">Mis Regalos</h2>
-                  <button
-                    onClick={() => {
-                      setEditingGift(null);
-                      setFormData({ nombre: '', descripcion: '', url: '' });
-                      setShowAddGift(true);
-                    }}
-                    className={`${theme.primary} text-white px-4 py-2 rounded-md font-medium`}
-                  >
-                    + Añadir Regalo
-                  </button>
+                  {!group.archived && (
+                    <button
+                      onClick={() => {
+                        setEditingGift(null);
+                        setFormData({ nombre: '', descripcion: '', url: '' });
+                        setShowAddGift(true);
+                      }}
+                      className={`${theme.primary} text-white px-4 py-2 rounded-md font-medium`}
+                    >
+                      + Añadir Regalo
+                    </button>
+                  )}
                 </div>
 
                 {myGifts.length === 0 ? (
@@ -512,8 +538,8 @@ export default function GroupDetail() {
                       <GiftCard
                         key={gift.id}
                         gift={gift}
-                        onEdit={handleEditGift}
-                        onDelete={handleDeleteGift}
+                        onEdit={!group.archived ? handleEditGift : undefined}
+                        onDelete={!group.archived ? handleDeleteGift : undefined}
                         currentUserId={user?.id}
                       />
                     ))}
