@@ -11,8 +11,10 @@ export default function Groups() {
   const [selectedGroup, setSelectedGroup] = useState(null);
   const [members, setMembers] = useState([]);
   const [loadingMembers, setLoadingMembers] = useState(false);
+  const [showHelpModal, setShowHelpModal] = useState(false);
   const [formData, setFormData] = useState({
     nombreGrupo: '',
+    gameMode: 'Lista de Deseos Anónimos',
     tipoCelebracion: 'Navidad',
     fechaInicio: '',
   });
@@ -57,6 +59,7 @@ export default function Groups() {
       setShowCreateModal(false);
       setFormData({
         nombreGrupo: '',
+        gameMode: 'Lista de Deseos Anónimos',
         tipoCelebracion: 'Navidad',
         fechaInicio: '',
       });
@@ -157,6 +160,30 @@ export default function Groups() {
                 </div>
 
                 <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Modo de Juego
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => setShowHelpModal(true)}
+                      className="text-blue-600 hover:text-blue-800 text-sm underline"
+                    >
+                      ¿Qué es esto?
+                    </button>
+                  </div>
+                  <select
+                    value={formData.gameMode}
+                    onChange={(e) => setFormData({ ...formData, gameMode: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  >
+                    <option value="Lista de Deseos Anónimos">Lista de Deseos Anónimos</option>
+                    <option value="Amigo Invisible">Amigo Invisible</option>
+                  </select>
+                </div>
+
+                <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Tipo de Celebración
                   </label>
@@ -247,6 +274,66 @@ export default function Groups() {
                 className="w-full mt-6 bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md font-medium"
               >
                 Cerrar
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Help Modal */}
+        {showHelpModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">Modos de Juego</h2>
+
+              <div className="space-y-6">
+                {/* Lista de Deseos Anónimos */}
+                <div className="border-l-4 border-blue-500 pl-4">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2 flex items-center">
+                    <span className="mr-2">🎁</span>
+                    Lista de Deseos Anónimos
+                  </h3>
+                  <p className="text-gray-700 mb-2">
+                    En este modo, los miembros del grupo pueden:
+                  </p>
+                  <ul className="list-disc list-inside text-gray-600 space-y-1 ml-4">
+                    <li>Crear su propia lista de regalos deseados</li>
+                    <li>Ver una lista anónima de todos los regalos del grupo</li>
+                    <li>Seleccionar qué regalos quieren comprar (sin revelar su identidad)</li>
+                    <li>La lista de deseos se hace visible en la fecha de inicio del evento</li>
+                  </ul>
+                  <p className="text-gray-600 mt-2 italic">
+                    Perfecto para eventos donde todos quieren sorprenderse mutuamente con regalos.
+                  </p>
+                </div>
+
+                {/* Amigo Invisible */}
+                <div className="border-l-4 border-purple-500 pl-4">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2 flex items-center">
+                    <span className="mr-2">🎭</span>
+                    Amigo Invisible
+                  </h3>
+                  <p className="text-gray-700 mb-2">
+                    El clásico juego del Amigo Invisible (Secret Santa):
+                  </p>
+                  <ul className="list-disc list-inside text-gray-600 space-y-1 ml-4">
+                    <li>Los miembros se unen al grupo hasta la fecha de inicio</li>
+                    <li>El creador del grupo realiza el sorteo en la fecha de inicio</li>
+                    <li>Cada persona es emparejada aleatoriamente con otra</li>
+                    <li>Cada participante solo puede ver a quién le tocó regalar</li>
+                    <li>Una vez hecho el sorteo, no se pueden unir más personas</li>
+                    <li>Todos reciben un email informando de su emparejamiento</li>
+                  </ul>
+                  <p className="text-gray-600 mt-2 italic">
+                    Ideal para eventos con presupuesto limitado donde cada persona solo regala a una persona específica.
+                  </p>
+                </div>
+              </div>
+
+              <button
+                onClick={() => setShowHelpModal(false)}
+                className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium"
+              >
+                Entendido
               </button>
             </div>
           </div>

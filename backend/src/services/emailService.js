@@ -234,6 +234,80 @@ Regalo Anónimo Familiar
 
     return await this.sendEmail({ to, subject, text, html });
   }
+
+  async sendSecretSantaAssignment(to, giverName, receiverName, groupName, eventType, eventDate) {
+    const subject = `🎭 ¡Ya tienes tu asignación de Amigo Invisible! - ${groupName}`;
+
+    const text = `
+Hola ${giverName},
+
+¡El sorteo del Amigo Invisible para "${groupName}" ya se ha realizado!
+
+🎭 Tu persona asignada es: ${receiverName}
+
+Tipo de celebración: ${eventType}
+Fecha del evento: ${eventDate}
+
+Recuerda mantener el secreto y prepara un bonito regalo para ${receiverName}.
+
+¡Que disfrutes del juego!
+
+Saludos,
+Regalo Anónimo Familiar
+    `.trim();
+
+    const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+    .header { background: linear-gradient(135deg, #9333ea 0%, #ec4899 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+    .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
+    .assignment-box { background: white; border: 3px dashed #9333ea; border-radius: 10px; padding: 25px; margin: 25px 0; text-align: center; }
+    .receiver-name { font-size: 28px; font-weight: bold; color: #9333ea; margin: 15px 0; }
+    .secret-notice { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px; margin: 20px 0; font-size: 14px; }
+    .event-details { background: white; border-radius: 8px; padding: 15px; margin: 20px 0; }
+    .footer { text-align: center; margin-top: 20px; font-size: 12px; color: #666; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🎭 ¡Amigo Invisible!</h1>
+    </div>
+    <div class="content">
+      <h2>Hola ${giverName},</h2>
+      <p>¡El sorteo del Amigo Invisible para <strong>"${groupName}"</strong> ya se ha realizado!</p>
+
+      <div class="assignment-box">
+        <p style="margin: 0; font-size: 16px; color: #666;">🎁 Tu persona asignada es:</p>
+        <div class="receiver-name">${receiverName}</div>
+        <p style="margin: 0; font-size: 14px; color: #666;">¡Prepara un bonito regalo!</p>
+      </div>
+
+      <div class="secret-notice">
+        <strong>🤫 Recuerda:</strong> Mantén el secreto sobre quién te tocó. ¡Esa es la magia del Amigo Invisible!
+      </div>
+
+      <div class="event-details">
+        <p style="margin: 5px 0;"><strong>📅 Tipo de celebración:</strong> ${eventType}</p>
+        <p style="margin: 5px 0;"><strong>🗓️ Fecha del evento:</strong> ${eventDate}</p>
+      </div>
+
+      <p style="margin-top: 30px; text-align: center;">¡Que disfrutes del juego! 🎉</p>
+    </div>
+    <div class="footer">
+      <p>Regalo Anónimo Familiar - Comparte la magia de dar</p>
+    </div>
+  </div>
+</body>
+</html>
+    `.trim();
+
+    return await this.sendEmail({ to, subject, text, html });
+  }
 }
 
 // Singleton instance

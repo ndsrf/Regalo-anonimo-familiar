@@ -34,6 +34,9 @@ export default function GroupDetail() {
   const [showMembersModal, setShowMembersModal] = useState(false);
   const [members, setMembers] = useState([]);
   const [loadingMembers, setLoadingMembers] = useState(false);
+  // Secret Santa states
+  const [secretSantaAssignment, setSecretSantaAssignment] = useState(null);
+  const [loadingPairings, setLoadingPairings] = useState(false);
   const { theme, setTheme } = useTheme();
 
   useEffect(() => {
@@ -44,8 +47,12 @@ export default function GroupDetail() {
     if (group) {
       setTheme(group.tipo_celebracion);
       if (group.is_member) {
-        loadMyGifts();
-        loadWishlist();
+        if (group.game_mode === 'Amigo Invisible') {
+          loadSecretSantaAssignment();
+        } else {
+          loadMyGifts();
+          loadWishlist();
+        }
       }
     }
   }, [group]);
@@ -80,6 +87,31 @@ export default function GroupDetail() {
       setWishlistMessage(response.data.message || '');
     } catch (error) {
       console.error('Failed to load wishlist:', error);
+    }
+  };
+
+  const loadSecretSantaAssignment = async () => {
+    if (!group) return;
+    try {
+      const response = await groupAPI.getMyAssignment(group.id);
+      setSecretSantaAssignment(response.data);
+    } catch (error) {
+      console.error('Failed to load secret santa assignment:', error);
+    }
+  };
+
+  const handleCreatePairings = async () => {
+    if (!confirm('¿Estás seguro de realizar el sorteo? Una vez hecho, no se pueden unir más personas al grupo.')) return;
+    setLoadingPairings(true);
+    try {
+      await groupAPI.createPairings(group.id);
+      alert('¡Emparejamientos realizados exitosamente! Todos los participantes han recibido un email con su asignación.');
+      loadGroup();
+      loadSecretSantaAssignment();
+    } catch (error) {
+      alert(error.response?.data?.error || 'Error al crear emparejamientos');
+    } finally {
+      setLoadingPairings(false);
     }
   };
 
@@ -251,20 +283,37 @@ export default function GroupDetail() {
   }
 
   if (!group.is_member) {
+    const canJoinSecretSanta = group.game_mode === 'Amigo Invisible' && !group.pairings_done;
+    const canJoin = group.game_mode !== 'Amigo Invisible' || canJoinSecretSanta;
+
     return (
       <div className={`min-h-screen ${theme.bg} flex items-center justify-center px-4`}>
         <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8 text-center">
           <h1 className="text-3xl font-bold text-gray-900 mb-4">{group.nombre_grupo}</h1>
-          <p className="text-gray-600 mb-2">{group.tipo_celebracion}</p>
+          <div className="mb-2">
+            <p className="text-gray-600">{group.tipo_celebracion}</p>
+            <p className="text-purple-600 font-medium mt-1">
+              {group.game_mode === 'Amigo Invisible' ? '🎭 Amigo Invisible' : '🎁 Lista de Deseos'}
+            </p>
+          </div>
           <p className="text-gray-500 mb-6">
             Fecha: {new Date(group.fecha_inicio).toLocaleDateString('es-ES')}
           </p>
-          <button
-            onClick={handleJoinGroup}
-            className={`${theme.primary} text-white px-6 py-3 rounded-md font-medium w-full`}
-          >
-            Unirse al Grupo
-          </button>
+          {canJoin ? (
+            <button
+              onClick={handleJoinGroup}
+              className={`${theme.primary} text-white px-6 py-3 rounded-md font-medium w-full`}
+            >
+              Unirse al Grupo
+            </button>
+          ) : (
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+              <p className="font-medium">No es posible unirse a este grupo</p>
+              <p className="text-sm mt-1">
+                El sorteo del Amigo Invisible ya se ha realizado y el grupo está cerrado.
+              </p>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -279,7 +328,13 @@ export default function GroupDetail() {
           <div className="flex justify-between items-start">
             <div>
               <h1 className="text-3xl font-bold text-gray-900 mb-2">{group.nombre_grupo}</h1>
-              <p className="text-gray-600">{group.tipo_celebracion}</p>
+              <div className="flex items-center gap-2 mb-1">
+                <p className="text-gray-600">{group.tipo_celebracion}</p>
+                <span className="text-gray-400">•</span>
+                <p className="text-purple-600 font-medium">
+                  {group.game_mode === 'Amigo Invisible' ? '🎭 Amigo Invisible' : '🎁 Lista de Deseos'}
+                </p>
+              </div>
               <p className="text-gray-500 text-sm">
                 Fecha: {new Date(group.fecha_inicio).toLocaleDateString('es-ES')}
               </p>
@@ -292,8 +347,22 @@ export default function GroupDetail() {
                   {group.member_count}
                 </button>
               </p>
+              {group.game_mode === 'Amigo Invisible' && group.pairings_done && (
+                <p className="text-green-600 text-sm font-medium mt-1">
+                  ✓ Emparejamientos realizados
+                </p>
+              )}
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap">
+              {user && user.id === group.creator_id && group.game_mode === 'Amigo Invisible' && !group.pairings_done && (
+                <button
+                  onClick={handleCreatePairings}
+                  disabled={loadingPairings}
+                  className="bg-purple-600 hover:bg-purple-700 disabled:bg-purple-400 text-white px-4 py-2 rounded-md text-sm transition-colors font-medium"
+                >
+                  {loadingPairings ? 'Realizando sorteo...' : '🎭 Realizar Sorteo'}
+                </button>
+              )}
               {user && user.id === group.creator_id && (
                 <button
                   onClick={handleEditGroup}
@@ -318,32 +387,77 @@ export default function GroupDetail() {
           </div>
         </div>
 
-        {/* Tabs */}
-        <div className="bg-white rounded-lg shadow-md mb-6">
-          <div className="flex border-b">
-            <button
-              onClick={() => setActiveTab('wishlist')}
-              className={`flex-1 px-6 py-4 font-medium ${
-                activeTab === 'wishlist'
-                  ? `${theme.accent} border-b-2 border-current`
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
-            >
-              Lista de Deseos del Grupo
-            </button>
-            <button
-              onClick={() => setActiveTab('myGifts')}
-              className={`flex-1 px-6 py-4 font-medium ${
-                activeTab === 'myGifts'
-                  ? `${theme.accent} border-b-2 border-current`
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
-            >
-              Mis Regalos
-            </button>
-          </div>
+        {/* Secret Santa Assignment or Tabs */}
+        {group.game_mode === 'Amigo Invisible' ? (
+          <div className="bg-white rounded-lg shadow-md mb-6 p-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4 text-center">
+              🎭 Amigo Invisible
+            </h2>
 
-          <div className="p-6">
+            {!secretSantaAssignment || !secretSantaAssignment.hasPairing ? (
+              <div className="text-center py-8">
+                <div className="bg-purple-50 border-2 border-purple-200 rounded-lg p-6 max-w-md mx-auto">
+                  <p className="text-lg text-gray-700 mb-2">
+                    {group.pairings_done
+                      ? 'Cargando tu asignación...'
+                      : 'El sorteo aún no se ha realizado'}
+                  </p>
+                  {!group.pairings_done && (
+                    <p className="text-sm text-gray-600">
+                      {user && user.id === group.creator_id
+                        ? 'Como creador del grupo, puedes realizar el sorteo cuando todos los participantes se hayan unido.'
+                        : 'Espera a que el creador del grupo realice el sorteo.'}
+                    </p>
+                  )}
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <div className="bg-gradient-to-br from-purple-50 to-pink-50 border-3 border-dashed border-purple-300 rounded-xl p-8 max-w-md mx-auto">
+                  <p className="text-lg text-gray-700 mb-3">
+                    🎁 Tu persona asignada es:
+                  </p>
+                  <p className="text-4xl font-bold text-purple-600 mb-6">
+                    {secretSantaAssignment.receiver.nombre}
+                  </p>
+                  <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 text-left">
+                    <p className="text-sm text-gray-700">
+                      <strong>🤫 Recuerda:</strong> Mantén el secreto sobre quién te tocó. ¡Esa es la magia del Amigo Invisible!
+                    </p>
+                  </div>
+                  <p className="text-sm text-gray-600 mt-4">
+                    Prepara un bonito regalo para el {new Date(group.fecha_inicio).toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="bg-white rounded-lg shadow-md mb-6">
+            <div className="flex border-b">
+              <button
+                onClick={() => setActiveTab('wishlist')}
+                className={`flex-1 px-6 py-4 font-medium ${
+                  activeTab === 'wishlist'
+                    ? `${theme.accent} border-b-2 border-current`
+                    : 'text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                Lista de Deseos del Grupo
+              </button>
+              <button
+                onClick={() => setActiveTab('myGifts')}
+                className={`flex-1 px-6 py-4 font-medium ${
+                  activeTab === 'myGifts'
+                    ? `${theme.accent} border-b-2 border-current`
+                    : 'text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                Mis Regalos
+              </button>
+            </div>
+
+            <div className="p-6">
             {activeTab === 'wishlist' && (
               <div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">
@@ -407,8 +521,9 @@ export default function GroupDetail() {
                 )}
               </div>
             )}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Add/Edit Gift Modal */}
         {showAddGift && (
