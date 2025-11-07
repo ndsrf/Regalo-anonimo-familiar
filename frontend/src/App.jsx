@@ -9,6 +9,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import GoogleCallback from './pages/GoogleCallback';
 import MetaCallback from './pages/MetaCallback';
+import VerifyEmail from './pages/VerifyEmail';
 import Groups from './pages/Groups';
 import GroupDetail from './pages/GroupDetail';
 import TermsOfService from './pages/TermsOfService';
@@ -28,6 +29,7 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/oauth-callback" element={<GoogleCallback />} />
               <Route path="/oauth-callback-meta" element={<MetaCallback />} />
+              <Route path="/verify-email" element={<VerifyEmail />} />
               <Route
                 path="/groups"
                 element={

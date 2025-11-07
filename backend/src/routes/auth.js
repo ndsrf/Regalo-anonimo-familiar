@@ -1,6 +1,14 @@
 import express from 'express';
 import passport from 'passport';
-import { register, login, googleCallback, metaCallback, getMe } from '../controllers/authController.js';
+import {
+  register,
+  login,
+  googleCallback,
+  metaCallback,
+  getMe,
+  verifyEmail,
+  resendVerificationEmail,
+} from '../controllers/authController.js';
 import { requireAuth } from '../middleware/auth.js';
 
 const router = express.Router();
@@ -45,5 +53,9 @@ router.get(
 
 // Get current user
 router.get('/me', requireAuth, getMe);
+
+// Email verification
+router.post('/verify-email', verifyEmail);
+router.post('/resend-verification', requireAuth, resendVerificationEmail);
 
 export default router;
