@@ -11,10 +11,23 @@ export default function Home() {
           <h1 className="text-6xl font-bold text-gray-900 mb-6">
             🎁 Lista de Deseos Secreta
           </h1>
-          <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto">
-            Crea grupos, añade regalos a tu lista de deseos personal, y deja que los demás
-            miembros vean una lista anónima de todos los regalos sin saber quién pidió qué.
+          <p className="text-xl text-gray-600 mb-4 max-w-3xl mx-auto">
+            Crea grupos para tus celebraciones y elige entre dos modos de juego:
           </p>
+          <div className="flex flex-col md:flex-row gap-4 justify-center mb-12 max-w-4xl mx-auto">
+            <div className="flex-1 bg-blue-50 border-2 border-blue-200 rounded-lg p-4">
+              <h3 className="text-lg font-bold text-blue-900 mb-1">🎁 Lista de Deseos Anónimos</h3>
+              <p className="text-sm text-gray-700">
+                Añade regalos a tu lista y ve una lista anónima de todos los regalos sin saber quién pidió qué.
+              </p>
+            </div>
+            <div className="flex-1 bg-purple-50 border-2 border-purple-200 rounded-lg p-4">
+              <h3 className="text-lg font-bold text-purple-900 mb-1">🎭 Amigo Invisible</h3>
+              <p className="text-sm text-gray-700">
+                El clásico juego donde cada persona regala a alguien específico. Sorteo automático y notificaciones por email.
+              </p>
+            </div>
+          </div>
 
           <div className="flex gap-4 justify-center mb-20">
             {isAuthenticated ? (
@@ -45,12 +58,12 @@ export default function Home() {
           {/* Features */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             <div className="bg-white rounded-lg shadow-lg p-6">
-              <div className="text-4xl mb-4">🎭</div>
+              <div className="text-4xl mb-4">🎲</div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                Totalmente Anónimo
+                Dos Modos de Juego
               </h3>
               <p className="text-gray-600">
-                Los regalos se muestran mezclados sin identificar quién pidió qué
+                Elige entre Lista de Deseos Anónimos o Amigo Invisible con sorteo automático
               </p>
             </div>
 
@@ -70,7 +83,7 @@ export default function Home() {
                 Notificaciones Inteligentes
               </h3>
               <p className="text-gray-600">
-                Te avisamos si un regalo comprado es modificado o eliminado
+                Recibe notificaciones por email sobre cambios en regalos y emparejamientos
               </p>
             </div>
           </div>

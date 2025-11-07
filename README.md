@@ -14,12 +14,15 @@ Aplicación web para gestionar listas de deseos anónimas en grupos familiares o
 - Autenticación con email/contraseña, Google OAuth y Meta (Instagram) OAuth
 - **Verificación de email para usuarios locales (opcional)**: Los usuarios que se registran con email/contraseña deben verificar su correo antes de agregar regalos
 - Creación y gestión de grupos
-- Listas de deseos anónimas
+- **Dos modos de juego**:
+  - **🎁 Lista de Deseos Anónimos**: Los usuarios piden sus regalos y pueden ver una lista anónima de todos los regalos del grupo
+  - **🎭 Amigo Invisible (Secret Santa)**: Sistema de emparejamiento aleatorio donde cada persona regala a una persona específica. Incluye sorteo automático y notificaciones por email con las asignaciones
 - Sistema de notificaciones en la aplicación y por email
 - **Notificaciones por email con Mailgun (opcional)**:
   - Email de bienvenida con enlace de verificación para nuevos usuarios
   - Notificaciones cuando alguien cambia o borra un regalo que compraste
   - Notificaciones cuando llega la fecha del evento
+  - **Notificaciones de emparejamiento de Amigo Invisible**: Cada participante recibe un email con la persona que le tocó
 - Tematización según tipo de celebración
 - Scraping automático de imágenes de productos
 

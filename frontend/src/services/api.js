@@ -67,6 +67,9 @@ export const groupAPI = {
   join: (codigoUrl) => api.post(`/api/groups/${codigoUrl}/join`),
   getMembers: (grupoId) => api.get(`/api/groups/${grupoId}/members`),
   update: (grupoId, data) => api.put(`/api/groups/${grupoId}/update`, data),
+  // Secret Santa endpoints
+  createPairings: (grupoId) => api.post(`/api/groups/${grupoId}/secret-santa/create-pairings`),
+  getMyAssignment: (grupoId) => api.get(`/api/groups/${grupoId}/secret-santa/my-assignment`),
 };
 
 // Gift endpoints

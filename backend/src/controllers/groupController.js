@@ -3,12 +3,18 @@ import { generateGroupCode } from '../utils/generateCode.js';
 
 export async function createGroup(req, res) {
   try {
-    const { nombreGrupo, tipoCelebracion, fechaInicio } = req.body;
+    const { nombreGrupo, gameMode, tipoCelebracion, fechaInicio } = req.body;
     const userId = req.user.id;
 
     // Validate input
-    if (!nombreGrupo || !tipoCelebracion || !fechaInicio) {
+    if (!nombreGrupo || !gameMode || !tipoCelebracion || !fechaInicio) {
       return res.status(400).json({ error: 'Todos los campos son requeridos' });
+    }
+
+    // Validate game mode
+    const validGameModes = ['Lista de Deseos Anónimos', 'Amigo Invisible'];
+    if (!validGameModes.includes(gameMode)) {
+      return res.status(400).json({ error: 'Modo de juego inválido' });
     }
 
     // Validate celebration type
@@ -32,8 +38,8 @@ export async function createGroup(req, res) {
 
     // Create group
     const groupResult = await query(
-      'INSERT INTO groups (nombre_grupo, tipo_celebracion, fecha_inicio, codigo_url, creator_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-      [nombreGrupo, tipoCelebracion, fechaInicio, codigoUrl, userId]
+      'INSERT INTO groups (nombre_grupo, game_mode, tipo_celebracion, fecha_inicio, codigo_url, creator_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+      [nombreGrupo, gameMode, tipoCelebracion, fechaInicio, codigoUrl, userId]
     );
 
     const group = groupResult.rows[0];
@@ -99,13 +105,19 @@ export async function joinGroup(req, res) {
     const userId = req.user.id;
 
     // Find group
-    const groupResult = await query('SELECT id FROM groups WHERE codigo_url = $1', [codigoUrl]);
+    const groupResult = await query('SELECT id, game_mode, pairings_done FROM groups WHERE codigo_url = $1', [codigoUrl]);
 
     if (groupResult.rows.length === 0) {
       return res.status(404).json({ error: 'Grupo no encontrado' });
     }
 
-    const groupId = groupResult.rows[0].id;
+    const group = groupResult.rows[0];
+    const groupId = group.id;
+
+    // Check if Secret Santa pairings already done
+    if (group.game_mode === 'Amigo Invisible' && group.pairings_done) {
+      return res.status(403).json({ error: 'No es posible unirse. Los emparejamientos ya han sido realizados.' });
+    }
 
     // Check if already a member
     const existingMembership = await query(
