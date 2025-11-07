@@ -149,7 +149,7 @@ export async function getUserGroups(req, res) {
        FROM groups g
        JOIN memberships m ON g.id = m.grupo_id
        JOIN users u ON g.creator_id = u.id
-       WHERE m.usuario_id = $1
+       WHERE m.usuario_id = $1 AND g.archived = FALSE
        ORDER BY g.created_at DESC`,
       [userId]
     );
@@ -212,7 +212,7 @@ export async function updateGroup(req, res) {
 
     // Check if group exists and user is the creator
     const groupResult = await query(
-      'SELECT creator_id FROM groups WHERE id = $1',
+      'SELECT creator_id, archived FROM groups WHERE id = $1',
       [grupoId]
     );
 
@@ -226,6 +226,10 @@ export async function updateGroup(req, res) {
       return res.status(403).json({ error: 'Solo el creador puede editar el grupo' });
     }
 
+    if (group.archived) {
+      return res.status(403).json({ error: 'No se puede editar un grupo archivado' });
+    }
+
     // Update group
     const updateResult = await query(
       'UPDATE groups SET nombre_grupo = $1, tipo_celebracion = $2, fecha_inicio = $3 WHERE id = $4 RETURNING *',
@@ -236,5 +240,68 @@ export async function updateGroup(req, res) {
   } catch (error) {
     console.error('Update group error:', error);
     res.status(500).json({ error: 'Error al actualizar grupo' });
+  }
+}
+
+export async function archiveGroup(req, res) {
+  try {
+    const { grupoId } = req.params;
+    const userId = req.user.id;
+
+    // Check if group exists and user is the creator
+    const groupResult = await query(
+      'SELECT creator_id, archived FROM groups WHERE id = $1',
+      [grupoId]
+    );
+
+    if (groupResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Grupo no encontrado' });
+    }
+
+    const group = groupResult.rows[0];
+
+    if (group.creator_id !== userId) {
+      return res.status(403).json({ error: 'Solo el creador puede archivar el grupo' });
+    }
+
+    if (group.archived) {
+      return res.status(400).json({ error: 'El grupo ya está archivado' });
+    }
+
+    // Archive the group
+    const updateResult = await query(
+      'UPDATE groups SET archived = TRUE WHERE id = $1 RETURNING *',
+      [grupoId]
+    );
+
+    res.json({
+      message: 'Grupo archivado exitosamente',
+      group: updateResult.rows[0]
+    });
+  } catch (error) {
+    console.error('Archive group error:', error);
+    res.status(500).json({ error: 'Error al archivar grupo' });
+  }
+}
+
+export async function getArchivedGroups(req, res) {
+  try {
+    const userId = req.user.id;
+
+    const result = await query(
+      `SELECT g.*, u.nombre as creator_name,
+       (SELECT COUNT(*) FROM memberships WHERE grupo_id = g.id) as member_count
+       FROM groups g
+       JOIN memberships m ON g.id = m.grupo_id
+       JOIN users u ON g.creator_id = u.id
+       WHERE m.usuario_id = $1 AND g.archived = TRUE
+       ORDER BY g.created_at DESC`,
+      [userId]
+    );
+
+    res.json({ groups: result.rows });
+  } catch (error) {
+    console.error('Get archived groups error:', error);
+    res.status(500).json({ error: 'Error al obtener grupos archivados' });
   }
 }

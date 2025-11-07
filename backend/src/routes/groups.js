@@ -6,6 +6,8 @@ import {
   getUserGroups,
   getGroupMembers,
   updateGroup,
+  archiveGroup,
+  getArchivedGroups,
 } from '../controllers/groupController.js';
 import {
   createPairings,
@@ -21,10 +23,12 @@ router.use(requireAuth);
 // Group management
 router.post('/', createGroup);
 router.get('/my-groups', getUserGroups);
+router.get('/archived-groups', getArchivedGroups);
 router.get('/:codigoUrl', getGroupByCode);
 router.post('/:codigoUrl/join', joinGroup);
 router.get('/:grupoId/members', getGroupMembers);
 router.put('/:grupoId/update', updateGroup);
+router.put('/:grupoId/archive', archiveGroup);
 
 // Secret Santa (Amigo Invisible) routes
 router.post('/:grupoId/secret-santa/create-pairings', createPairings);

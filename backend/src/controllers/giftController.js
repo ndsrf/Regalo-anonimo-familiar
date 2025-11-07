@@ -22,6 +22,20 @@ export async function createGift(req, res) {
       return res.status(403).json({ error: 'No eres miembro de este grupo' });
     }
 
+    // Check if group is archived
+    const groupCheck = await query(
+      'SELECT archived FROM groups WHERE id = $1',
+      [grupoId]
+    );
+
+    if (groupCheck.rows.length === 0) {
+      return res.status(404).json({ error: 'Grupo no encontrado' });
+    }
+
+    if (groupCheck.rows[0].archived) {
+      return res.status(403).json({ error: 'No se pueden añadir regalos a un grupo archivado' });
+    }
+
     // Scrape image if URL provided
     let imageUrl = null;
     if (url) {
@@ -197,6 +211,16 @@ export async function updateGift(req, res) {
       return res.status(403).json({ error: 'No tienes permiso para editar este regalo' });
     }
 
+    // Check if group is archived
+    const groupCheck = await query(
+      'SELECT archived FROM groups WHERE id = $1',
+      [gift.grupo_id]
+    );
+
+    if (groupCheck.rows.length > 0 && groupCheck.rows[0].archived) {
+      return res.status(403).json({ error: 'No se pueden modificar regalos en un grupo archivado' });
+    }
+
     // Check if someone already bought it (send notification)
     if (gift.comprador_id !== null) {
       await query(
@@ -272,6 +296,16 @@ export async function deleteGift(req, res) {
     // Check if user is the solicitante
     if (gift.solicitante_id !== userId) {
       return res.status(403).json({ error: 'No tienes permiso para eliminar este regalo' });
+    }
+
+    // Check if group is archived
+    const groupCheck = await query(
+      'SELECT archived FROM groups WHERE id = $1',
+      [gift.grupo_id]
+    );
+
+    if (groupCheck.rows.length > 0 && groupCheck.rows[0].archived) {
+      return res.status(403).json({ error: 'No se pueden eliminar regalos en un grupo archivado' });
     }
 
     // Check if someone already bought it
@@ -358,6 +392,16 @@ export async function markAsBought(req, res) {
       return res.status(403).json({ error: 'No eres miembro de este grupo' });
     }
 
+    // Check if group is archived
+    const groupCheck = await query(
+      'SELECT archived FROM groups WHERE id = $1',
+      [gift.grupo_id]
+    );
+
+    if (groupCheck.rows.length > 0 && groupCheck.rows[0].archived) {
+      return res.status(403).json({ error: 'No se pueden comprar regalos en un grupo archivado' });
+    }
+
     // Mark as bought
     const result = await query(
       'UPDATE gifts SET comprador_id = $1, fecha_compra = CURRENT_TIMESTAMP WHERE id = $2 RETURNING *',
@@ -388,6 +432,16 @@ export async function unmarkAsBought(req, res) {
     // Check if the gift was bought by the current user
     if (gift.comprador_id !== userId) {
       return res.status(403).json({ error: 'Solo puedes desmarcar regalos que tú compraste' });
+    }
+
+    // Check if group is archived
+    const groupCheck = await query(
+      'SELECT archived FROM groups WHERE id = $1',
+      [gift.grupo_id]
+    );
+
+    if (groupCheck.rows.length > 0 && groupCheck.rows[0].archived) {
+      return res.status(403).json({ error: 'No se pueden desmarcar regalos en un grupo archivado' });
     }
 
     // Unmark as bought

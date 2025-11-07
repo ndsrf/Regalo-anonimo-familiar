@@ -63,10 +63,12 @@ export const authAPI = {
 export const groupAPI = {
   create: (data) => api.post('/api/groups', data),
   getMyGroups: () => api.get('/api/groups/my-groups'),
+  getArchivedGroups: () => api.get('/api/groups/archived-groups'),
   getByCode: (codigoUrl) => api.get(`/api/groups/${codigoUrl}`),
   join: (codigoUrl) => api.post(`/api/groups/${codigoUrl}/join`),
   getMembers: (grupoId) => api.get(`/api/groups/${grupoId}/members`),
   update: (grupoId, data) => api.put(`/api/groups/${grupoId}/update`, data),
+  archive: (grupoId) => api.put(`/api/groups/${grupoId}/archive`),
   // Secret Santa endpoints
   createPairings: (grupoId) => api.post(`/api/groups/${grupoId}/secret-santa/create-pairings`),
   getMyAssignment: (grupoId) => api.get(`/api/groups/${grupoId}/secret-santa/my-assignment`),

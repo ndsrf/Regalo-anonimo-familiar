@@ -11,6 +11,7 @@ import GoogleCallback from './pages/GoogleCallback';
 import MetaCallback from './pages/MetaCallback';
 import VerifyEmail from './pages/VerifyEmail';
 import Groups from './pages/Groups';
+import ArchivedGroups from './pages/ArchivedGroups';
 import GroupDetail from './pages/GroupDetail';
 import TermsOfService from './pages/TermsOfService';
 import PrivacyPolicy from './pages/PrivacyPolicy';
@@ -35,6 +36,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Groups />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/archived-groups"
+                element={
+                  <ProtectedRoute>
+                    <ArchivedGroups />
                   </ProtectedRoute>
                 }
               />
