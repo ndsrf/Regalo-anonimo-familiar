@@ -57,6 +57,10 @@ export const authAPI = {
     }
     window.location.href = url;
   },
+  // Magic link endpoints
+  verifyMagicToken: (token) => api.get(`/auth/magic-link/${token}`),
+  registerViaMagicLink: (token, data) => api.post(`/auth/magic-link/${token}/register`, data),
+  joinGroupViaMagicLink: (token) => api.post(`/auth/magic-link/${token}/join`),
 };
 
 // Group endpoints
@@ -69,6 +73,7 @@ export const groupAPI = {
   getMembers: (grupoId) => api.get(`/api/groups/${grupoId}/members`),
   update: (grupoId, data) => api.put(`/api/groups/${grupoId}/update`, data),
   archive: (grupoId) => api.put(`/api/groups/${grupoId}/archive`),
+  sendEmailInvitations: (grupoId, emailInput) => api.post(`/api/groups/${grupoId}/invite-emails`, { emailInput }),
   // Secret Santa endpoints
   createPairings: (grupoId) => api.post(`/api/groups/${grupoId}/secret-santa/create-pairings`),
   getMyAssignment: (grupoId) => api.get(`/api/groups/${grupoId}/secret-santa/my-assignment`),

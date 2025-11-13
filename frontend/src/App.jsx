@@ -13,6 +13,7 @@ import VerifyEmail from './pages/VerifyEmail';
 import Groups from './pages/Groups';
 import ArchivedGroups from './pages/ArchivedGroups';
 import GroupDetail from './pages/GroupDetail';
+import MagicLinkInvite from './pages/MagicLinkInvite';
 import TermsOfService from './pages/TermsOfService';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 
@@ -31,6 +32,7 @@ function App() {
               <Route path="/oauth-callback" element={<GoogleCallback />} />
               <Route path="/oauth-callback-meta" element={<MetaCallback />} />
               <Route path="/verify-email" element={<VerifyEmail />} />
+              <Route path="/invite/:token" element={<MagicLinkInvite />} />
               <Route
                 path="/groups"
                 element={

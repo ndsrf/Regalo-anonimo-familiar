@@ -308,6 +308,157 @@ Regalo Anónimo Familiar
 
     return await this.sendEmail({ to, subject, text, html });
   }
+
+  async sendGroupInvitation(to, userName, groupName, inviterName, token, gameMode, isExistingUser) {
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+    const magicLinkUrl = `${frontendUrl}/invite/${token}`;
+
+    const gameModeText = gameMode === 'Amigo Invisible' ? 'Amigo Invisible (Secret Santa)' : 'Lista de Deseos Anónimos';
+    const gameModeEmoji = gameMode === 'Amigo Invisible' ? '🎭' : '🎁';
+
+    let subject, text, html;
+
+    if (isExistingUser) {
+      // Email for existing users
+      subject = `${gameModeEmoji} Invitación para unirte al grupo: ${groupName}`;
+
+      text = `
+Hola ${userName || 'amigo'},
+
+${inviterName} te ha invitado a unirte al grupo "${groupName}".
+
+Modo de juego: ${gameModeText}
+
+Haz clic en el siguiente enlace para unirte al grupo:
+${magicLinkUrl}
+
+Este enlace expirará en 7 días.
+
+¡Esperamos verte pronto!
+
+Saludos,
+Regalo Anónimo Familiar
+      `.trim();
+
+      html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+    .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+    .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
+    .invitation-box { background: white; border: 2px solid #667eea; border-radius: 10px; padding: 20px; margin: 20px 0; }
+    .button { display: inline-block; padding: 12px 30px; background: #667eea; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0; }
+    .footer { text-align: center; margin-top: 20px; font-size: 12px; color: #666; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>${gameModeEmoji} ¡Te han invitado!</h1>
+    </div>
+    <div class="content">
+      <h2>Hola ${userName || 'amigo'},</h2>
+      <p><strong>${inviterName}</strong> te ha invitado a unirte al grupo:</p>
+      <div class="invitation-box">
+        <h3 style="color: #667eea; margin: 0 0 10px 0;">${groupName}</h3>
+        <p style="margin: 5px 0;"><strong>Modo de juego:</strong> ${gameModeText}</p>
+      </div>
+      <div style="text-align: center;">
+        <a href="${magicLinkUrl}" class="button">Unirme al grupo</a>
+      </div>
+      <p style="font-size: 12px; color: #666; margin-top: 20px;">
+        O copia y pega este enlace en tu navegador:<br>
+        <a href="${magicLinkUrl}">${magicLinkUrl}</a>
+      </p>
+      <p style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #666;">
+        Este enlace expirará en 7 días.
+      </p>
+    </div>
+    <div class="footer">
+      <p>Regalo Anónimo Familiar - Comparte la magia de dar</p>
+    </div>
+  </div>
+</body>
+</html>
+      `.trim();
+    } else {
+      // Email for non-existing users
+      subject = `${gameModeEmoji} ${inviterName} te ha invitado a Regalo Anónimo Familiar`;
+
+      const actionText = gameMode === 'Amigo Invisible'
+        ? 'unirte al grupo y ver tu asignación del Amigo Invisible'
+        : 'completar tu registro y unirte al grupo';
+
+      text = `
+Hola${userName ? ' ' + userName : ''},
+
+${inviterName} te ha invitado a unirte al grupo "${groupName}" en Regalo Anónimo Familiar.
+
+Modo de juego: ${gameModeText}
+
+Haz clic en el siguiente enlace para ${actionText}:
+${magicLinkUrl}
+
+Este enlace expirará en 7 días.
+
+¡Te esperamos!
+
+Saludos,
+Regalo Anónimo Familiar
+      `.trim();
+
+      html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+    .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+    .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
+    .invitation-box { background: white; border: 2px solid #667eea; border-radius: 10px; padding: 20px; margin: 20px 0; }
+    .button { display: inline-block; padding: 12px 30px; background: #667eea; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0; }
+    .footer { text-align: center; margin-top: 20px; font-size: 12px; color: #666; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>${gameModeEmoji} ¡Te han invitado!</h1>
+    </div>
+    <div class="content">
+      <h2>Hola${userName ? ' ' + userName : ''},</h2>
+      <p><strong>${inviterName}</strong> te ha invitado a unirte al grupo:</p>
+      <div class="invitation-box">
+        <h3 style="color: #667eea; margin: 0 0 10px 0;">${groupName}</h3>
+        <p style="margin: 5px 0;"><strong>Modo de juego:</strong> ${gameModeText}</p>
+      </div>
+      <p>Regalo Anónimo Familiar es una aplicación para gestionar listas de deseos y jugar al Amigo Invisible con tu familia y amigos.</p>
+      <div style="text-align: center;">
+        <a href="${magicLinkUrl}" class="button">${gameMode === 'Amigo Invisible' ? 'Unirme al grupo' : 'Crear mi cuenta y unirme'}</a>
+      </div>
+      <p style="font-size: 12px; color: #666; margin-top: 20px;">
+        O copia y pega este enlace en tu navegador:<br>
+        <a href="${magicLinkUrl}">${magicLinkUrl}</a>
+      </p>
+      <p style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #666;">
+        Este enlace expirará en 7 días.
+      </p>
+    </div>
+    <div class="footer">
+      <p>Regalo Anónimo Familiar - Comparte la magia de dar</p>
+    </div>
+  </div>
+</body>
+</html>
+      `.trim();
+    }
+
+    return await this.sendEmail({ to, subject, text, html });
+  }
 }
 
 // Singleton instance

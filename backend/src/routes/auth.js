@@ -8,6 +8,9 @@ import {
   getMe,
   verifyEmail,
   resendVerificationEmail,
+  verifyMagicToken,
+  registerViaMagicLink,
+  joinGroupViaMagicLink,
 } from '../controllers/authController.js';
 import { requireAuth } from '../middleware/auth.js';
 
@@ -57,5 +60,10 @@ router.get('/me', requireAuth, getMe);
 // Email verification
 router.post('/verify-email', verifyEmail);
 router.post('/resend-verification', requireAuth, resendVerificationEmail);
+
+// Magic link invitation routes
+router.get('/magic-link/:token', verifyMagicToken);
+router.post('/magic-link/:token/register', registerViaMagicLink);
+router.post('/magic-link/:token/join', joinGroupViaMagicLink);
 
 export default router;

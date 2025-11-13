@@ -8,6 +8,7 @@ import {
   updateGroup,
   archiveGroup,
   getArchivedGroups,
+  sendEmailInvitations,
 } from '../controllers/groupController.js';
 import {
   createPairings,
@@ -29,6 +30,9 @@ router.post('/:codigoUrl/join', joinGroup);
 router.get('/:grupoId/members', getGroupMembers);
 router.put('/:grupoId/update', updateGroup);
 router.put('/:grupoId/archive', archiveGroup);
+
+// Email invitations
+router.post('/:grupoId/invite-emails', sendEmailInvitations);
 
 // Secret Santa (Amigo Invisible) routes
 router.post('/:grupoId/secret-santa/create-pairings', createPairings);
