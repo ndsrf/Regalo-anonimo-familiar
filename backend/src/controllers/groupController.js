@@ -1,5 +1,7 @@
 import { query } from '../config/database.js';
 import { generateGroupCode } from '../utils/generateCode.js';
+import { nanoid } from 'nanoid';
+import emailService from '../services/emailService.js';
 
 export async function createGroup(req, res) {
   try {
@@ -303,5 +305,159 @@ export async function getArchivedGroups(req, res) {
   } catch (error) {
     console.error('Get archived groups error:', error);
     res.status(500).json({ error: 'Error al obtener grupos archivados' });
+  }
+}
+
+/**
+ * Parse email addresses from various formats:
+ * - "Name <email@example.com>"
+ * - "email@example.com"
+ * Separated by commas, spaces, or line breaks
+ */
+function parseEmailAddresses(emailInput) {
+  const emails = [];
+  const regex = /(?:([^<,\n]+?)\s*<([^>]+)>|([^\s,\n]+@[^\s,\n]+))/g;
+  let match;
+
+  while ((match = regex.exec(emailInput)) !== null) {
+    if (match[2]) {
+      // Format: Name <email@example.com>
+      emails.push({
+        name: match[1].trim(),
+        email: match[2].trim().toLowerCase()
+      });
+    } else if (match[3]) {
+      // Format: email@example.com
+      emails.push({
+        name: null,
+        email: match[3].trim().toLowerCase()
+      });
+    }
+  }
+
+  // Remove duplicates
+  const uniqueEmails = [];
+  const seen = new Set();
+  for (const emailObj of emails) {
+    if (!seen.has(emailObj.email)) {
+      seen.add(emailObj.email);
+      uniqueEmails.push(emailObj);
+    }
+  }
+
+  return uniqueEmails;
+}
+
+export async function sendEmailInvitations(req, res) {
+  try {
+    const { grupoId } = req.params;
+    const { emailInput } = req.body;
+    const userId = req.user.id;
+
+    // Get max email limit from environment (default 10)
+    const maxEmailInvites = parseInt(process.env.MAX_EMAIL_INVITES || '10', 10);
+
+    // Validate input
+    if (!emailInput || typeof emailInput !== 'string') {
+      return res.status(400).json({ error: 'Se requiere una lista de correos electrónicos' });
+    }
+
+    // Check if group exists and user is the creator
+    const groupResult = await query(
+      'SELECT g.*, u.nombre as creator_name FROM groups g JOIN users u ON g.creator_id = u.id WHERE g.id = $1',
+      [grupoId]
+    );
+
+    if (groupResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Grupo no encontrado' });
+    }
+
+    const group = groupResult.rows[0];
+
+    if (group.creator_id !== userId) {
+      return res.status(403).json({ error: 'Solo el creador puede enviar invitaciones' });
+    }
+
+    if (group.archived) {
+      return res.status(403).json({ error: 'No se pueden enviar invitaciones a un grupo archivado' });
+    }
+
+    // Parse email addresses
+    const parsedEmails = parseEmailAddresses(emailInput);
+
+    if (parsedEmails.length === 0) {
+      return res.status(400).json({ error: 'No se encontraron direcciones de correo válidas' });
+    }
+
+    if (parsedEmails.length > maxEmailInvites) {
+      return res.status(400).json({
+        error: `Solo puedes invitar hasta ${maxEmailInvites} personas a la vez`
+      });
+    }
+
+    const results = {
+      sent: [],
+      failed: [],
+      alreadyMembers: []
+    };
+
+    for (const emailObj of parsedEmails) {
+      try {
+        const { email, name } = emailObj;
+
+        // Check if user with this email exists
+        const userResult = await query('SELECT id, nombre, email FROM users WHERE LOWER(email) = $1', [email]);
+
+        // Check if already a member
+        if (userResult.rows.length > 0) {
+          const existingUser = userResult.rows[0];
+          const membershipCheck = await query(
+            'SELECT id FROM memberships WHERE usuario_id = $1 AND grupo_id = $2',
+            [existingUser.id, grupoId]
+          );
+
+          if (membershipCheck.rows.length > 0) {
+            results.alreadyMembers.push(email);
+            continue;
+          }
+        }
+
+        // Generate invitation token (valid for 7 days)
+        const token = nanoid(32);
+        const expiresAt = new Date();
+        expiresAt.setDate(expiresAt.getDate() + 7);
+
+        // Store invitation token
+        await query(
+          'INSERT INTO invitation_tokens (token, email, grupo_id, invited_by, expires_at) VALUES ($1, $2, $3, $4, $5)',
+          [token, email, grupoId, userId, expiresAt]
+        );
+
+        // Send invitation email
+        const isExistingUser = userResult.rows.length > 0;
+        await emailService.sendGroupInvitation(
+          email,
+          name || (isExistingUser ? userResult.rows[0].nombre : null),
+          group.nombre_grupo,
+          group.creator_name,
+          token,
+          group.game_mode,
+          isExistingUser
+        );
+
+        results.sent.push(email);
+      } catch (error) {
+        console.error(`Error sending invitation to ${emailObj.email}:`, error);
+        results.failed.push(emailObj.email);
+      }
+    }
+
+    res.json({
+      message: 'Invitaciones procesadas',
+      results
+    });
+  } catch (error) {
+    console.error('Send email invitations error:', error);
+    res.status(500).json({ error: 'Error al enviar invitaciones' });
   }
 }

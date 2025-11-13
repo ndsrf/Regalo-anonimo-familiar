@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { groupAPI, giftAPI } from '../services/api';
 import { useTheme } from '../context/ThemeContext';
@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import GiftCard from '../components/GiftCard';
 import ThemeDecorations from '../components/ThemeDecorations';
 import EmailVerificationBanner from '../components/EmailVerificationBanner';
+import EmailInviteModal from '../components/EmailInviteModal';
 
 export default function GroupDetail() {
   const { codigoUrl } = useParams();
@@ -37,11 +38,26 @@ export default function GroupDetail() {
   // Secret Santa states
   const [secretSantaAssignment, setSecretSantaAssignment] = useState(null);
   const [loadingPairings, setLoadingPairings] = useState(false);
+  // Email invitation states
+  const [showInviteDropdown, setShowInviteDropdown] = useState(false);
+  const [showEmailInviteModal, setShowEmailInviteModal] = useState(false);
+  const inviteDropdownRef = useRef(null);
   const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     loadGroup();
   }, [codigoUrl]);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (inviteDropdownRef.current && !inviteDropdownRef.current.contains(event.target)) {
+        setShowInviteDropdown(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   useEffect(() => {
     if (group) {
@@ -245,6 +261,30 @@ export default function GroupDetail() {
       console.error('Error copying to clipboard:', error);
       alert('Error al copiar el enlace. Por favor, cópialo manualmente: ' + link);
     }
+    setShowInviteDropdown(false);
+  };
+
+  const handleSendEmailInvitations = async (emailInput) => {
+    try {
+      const response = await groupAPI.sendEmailInvitations(group.id, emailInput);
+      const { results } = response.data;
+
+      let message = '';
+      if (results.sent.length > 0) {
+        message += `✅ ${results.sent.length} invitación(es) enviada(s) exitosamente.\n`;
+      }
+      if (results.alreadyMembers.length > 0) {
+        message += `ℹ️ ${results.alreadyMembers.length} usuario(s) ya son miembros del grupo.\n`;
+      }
+      if (results.failed.length > 0) {
+        message += `❌ ${results.failed.length} invitación(es) fallaron.\n`;
+      }
+
+      alert(message || 'Invitaciones procesadas');
+    } catch (error) {
+      alert(error.response?.data?.error || 'Error al enviar invitaciones');
+      throw error; // Re-throw to prevent modal from closing
+    }
   };
 
   const handleEditGroup = () => {
@@ -395,12 +435,39 @@ export default function GroupDetail() {
                   📦 Grupo Archivado
                 </div>
               )}
-              <button
-                onClick={copyInviteLink}
-                className={`${copySuccess ? 'bg-green-600 hover:bg-green-700' : theme.secondary} text-white px-4 py-2 rounded-md text-sm transition-colors`}
-              >
-                {copySuccess ? '✓ Enlace copiado!' : '📋 Copiar enlace de invitación'}
-              </button>
+              <div className="relative" ref={inviteDropdownRef}>
+                <button
+                  onClick={() => setShowInviteDropdown(!showInviteDropdown)}
+                  className={`${theme.secondary} text-white px-4 py-2 rounded-md text-sm transition-colors flex items-center gap-2`}
+                >
+                  👥 Invitar personas
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                {showInviteDropdown && (
+                  <div className="absolute right-0 mt-2 w-64 bg-white rounded-md shadow-lg z-10 border border-gray-200">
+                    <div className="py-1">
+                      <button
+                        onClick={copyInviteLink}
+                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                      >
+                        {copySuccess ? '✓ Enlace copiado!' : '📋 Copiar enlace de invitación'}
+                      </button>
+                      <button
+                        onClick={() => {
+                          setShowEmailInviteModal(true);
+                          setShowInviteDropdown(false);
+                        }}
+                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2 border-t border-gray-200"
+                      >
+                        📧 Invitar por correo electrónico
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
               <button
                 onClick={handleRefresh}
                 className="text-gray-600 hover:text-gray-800 border border-gray-300 bg-white px-4 py-2 rounded-md text-sm transition-colors"
@@ -739,6 +806,14 @@ export default function GroupDetail() {
             </div>
           </div>
         )}
+
+        {/* Email Invite Modal */}
+        <EmailInviteModal
+          isOpen={showEmailInviteModal}
+          onClose={() => setShowEmailInviteModal(false)}
+          onSend={handleSendEmailInvitations}
+          groupName={group?.nombre_grupo}
+        />
       </div>
     </div>
   );
