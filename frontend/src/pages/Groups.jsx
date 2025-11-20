@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { groupAPI } from '../services/api';
 import { useTheme } from '../context/ThemeContext';
 
 export default function Groups() {
+  const { t } = useTranslation();
   const [groups, setGroups] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -14,8 +16,8 @@ export default function Groups() {
   const [showHelpModal, setShowHelpModal] = useState(false);
   const [formData, setFormData] = useState({
     nombreGrupo: '',
-    gameMode: 'Lista de Deseos Anónimos',
-    tipoCelebracion: 'Navidad',
+    gameMode: 'anonymous',
+    tipoCelebracion: 'christmas',
     fechaInicio: '',
   });
   const { theme } = useTheme();
@@ -46,7 +48,7 @@ export default function Groups() {
       setMembers(response.data.members);
     } catch (error) {
       console.error('Failed to load members:', error);
-      alert('Error al cargar miembros');
+      alert(t('groups.errors.fetchGroups'));
     } finally {
       setLoadingMembers(false);
     }
@@ -59,13 +61,13 @@ export default function Groups() {
       setShowCreateModal(false);
       setFormData({
         nombreGrupo: '',
-        gameMode: 'Lista de Deseos Anónimos',
-        tipoCelebracion: 'Navidad',
+        gameMode: 'anonymous',
+        tipoCelebracion: 'christmas',
         fechaInicio: '',
       });
       loadGroups();
     } catch (error) {
-      alert(error.response?.data?.error || 'Error al crear grupo');
+      alert(error.response?.data?.error || t('groups.errors.createGroup'));
     }
   };
 
@@ -74,7 +76,7 @@ export default function Groups() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Cargando...</p>
+          <p className="mt-4 text-gray-600">{t('common.loading')}</p>
         </div>
       </div>
     );
@@ -84,23 +86,23 @@ export default function Groups() {
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Mis Grupos</h1>
+          <h1 className="text-3xl font-bold text-gray-900">{t('groups.title')}</h1>
           <button
             onClick={() => setShowCreateModal(true)}
             className={`${theme.primary} text-white px-4 py-2 rounded-md font-medium`}
           >
-            + Crear Grupo
+            + {t('groups.createGroup')}
           </button>
         </div>
 
         {groups.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-600 mb-4">No tienes grupos aún</p>
+            <p className="text-gray-600 mb-4">{t('groups.noGroups')}</p>
             <button
               onClick={() => setShowCreateModal(true)}
               className={`${theme.primary} text-white px-6 py-3 rounded-md font-medium`}
             >
-              Crear tu primer grupo
+              {t('groups.createGroup')}
             </button>
           </div>
         ) : (
@@ -115,19 +117,24 @@ export default function Groups() {
                   <div className="flex items-center justify-between mb-2">
                     <h2 className="text-xl font-semibold text-gray-900">{group.nombre_grupo}</h2>
                     <span className={`text-2xl`}>
+                      {group.tipo_celebracion === 'christmas' && '🎄'}
                       {group.tipo_celebracion === 'Navidad' && '🎄'}
                       {group.tipo_celebracion === 'Reyes Magos' && '👑'}
+                      {group.tipo_celebracion === 'wedding' && '💒'}
                       {group.tipo_celebracion === 'Boda' && '💒'}
+                      {group.tipo_celebracion === 'birthday' && '🎂'}
                       {group.tipo_celebracion === 'Cumpleaños' && '🎂'}
+                      {group.tipo_celebracion === 'anniversary' && '💐'}
+                      {group.tipo_celebracion === 'other' && '🎁'}
                       {group.tipo_celebracion === 'Otro' && '🎁'}
                     </span>
                   </div>
-                  <p className="text-gray-600 text-sm mb-2">{group.tipo_celebracion}</p>
+                  <p className="text-gray-600 text-sm mb-2">{t(`groups.eventTypes.${group.tipo_celebracion}`, group.tipo_celebracion)}</p>
                   <p className="text-gray-500 text-sm">
-                    Fecha: {new Date(group.fecha_inicio).toLocaleDateString('es-ES')}
+                    {t('groups.eventDate')}: {new Date(group.fecha_inicio).toLocaleDateString()}
                   </p>
                   <p className="text-gray-500 text-sm">
-                    Miembros:{' '}
+                    {t('groups.members')}:{' '}
                     <button
                       onClick={(e) => handleShowMembers(group, e)}
                       className="text-blue-600 hover:text-blue-800 underline"
@@ -144,7 +151,7 @@ export default function Groups() {
                 className="text-gray-600 hover:text-gray-800 underline text-sm flex items-center justify-center gap-2"
               >
                 <span>📦</span>
-                Ver Grupos Archivados
+                {t('groups.archivedGroups')}
               </Link>
             </div>
           </>
@@ -154,12 +161,12 @@ export default function Groups() {
         {showCreateModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Crear Nuevo Grupo</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('groups.createGroup')}</h2>
 
               <form onSubmit={handleCreateGroup} className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Nombre del Grupo
+                    {t('groups.groupName')}
                   </label>
                   <input
                     type="text"
@@ -173,14 +180,14 @@ export default function Groups() {
                 <div>
                   <div className="flex items-center justify-between mb-1">
                     <label className="block text-sm font-medium text-gray-700">
-                      Modo de Juego
+                      {t('groups.gameMode')}
                     </label>
                     <button
                       type="button"
                       onClick={() => setShowHelpModal(true)}
                       className="text-blue-600 hover:text-blue-800 text-sm underline"
                     >
-                      ¿Qué es esto?
+                      ¿?
                     </button>
                   </div>
                   <select
@@ -189,31 +196,31 @@ export default function Groups() {
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required
                   >
-                    <option value="Lista de Deseos Anónimos">Lista de Deseos Anónimos</option>
-                    <option value="Amigo Invisible">Amigo Invisible</option>
+                    <option value="anonymous">{t('groups.gameModes.anonymous')}</option>
+                    <option value="secretSanta">{t('groups.gameModes.secretSanta')}</option>
                   </select>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Tipo de Celebración
+                    {t('groups.eventType')}
                   </label>
                   <select
                     value={formData.tipoCelebracion}
                     onChange={(e) => setFormData({ ...formData, tipoCelebracion: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
-                    <option value="Navidad">🎄 Navidad</option>
-                    <option value="Reyes Magos">👑 Reyes Magos</option>
-                    <option value="Boda">💒 Boda</option>
-                    <option value="Cumpleaños">🎂 Cumpleaños</option>
-                    <option value="Otro">🎁 Otro</option>
+                    <option value="christmas">🎄 {t('groups.eventTypes.christmas')}</option>
+                    <option value="birthday">🎂 {t('groups.eventTypes.birthday')}</option>
+                    <option value="anniversary">💐 {t('groups.eventTypes.anniversary')}</option>
+                    <option value="wedding">💒 {t('groups.eventTypes.wedding')}</option>
+                    <option value="other">🎁 {t('groups.eventTypes.other')}</option>
                   </select>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Fecha de Inicio
+                    {t('groups.eventDate')}
                   </label>
                   <input
                     type="date"
@@ -222,9 +229,6 @@ export default function Groups() {
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required
                   />
-                  <p className="text-xs text-gray-500 mt-1">
-                    La lista de regalos será visible a partir de esta fecha
-                  </p>
                 </div>
 
                 <div className="flex gap-2 mt-6">
@@ -233,13 +237,13 @@ export default function Groups() {
                     onClick={() => setShowCreateModal(false)}
                     className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md font-medium"
                   >
-                    Cancelar
+                    {t('groupDetail.cancel')}
                   </button>
                   <button
                     type="submit"
                     className={`flex-1 ${theme.primary} text-white px-4 py-2 rounded-md font-medium`}
                   >
-                    Crear
+                    {t('groups.createGroup')}
                   </button>
                 </div>
               </form>
@@ -252,7 +256,7 @@ export default function Groups() {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                Miembros del Grupo
+                {t('groupDetail.members')}
               </h2>
               {selectedGroup && (
                 <p className="text-gray-600 mb-4">{selectedGroup.nombre_grupo}</p>
@@ -261,7 +265,7 @@ export default function Groups() {
               {loadingMembers ? (
                 <div className="text-center py-8">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-                  <p className="mt-2 text-gray-600">Cargando...</p>
+                  <p className="mt-2 text-gray-600">{t('common.loading')}</p>
                 </div>
               ) : (
                 <div className="space-y-2 max-h-96 overflow-y-auto">
@@ -284,7 +288,7 @@ export default function Groups() {
                 }}
                 className="w-full mt-6 bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md font-medium"
               >
-                Cerrar
+                {t('common.close')}
               </button>
             </div>
           </div>
