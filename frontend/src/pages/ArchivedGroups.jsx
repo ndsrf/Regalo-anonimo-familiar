@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { groupAPI } from '../services/api';
 import { useTheme } from '../context/ThemeContext';
 
 export default function ArchivedGroups() {
+  const { t } = useTranslation();
   const [groups, setGroups] = useState([]);
   const [loading, setLoading] = useState(true);
   const { theme } = useTheme();
@@ -28,7 +30,7 @@ export default function ArchivedGroups() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Cargando...</p>
+          <p className="mt-4 text-gray-600">{t('common.loading')}</p>
         </div>
       </div>
     );
@@ -39,28 +41,28 @@ export default function ArchivedGroups() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Grupos Archivados</h1>
+            <h1 className="text-3xl font-bold text-gray-900">{t('groups.archivedGroups')}</h1>
             <p className="text-gray-600 mt-2">
-              Estos grupos están archivados y no se pueden modificar
+              {t('groups.noGroupsDescription')}
             </p>
           </div>
           <Link
             to="/groups"
             className="text-blue-600 hover:text-blue-800 underline"
           >
-            ← Volver a Mis Grupos
+            ← {t('navbar.myGroups')}
           </Link>
         </div>
 
         {groups.length === 0 ? (
           <div className="text-center py-12">
             <div className="text-6xl mb-4">📦</div>
-            <p className="text-gray-600 mb-4">No tienes grupos archivados</p>
+            <p className="text-gray-600 mb-4">{t('groups.noGroups')}</p>
             <Link
               to="/groups"
               className={`${theme.primary} text-white px-6 py-3 rounded-md font-medium inline-block`}
             >
-              Ir a Mis Grupos
+              {t('navbar.myGroups')}
             </Link>
           </div>
         ) : (
@@ -74,17 +76,16 @@ export default function ArchivedGroups() {
                 <div className="flex items-start justify-between mb-2">
                   <h3 className="text-xl font-bold text-gray-900">{group.nombre_grupo}</h3>
                   <span className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2 py-1 rounded">
-                    Archivado
+                    {t('groups.archived')}
                   </span>
                 </div>
                 <div className="space-y-1 text-sm text-gray-600">
-                  <p>{group.tipo_celebracion}</p>
+                  <p>{t(`groups.eventTypes.${group.tipo_celebracion}`, group.tipo_celebracion)}</p>
                   <p className="text-purple-600 font-medium">
-                    {group.game_mode === 'Amigo Invisible' ? '🎭 Amigo Invisible' : '🎁 Lista de Deseos'}
+                    {group.game_mode === 'secretSanta' || group.game_mode === 'Amigo Invisible' ? `🎭 ${t('groups.gameModes.secretSanta')}` : `🎁 ${t('groups.gameModes.anonymous')}`}
                   </p>
-                  <p>Fecha: {new Date(group.fecha_inicio).toLocaleDateString('es-ES')}</p>
-                  <p>Miembros: {group.member_count}</p>
-                  <p className="text-xs text-gray-500 italic">Creado por: {group.creator_name}</p>
+                  <p>{t('groups.eventDate')}: {new Date(group.fecha_inicio).toLocaleDateString()}</p>
+                  <p>{t('groups.members')}: {group.member_count}</p>
                 </div>
               </Link>
             ))}

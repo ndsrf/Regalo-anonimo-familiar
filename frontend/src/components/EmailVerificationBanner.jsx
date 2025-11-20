@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { authAPI } from '../services/api';
 
 export default function EmailVerificationBanner({ user }) {
+  const { t } = useTranslation();
   const [resending, setResending] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
@@ -18,10 +20,10 @@ export default function EmailVerificationBanner({ user }) {
 
     try {
       const response = await authAPI.resendVerification();
-      setMessage(response.data.message || 'Email de verificación enviado. Revisa tu bandeja de entrada.');
+      setMessage(response.data.message || t('emailVerification.resendSuccess'));
       setTimeout(() => setMessage(''), 5000);
     } catch (err) {
-      setError(err.response?.data?.error || 'Error al reenviar email de verificación');
+      setError(err.response?.data?.error || t('emailVerification.error'));
       setTimeout(() => setError(''), 5000);
     } finally {
       setResending(false);
@@ -47,13 +49,7 @@ export default function EmailVerificationBanner({ user }) {
           </svg>
         </div>
         <div className="ml-3 flex-1">
-          <h3 className="text-sm font-medium text-yellow-800">Verifica tu correo electrónico</h3>
-          <div className="mt-2 text-sm text-yellow-700">
-            <p>
-              Para poder agregar regalos a tu lista de deseos, necesitas verificar tu correo electrónico.
-              Revisa tu bandeja de entrada y haz clic en el enlace de verificación.
-            </p>
-          </div>
+          <h3 className="text-sm font-medium text-yellow-800">{t('emailVerification.banner')}</h3>
           <div className="mt-4">
             <div className="flex items-center space-x-4">
               <button
@@ -61,7 +57,7 @@ export default function EmailVerificationBanner({ user }) {
                 disabled={resending}
                 className="text-sm font-medium text-yellow-800 hover:text-yellow-900 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {resending ? 'Enviando...' : '¿No recibiste el email? Reenviar'}
+                {resending ? t('common.loading') : t('emailVerification.resend')}
               </button>
             </div>
             {message && (
