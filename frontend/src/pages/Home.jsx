@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 
 export default function Home() {
+  const { t } = useTranslation();
   const { isAuthenticated } = useAuth();
 
   return (
@@ -9,22 +11,22 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center">
           <h1 className="text-6xl font-bold text-gray-900 mb-6">
-            🎁 Lista de Deseos Secreta
+            🎁 {t('home.title')}
           </h1>
           <p className="text-xl text-gray-600 mb-4 max-w-3xl mx-auto">
-            Crea grupos para tus celebraciones y elige entre dos modos de juego:
+            {t('home.subtitle')}
           </p>
           <div className="flex flex-col md:flex-row gap-4 justify-center mb-12 max-w-4xl mx-auto">
             <div className="flex-1 bg-blue-50 border-2 border-blue-200 rounded-lg p-4">
-              <h3 className="text-lg font-bold text-blue-900 mb-1">🎁 Lista de Deseos Anónimos</h3>
+              <h3 className="text-lg font-bold text-blue-900 mb-1">🎁 {t('home.anonymousWishlist.title')}</h3>
               <p className="text-sm text-gray-700">
-                Añade regalos a tu lista y ve una lista anónima de todos los regalos sin saber quién pidió qué.
+                {t('home.anonymousWishlist.description')}
               </p>
             </div>
             <div className="flex-1 bg-purple-50 border-2 border-purple-200 rounded-lg p-4">
-              <h3 className="text-lg font-bold text-purple-900 mb-1">🎭 Amigo Invisible</h3>
+              <h3 className="text-lg font-bold text-purple-900 mb-1">🎭 {t('home.secretSanta.title')}</h3>
               <p className="text-sm text-gray-700">
-                El clásico juego donde cada persona regala a alguien específico. Sorteo automático y notificaciones por email.
+                {t('home.secretSanta.description')}
               </p>
             </div>
           </div>
@@ -35,7 +37,7 @@ export default function Home() {
                 to="/groups"
                 className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg text-lg font-medium"
               >
-                Ver Mis Grupos
+                {t('home.viewGroups')}
               </Link>
             ) : (
               <>
@@ -43,13 +45,13 @@ export default function Home() {
                   to="/register"
                   className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg text-lg font-medium"
                 >
-                  Comenzar Ahora
+                  {t('home.startNow')}
                 </Link>
                 <Link
                   to="/login"
                   className="bg-white hover:bg-gray-50 text-purple-600 border-2 border-purple-600 px-8 py-3 rounded-lg text-lg font-medium"
                 >
-                  Iniciar Sesión
+                  {t('navbar.login')}
                 </Link>
               </>
             )}
@@ -60,46 +62,46 @@ export default function Home() {
             <div className="bg-white rounded-lg shadow-lg p-6">
               <div className="text-4xl mb-4">🎲</div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                Dos Modos de Juego
+                {t('home.features.gameModes.title')}
               </h3>
               <p className="text-gray-600">
-                Elige entre Lista de Deseos Anónimos o Amigo Invisible con sorteo automático
+                {t('home.features.gameModes.description')}
               </p>
             </div>
 
             <div className="bg-white rounded-lg shadow-lg p-6">
               <div className="text-4xl mb-4">🎨</div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                Tematización Personalizada
+                {t('home.features.customThemes.title')}
               </h3>
               <p className="text-gray-600">
-                La aplicación cambia de tema según el tipo de celebración
+                {t('home.features.customThemes.description')}
               </p>
             </div>
 
             <div className="bg-white rounded-lg shadow-lg p-6">
               <div className="text-4xl mb-4">🔔</div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                Notificaciones Inteligentes
+                {t('home.features.notifications.title')}
               </h3>
               <p className="text-gray-600">
-                Recibe notificaciones por email sobre cambios en regalos y emparejamientos
+                {t('home.features.notifications.description')}
               </p>
             </div>
           </div>
 
           {/* How it works */}
           <div className="mt-20 max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8">¿Cómo funciona?</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-8">{t('home.howItWorks.title')}</h2>
             <div className="space-y-6 text-left">
               <div className="flex gap-4">
                 <div className="flex-shrink-0 w-10 h-10 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold">
                   1
                 </div>
                 <div>
-                  <h4 className="font-semibold text-gray-900 mb-1">Crea un grupo</h4>
+                  <h4 className="font-semibold text-gray-900 mb-1">{t('home.howItWorks.step1.title')}</h4>
                   <p className="text-gray-600">
-                    Define el nombre, tipo de celebración y fecha de inicio
+                    {t('home.howItWorks.step1.description')}
                   </p>
                 </div>
               </div>
@@ -109,9 +111,9 @@ export default function Home() {
                   2
                 </div>
                 <div>
-                  <h4 className="font-semibold text-gray-900 mb-1">Invita a tus amigos</h4>
+                  <h4 className="font-semibold text-gray-900 mb-1">{t('home.howItWorks.step2.title')}</h4>
                   <p className="text-gray-600">
-                    Comparte el enlace único del grupo con tu familia o amigos
+                    {t('home.howItWorks.step2.description')}
                   </p>
                 </div>
               </div>
@@ -121,9 +123,9 @@ export default function Home() {
                   3
                 </div>
                 <div>
-                  <h4 className="font-semibold text-gray-900 mb-1">Añade tus regalos</h4>
+                  <h4 className="font-semibold text-gray-900 mb-1">{t('home.howItWorks.step3.title')}</h4>
                   <p className="text-gray-600">
-                    Cada miembro añade los regalos que desea a su lista personal
+                    {t('home.howItWorks.step3.description')}
                   </p>
                 </div>
               </div>
@@ -133,9 +135,9 @@ export default function Home() {
                   4
                 </div>
                 <div>
-                  <h4 className="font-semibold text-gray-900 mb-1">Compra regalos anónimos</h4>
+                  <h4 className="font-semibold text-gray-900 mb-1">{t('home.howItWorks.step4.title')}</h4>
                   <p className="text-gray-600">
-                    Ve la lista mezclada del grupo y marca los que vas a comprar, sin que nadie sepa qué compraste
+                    {t('home.howItWorks.step4.description')}
                   </p>
                 </div>
               </div>
@@ -150,15 +152,15 @@ export default function Home() {
           <div className="text-center text-gray-600 space-y-2">
             <div className="flex justify-center gap-6 text-sm">
               <Link to="/terms-of-service" className="hover:text-purple-600">
-                Condiciones del Servicio
+                {t('home.footer.termsOfService')}
               </Link>
               <span>•</span>
               <Link to="/privacy-policy" className="hover:text-purple-600">
-                Política de Privacidad
+                {t('home.footer.privacyPolicy')}
               </Link>
             </div>
             <p className="text-sm">
-              © {new Date().getFullYear()} Lista de Deseos Secreta. Todos los derechos reservados.
+              {t('home.footer.copyright', { year: new Date().getFullYear() })}
             </p>
           </div>
         </div>

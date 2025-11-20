@@ -1,0 +1,195 @@
+{
+  "navbar": {
+    "title": "Lista de Deseos Secreta",
+    "myGroups": "Mis Grupos",
+    "hello": "Hola, {{name}}",
+    "logout": "Cerrar Sesión",
+    "login": "Iniciar Sesión",
+    "register": "Registrarse"
+  },
+  "home": {
+    "title": "Lista de Deseos Secreta",
+    "subtitle": "Crea grupos para tus celebraciones y elige entre dos modos de juego:",
+    "anonymousWishlist": {
+      "title": "Lista de Deseos Anónimos",
+      "description": "Añade regalos a tu lista y ve una lista anónima de todos los regalos sin saber quién pidió qué."
+    },
+    "secretSanta": {
+      "title": "Amigo Invisible",
+      "description": "El clásico juego donde cada persona regala a alguien específico. Sorteo automático y notificaciones por email."
+    },
+    "viewGroups": "Ver Mis Grupos",
+    "startNow": "Comenzar Ahora",
+    "features": {
+      "gameModes": {
+        "title": "Dos Modos de Juego",
+        "description": "Elige entre Lista de Deseos Anónimos o Amigo Invisible con sorteo automático"
+      },
+      "customThemes": {
+        "title": "Tematización Personalizada",
+        "description": "La aplicación cambia de tema según el tipo de celebración"
+      },
+      "notifications": {
+        "title": "Notificaciones Inteligentes",
+        "description": "Recibe notificaciones por email sobre cambios en regalos y emparejamientos"
+      }
+    },
+    "howItWorks": {
+      "title": "¿Cómo funciona?",
+      "step1": {
+        "title": "Crea un grupo",
+        "description": "Define el nombre, tipo de celebración y fecha de inicio"
+      },
+      "step2": {
+        "title": "Invita a tus amigos",
+        "description": "Comparte el enlace único del grupo con tu familia o amigos"
+      },
+      "step3": {
+        "title": "Añade tus regalos",
+        "description": "Cada miembro añade los regalos que desea a su lista personal"
+      },
+      "step4": {
+        "title": "Compra regalos anónimos",
+        "description": "Ve la lista mezclada del grupo y marca los que vas a comprar, sin que nadie sepa qué compraste"
+      }
+    },
+    "footer": {
+      "termsOfService": "Condiciones del Servicio",
+      "privacyPolicy": "Política de Privacidad",
+      "copyright": "© {{year}} Lista de Deseos Secreta. Todos los derechos reservados."
+    }
+  },
+  "login": {
+    "title": "Lista de Deseos Secreta",
+    "subtitle": "Inicia sesión para continuar",
+    "email": "Email",
+    "password": "Contraseña",
+    "submit": "Iniciar Sesión",
+    "submitting": "Iniciando sesión...",
+    "orContinueWith": "O continúa con",
+    "google": "Google",
+    "instagram": "Instagram",
+    "noAccount": "¿No tienes cuenta?",
+    "registerHere": "Regístrate aquí",
+    "error": "Error al iniciar sesión"
+  },
+  "register": {
+    "title": "Lista de Deseos Secreta",
+    "subtitle": "Crea tu cuenta",
+    "name": "Nombre",
+    "email": "Email",
+    "password": "Contraseña",
+    "confirmPassword": "Confirmar Contraseña",
+    "submit": "Registrarse",
+    "submitting": "Registrando...",
+    "orContinueWith": "O continúa con",
+    "google": "Google",
+    "instagram": "Instagram",
+    "hasAccount": "¿Ya tienes cuenta?",
+    "loginHere": "Inicia sesión aquí",
+    "error": "Error al registrarse",
+    "passwordsDontMatch": "Las contraseñas no coinciden",
+    "verificationEmailSent": "Se ha enviado un correo de verificación a tu email"
+  },
+  "groups": {
+    "title": "Mis Grupos",
+    "createGroup": "Crear Grupo",
+    "archivedGroups": "Grupos Archivados",
+    "noGroups": "No tienes grupos aún",
+    "noGroupsDescription": "Crea un nuevo grupo o espera a que te inviten a uno.",
+    "groupName": "Nombre del Grupo",
+    "eventType": "Tipo de Evento",
+    "eventDate": "Fecha del Evento",
+    "gameMode": "Modo de Juego",
+    "members": "miembros",
+    "gifts": "regalos",
+    "archived": "Archivado",
+    "active": "Activo",
+    "gameModes": {
+      "anonymous": "Lista de Deseos Anónimos",
+      "secretSanta": "Amigo Invisible"
+    },
+    "eventTypes": {
+      "christmas": "Navidad",
+      "birthday": "Cumpleaños",
+      "anniversary": "Aniversario",
+      "wedding": "Boda",
+      "other": "Otro"
+    },
+    "errors": {
+      "fetchGroups": "Error al cargar los grupos",
+      "createGroup": "Error al crear el grupo"
+    }
+  },
+  "groupDetail": {
+    "members": "Miembros",
+    "gifts": "Regalos",
+    "myGifts": "Mis Regalos",
+    "addGift": "Añadir Regalo",
+    "inviteMembers": "Invitar Miembros",
+    "settings": "Configuración",
+    "archive": "Archivar",
+    "unarchive": "Desarchivar",
+    "delete": "Eliminar",
+    "startSecretSanta": "Iniciar Amigo Invisible",
+    "secretSantaActive": "Amigo Invisible Activo",
+    "yourRecipient": "Compras para",
+    "noGifts": "No hay regalos todavía",
+    "noGiftsDescription": "Sé el primero en añadir un regalo a la lista.",
+    "giftName": "Nombre del Regalo",
+    "url": "URL (opcional)",
+    "price": "Precio (opcional)",
+    "notes": "Notas (opcional)",
+    "imageUrl": "URL de Imagen (opcional)",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "edit": "Editar",
+    "markAsPurchased": "Marcar como Comprado",
+    "purchased": "Comprado",
+    "confirmDelete": "¿Estás seguro de que quieres eliminar este grupo?",
+    "confirmArchive": "¿Estás seguro de que quieres archivar este grupo?",
+    "errors": {
+      "fetchGroup": "Error al cargar el grupo",
+      "addGift": "Error al añadir el regalo",
+      "updateGift": "Error al actualizar el regalo",
+      "deleteGift": "Error al eliminar el regalo",
+      "purchaseGift": "Error al marcar el regalo como comprado"
+    }
+  },
+  "notifications": {
+    "title": "Notificaciones",
+    "markAllRead": "Marcar todas como leídas",
+    "noNotifications": "No tienes notificaciones",
+    "types": {
+      "giftChanged": "Regalo modificado",
+      "giftDeleted": "Regalo eliminado",
+      "eventDate": "Fecha del evento",
+      "secretSantaMatch": "Emparejamiento Amigo Invisible"
+    }
+  },
+  "emailVerification": {
+    "banner": "Por favor verifica tu email para poder añadir regalos",
+    "resend": "Reenviar email",
+    "success": "Email verificado correctamente",
+    "error": "Error al verificar el email",
+    "resendSuccess": "Email de verificación reenviado"
+  },
+  "invite": {
+    "title": "Invitación al Grupo",
+    "subtitle": "Has sido invitado a unirte a",
+    "join": "Unirse al Grupo",
+    "loginToJoin": "Inicia sesión para unirte",
+    "registerToJoin": "Regístrate para unirte",
+    "error": "Error al unirse al grupo",
+    "invalidToken": "Enlace de invitación inválido o expirado"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "close": "Cerrar",
+    "confirm": "Confirmar",
+    "yes": "Sí",
+    "no": "No"
+  }
+}

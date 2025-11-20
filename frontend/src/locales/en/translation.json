@@ -1,0 +1,195 @@
+{
+  "navbar": {
+    "title": "Secret Wishlist",
+    "myGroups": "My Groups",
+    "hello": "Hello, {{name}}",
+    "logout": "Logout",
+    "login": "Login",
+    "register": "Register"
+  },
+  "home": {
+    "title": "Secret Wishlist",
+    "subtitle": "Create groups for your celebrations and choose between two game modes:",
+    "anonymousWishlist": {
+      "title": "Anonymous Wishlist",
+      "description": "Add gifts to your list and see an anonymous list of all gifts without knowing who asked for what."
+    },
+    "secretSanta": {
+      "title": "Secret Santa",
+      "description": "The classic game where each person gifts to someone specific. Automatic draw and email notifications."
+    },
+    "viewGroups": "View My Groups",
+    "startNow": "Start Now",
+    "features": {
+      "gameModes": {
+        "title": "Two Game Modes",
+        "description": "Choose between Anonymous Wishlist or Secret Santa with automatic draw"
+      },
+      "customThemes": {
+        "title": "Custom Themes",
+        "description": "The app changes theme based on the celebration type"
+      },
+      "notifications": {
+        "title": "Smart Notifications",
+        "description": "Receive email notifications about gift changes and matchings"
+      }
+    },
+    "howItWorks": {
+      "title": "How does it work?",
+      "step1": {
+        "title": "Create a group",
+        "description": "Define the name, celebration type, and start date"
+      },
+      "step2": {
+        "title": "Invite your friends",
+        "description": "Share the unique group link with your family or friends"
+      },
+      "step3": {
+        "title": "Add your gifts",
+        "description": "Each member adds the gifts they want to their personal list"
+      },
+      "step4": {
+        "title": "Buy anonymous gifts",
+        "description": "See the shuffled group list and mark the ones you'll buy, without anyone knowing what you purchased"
+      }
+    },
+    "footer": {
+      "termsOfService": "Terms of Service",
+      "privacyPolicy": "Privacy Policy",
+      "copyright": "© {{year}} Secret Wishlist. All rights reserved."
+    }
+  },
+  "login": {
+    "title": "Secret Wishlist",
+    "subtitle": "Login to continue",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Login",
+    "submitting": "Logging in...",
+    "orContinueWith": "Or continue with",
+    "google": "Google",
+    "instagram": "Instagram",
+    "noAccount": "Don't have an account?",
+    "registerHere": "Register here",
+    "error": "Login error"
+  },
+  "register": {
+    "title": "Secret Wishlist",
+    "subtitle": "Create your account",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "submit": "Register",
+    "submitting": "Registering...",
+    "orContinueWith": "Or continue with",
+    "google": "Google",
+    "instagram": "Instagram",
+    "hasAccount": "Already have an account?",
+    "loginHere": "Login here",
+    "error": "Registration error",
+    "passwordsDontMatch": "Passwords don't match",
+    "verificationEmailSent": "A verification email has been sent to your email"
+  },
+  "groups": {
+    "title": "My Groups",
+    "createGroup": "Create Group",
+    "archivedGroups": "Archived Groups",
+    "noGroups": "You don't have any groups yet",
+    "noGroupsDescription": "Create a new group or wait to be invited to one.",
+    "groupName": "Group Name",
+    "eventType": "Event Type",
+    "eventDate": "Event Date",
+    "gameMode": "Game Mode",
+    "members": "members",
+    "gifts": "gifts",
+    "archived": "Archived",
+    "active": "Active",
+    "gameModes": {
+      "anonymous": "Anonymous Wishlist",
+      "secretSanta": "Secret Santa"
+    },
+    "eventTypes": {
+      "christmas": "Christmas",
+      "birthday": "Birthday",
+      "anniversary": "Anniversary",
+      "wedding": "Wedding",
+      "other": "Other"
+    },
+    "errors": {
+      "fetchGroups": "Error loading groups",
+      "createGroup": "Error creating group"
+    }
+  },
+  "groupDetail": {
+    "members": "Members",
+    "gifts": "Gifts",
+    "myGifts": "My Gifts",
+    "addGift": "Add Gift",
+    "inviteMembers": "Invite Members",
+    "settings": "Settings",
+    "archive": "Archive",
+    "unarchive": "Unarchive",
+    "delete": "Delete",
+    "startSecretSanta": "Start Secret Santa",
+    "secretSantaActive": "Secret Santa Active",
+    "yourRecipient": "You're buying for",
+    "noGifts": "No gifts yet",
+    "noGiftsDescription": "Be the first to add a gift to the list.",
+    "giftName": "Gift Name",
+    "url": "URL (optional)",
+    "price": "Price (optional)",
+    "notes": "Notes (optional)",
+    "imageUrl": "Image URL (optional)",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "markAsPurchased": "Mark as Purchased",
+    "purchased": "Purchased",
+    "confirmDelete": "Are you sure you want to delete this group?",
+    "confirmArchive": "Are you sure you want to archive this group?",
+    "errors": {
+      "fetchGroup": "Error loading group",
+      "addGift": "Error adding gift",
+      "updateGift": "Error updating gift",
+      "deleteGift": "Error deleting gift",
+      "purchaseGift": "Error marking gift as purchased"
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "markAllRead": "Mark all as read",
+    "noNotifications": "You have no notifications",
+    "types": {
+      "giftChanged": "Gift modified",
+      "giftDeleted": "Gift deleted",
+      "eventDate": "Event date",
+      "secretSantaMatch": "Secret Santa Matching"
+    }
+  },
+  "emailVerification": {
+    "banner": "Please verify your email to be able to add gifts",
+    "resend": "Resend email",
+    "success": "Email verified successfully",
+    "error": "Error verifying email",
+    "resendSuccess": "Verification email resent"
+  },
+  "invite": {
+    "title": "Group Invitation",
+    "subtitle": "You've been invited to join",
+    "join": "Join Group",
+    "loginToJoin": "Login to join",
+    "registerToJoin": "Register to join",
+    "error": "Error joining group",
+    "invalidToken": "Invalid or expired invitation link"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "close": "Close",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No"
+  }
+}
