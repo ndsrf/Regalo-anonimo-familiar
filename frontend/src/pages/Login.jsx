@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import { authAPI } from '../services/api';
 
 export default function Login() {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -26,7 +28,7 @@ export default function Login() {
       const destination = returnTo ? decodeURIComponent(returnTo) : '/groups';
       navigate(destination);
     } catch (err) {
-      setError(err.response?.data?.error || 'Error al iniciar sesión');
+      setError(err.response?.data?.error || t('login.error'));
     } finally {
       setLoading(false);
     }
@@ -58,8 +60,8 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50 px-4">
       <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">🎁 Lista de Deseos Secreta</h1>
-          <p className="text-gray-600">Inicia sesión para continuar</p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">🎁 {t('login.title')}</h1>
+          <p className="text-gray-600">{t('login.subtitle')}</p>
         </div>
 
         {error && (
@@ -71,7 +73,7 @@ export default function Login() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Email
+              {t('login.email')}
             </label>
             <input
               type="email"
@@ -84,7 +86,7 @@ export default function Login() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Contraseña
+              {t('login.password')}
             </label>
             <input
               type="password"
@@ -100,7 +102,7 @@ export default function Login() {
             disabled={loading}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-md disabled:opacity-50"
           >
-            {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
+            {loading ? t('login.submitting') : t('login.submit')}
           </button>
         </form>
 
@@ -110,7 +112,7 @@ export default function Login() {
               <div className="w-full border-t border-gray-300"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">O continúa con</span>
+              <span className="px-2 bg-white text-gray-500">{t('login.orContinueWith')}</span>
             </div>
           </div>
 
@@ -136,7 +138,7 @@ export default function Login() {
                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
               />
             </svg>
-            Google
+            {t('login.google')}
           </button>
 
           <button
@@ -155,17 +157,17 @@ export default function Login() {
               <circle cx="12" cy="12" r="4" stroke="url(#instagramGradient)" strokeWidth="2" fill="none"/>
               <circle cx="17.5" cy="6.5" r="1.5" fill="url(#instagramGradient)"/>
             </svg>
-            Instagram
+            {t('login.instagram')}
           </button>
         </div>
 
         <p className="mt-6 text-center text-sm text-gray-600">
-          ¿No tienes cuenta?{' '}
+          {t('login.noAccount')}{' '}
           <Link
             to={returnTo ? `/register?returnTo=${returnTo}` : '/register'}
             className="text-blue-600 hover:underline font-medium"
           >
-            Regístrate aquí
+            {t('login.registerHere')}
           </Link>
         </p>
       </div>

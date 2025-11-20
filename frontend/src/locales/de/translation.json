@@ -1,0 +1,195 @@
+{
+  "navbar": {
+    "title": "Geheime Wunschliste",
+    "myGroups": "Meine Gruppen",
+    "hello": "Hallo, {{name}}",
+    "logout": "Abmelden",
+    "login": "Anmelden",
+    "register": "Registrieren"
+  },
+  "home": {
+    "title": "Geheime Wunschliste",
+    "subtitle": "Erstellen Sie Gruppen für Ihre Feiern und wählen Sie zwischen zwei Spielmodi:",
+    "anonymousWishlist": {
+      "title": "Anonyme Wunschliste",
+      "description": "Fügen Sie Geschenke zu Ihrer Liste hinzu und sehen Sie eine anonyme Liste aller Geschenke, ohne zu wissen, wer was gewünscht hat."
+    },
+    "secretSanta": {
+      "title": "Wichteln",
+      "description": "Das klassische Spiel, bei dem jede Person jemandem Bestimmtes schenkt. Automatische Auslosung und E-Mail-Benachrichtigungen."
+    },
+    "viewGroups": "Meine Gruppen ansehen",
+    "startNow": "Jetzt starten",
+    "features": {
+      "gameModes": {
+        "title": "Zwei Spielmodi",
+        "description": "Wählen Sie zwischen Anonymer Wunschliste oder Wichteln mit automatischer Auslosung"
+      },
+      "customThemes": {
+        "title": "Benutzerdefinierte Designs",
+        "description": "Die App ändert das Design je nach Art der Feier"
+      },
+      "notifications": {
+        "title": "Intelligente Benachrichtigungen",
+        "description": "Erhalten Sie E-Mail-Benachrichtigungen über Geschenkänderungen und Zuordnungen"
+      }
+    },
+    "howItWorks": {
+      "title": "Wie funktioniert es?",
+      "step1": {
+        "title": "Erstellen Sie eine Gruppe",
+        "description": "Definieren Sie den Namen, die Art der Feier und das Startdatum"
+      },
+      "step2": {
+        "title": "Laden Sie Ihre Freunde ein",
+        "description": "Teilen Sie den einzigartigen Gruppenlink mit Ihrer Familie oder Freunden"
+      },
+      "step3": {
+        "title": "Fügen Sie Ihre Geschenke hinzu",
+        "description": "Jedes Mitglied fügt die gewünschten Geschenke zu seiner persönlichen Liste hinzu"
+      },
+      "step4": {
+        "title": "Kaufen Sie anonyme Geschenke",
+        "description": "Sehen Sie sich die gemischte Gruppenliste an und markieren Sie die Geschenke, die Sie kaufen werden, ohne dass jemand weiß, was Sie gekauft haben"
+      }
+    },
+    "footer": {
+      "termsOfService": "Nutzungsbedingungen",
+      "privacyPolicy": "Datenschutzrichtlinie",
+      "copyright": "© {{year}} Geheime Wunschliste. Alle Rechte vorbehalten."
+    }
+  },
+  "login": {
+    "title": "Geheime Wunschliste",
+    "subtitle": "Melden Sie sich an, um fortzufahren",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "submit": "Anmelden",
+    "submitting": "Anmeldung läuft...",
+    "orContinueWith": "Oder fortfahren mit",
+    "google": "Google",
+    "instagram": "Instagram",
+    "noAccount": "Haben Sie kein Konto?",
+    "registerHere": "Hier registrieren",
+    "error": "Anmeldefehler"
+  },
+  "register": {
+    "title": "Geheime Wunschliste",
+    "subtitle": "Erstellen Sie Ihr Konto",
+    "name": "Name",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "confirmPassword": "Passwort bestätigen",
+    "submit": "Registrieren",
+    "submitting": "Registrierung läuft...",
+    "orContinueWith": "Oder fortfahren mit",
+    "google": "Google",
+    "instagram": "Instagram",
+    "hasAccount": "Haben Sie bereits ein Konto?",
+    "loginHere": "Hier anmelden",
+    "error": "Registrierungsfehler",
+    "passwordsDontMatch": "Passwörter stimmen nicht überein",
+    "verificationEmailSent": "Eine Bestätigungs-E-Mail wurde an Ihre E-Mail-Adresse gesendet"
+  },
+  "groups": {
+    "title": "Meine Gruppen",
+    "createGroup": "Gruppe erstellen",
+    "archivedGroups": "Archivierte Gruppen",
+    "noGroups": "Sie haben noch keine Gruppen",
+    "noGroupsDescription": "Erstellen Sie eine neue Gruppe oder warten Sie darauf, zu einer eingeladen zu werden.",
+    "groupName": "Gruppenname",
+    "eventType": "Veranstaltungstyp",
+    "eventDate": "Veranstaltungsdatum",
+    "gameMode": "Spielmodus",
+    "members": "Mitglieder",
+    "gifts": "Geschenke",
+    "archived": "Archiviert",
+    "active": "Aktiv",
+    "gameModes": {
+      "anonymous": "Anonyme Wunschliste",
+      "secretSanta": "Wichteln"
+    },
+    "eventTypes": {
+      "christmas": "Weihnachten",
+      "birthday": "Geburtstag",
+      "anniversary": "Jahrestag",
+      "wedding": "Hochzeit",
+      "other": "Andere"
+    },
+    "errors": {
+      "fetchGroups": "Fehler beim Laden der Gruppen",
+      "createGroup": "Fehler beim Erstellen der Gruppe"
+    }
+  },
+  "groupDetail": {
+    "members": "Mitglieder",
+    "gifts": "Geschenke",
+    "myGifts": "Meine Geschenke",
+    "addGift": "Geschenk hinzufügen",
+    "inviteMembers": "Mitglieder einladen",
+    "settings": "Einstellungen",
+    "archive": "Archivieren",
+    "unarchive": "Dearchivieren",
+    "delete": "Löschen",
+    "startSecretSanta": "Wichteln starten",
+    "secretSantaActive": "Wichteln aktiv",
+    "yourRecipient": "Sie kaufen für",
+    "noGifts": "Noch keine Geschenke",
+    "noGiftsDescription": "Seien Sie der Erste, der ein Geschenk zur Liste hinzufügt.",
+    "giftName": "Geschenkname",
+    "url": "URL (optional)",
+    "price": "Preis (optional)",
+    "notes": "Notizen (optional)",
+    "imageUrl": "Bild-URL (optional)",
+    "cancel": "Abbrechen",
+    "save": "Speichern",
+    "edit": "Bearbeiten",
+    "markAsPurchased": "Als gekauft markieren",
+    "purchased": "Gekauft",
+    "confirmDelete": "Sind Sie sicher, dass Sie diese Gruppe löschen möchten?",
+    "confirmArchive": "Sind Sie sicher, dass Sie diese Gruppe archivieren möchten?",
+    "errors": {
+      "fetchGroup": "Fehler beim Laden der Gruppe",
+      "addGift": "Fehler beim Hinzufügen des Geschenks",
+      "updateGift": "Fehler beim Aktualisieren des Geschenks",
+      "deleteGift": "Fehler beim Löschen des Geschenks",
+      "purchaseGift": "Fehler beim Markieren des Geschenks als gekauft"
+    }
+  },
+  "notifications": {
+    "title": "Benachrichtigungen",
+    "markAllRead": "Alle als gelesen markieren",
+    "noNotifications": "Sie haben keine Benachrichtigungen",
+    "types": {
+      "giftChanged": "Geschenk geändert",
+      "giftDeleted": "Geschenk gelöscht",
+      "eventDate": "Veranstaltungsdatum",
+      "secretSantaMatch": "Wichteln-Zuordnung"
+    }
+  },
+  "emailVerification": {
+    "banner": "Bitte bestätigen Sie Ihre E-Mail, um Geschenke hinzufügen zu können",
+    "resend": "E-Mail erneut senden",
+    "success": "E-Mail erfolgreich bestätigt",
+    "error": "Fehler beim Bestätigen der E-Mail",
+    "resendSuccess": "Bestätigungs-E-Mail erneut gesendet"
+  },
+  "invite": {
+    "title": "Gruppeneinladung",
+    "subtitle": "Sie wurden eingeladen beizutreten",
+    "join": "Gruppe beitreten",
+    "loginToJoin": "Anmelden zum Beitreten",
+    "registerToJoin": "Registrieren zum Beitreten",
+    "error": "Fehler beim Beitritt zur Gruppe",
+    "invalidToken": "Ungültiger oder abgelaufener Einladungslink"
+  },
+  "common": {
+    "loading": "Laden...",
+    "error": "Fehler",
+    "success": "Erfolg",
+    "close": "Schließen",
+    "confirm": "Bestätigen",
+    "yes": "Ja",
+    "no": "Nein"
+  }
+}

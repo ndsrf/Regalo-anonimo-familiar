@@ -1,8 +1,11 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
+import LanguageSelector from './LanguageSelector';
 
 export default function Navbar() {
+  const { t } = useTranslation();
   const { user, logout, isAuthenticated } = useAuth();
   const { theme } = useTheme();
   const navigate = useNavigate();
@@ -18,25 +21,26 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <Link to="/" className={`text-2xl font-bold ${theme.accent}`}>
-              🎁 Lista de Deseos Secreta
+              🎁 {t('navbar.title')}
             </Link>
           </div>
 
           <div className="flex items-center space-x-4">
+            <LanguageSelector />
             {isAuthenticated ? (
               <>
                 <Link
                   to="/groups"
                   className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
                 >
-                  Mis Grupos
+                  {t('navbar.myGroups')}
                 </Link>
-                <span className="text-gray-700 text-sm">Hola, {user?.nombre}</span>
+                <span className="text-gray-700 text-sm">{t('navbar.hello', { name: user?.nombre })}</span>
                 <button
                   onClick={handleLogout}
                   className={`${theme.primary} text-white px-4 py-2 rounded-md text-sm font-medium`}
                 >
-                  Cerrar Sesión
+                  {t('navbar.logout')}
                 </button>
               </>
             ) : (
@@ -45,13 +49,13 @@ export default function Navbar() {
                   to="/login"
                   className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
                 >
-                  Iniciar Sesión
+                  {t('navbar.login')}
                 </Link>
                 <Link
                   to="/register"
                   className={`${theme.primary} text-white px-4 py-2 rounded-md text-sm font-medium`}
                 >
-                  Registrarse
+                  {t('navbar.register')}
                 </Link>
               </>
             )}

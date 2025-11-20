@@ -1,0 +1,195 @@
+{
+  "navbar": {
+    "title": "Liste de Souhaits Secrète",
+    "myGroups": "Mes Groupes",
+    "hello": "Bonjour, {{name}}",
+    "logout": "Déconnexion",
+    "login": "Connexion",
+    "register": "S'inscrire"
+  },
+  "home": {
+    "title": "Liste de Souhaits Secrète",
+    "subtitle": "Créez des groupes pour vos célébrations et choisissez entre deux modes de jeu :",
+    "anonymousWishlist": {
+      "title": "Liste de Souhaits Anonyme",
+      "description": "Ajoutez des cadeaux à votre liste et voyez une liste anonyme de tous les cadeaux sans savoir qui a demandé quoi."
+    },
+    "secretSanta": {
+      "title": "Père Noël Secret",
+      "description": "Le jeu classique où chaque personne offre un cadeau à quelqu'un de spécifique. Tirage au sort automatique et notifications par email."
+    },
+    "viewGroups": "Voir Mes Groupes",
+    "startNow": "Commencer Maintenant",
+    "features": {
+      "gameModes": {
+        "title": "Deux Modes de Jeu",
+        "description": "Choisissez entre Liste de Souhaits Anonyme ou Père Noël Secret avec tirage automatique"
+      },
+      "customThemes": {
+        "title": "Thèmes Personnalisés",
+        "description": "L'application change de thème en fonction du type de célébration"
+      },
+      "notifications": {
+        "title": "Notifications Intelligentes",
+        "description": "Recevez des notifications par email concernant les changements de cadeaux et les appariements"
+      }
+    },
+    "howItWorks": {
+      "title": "Comment ça marche ?",
+      "step1": {
+        "title": "Créez un groupe",
+        "description": "Définissez le nom, le type de célébration et la date de début"
+      },
+      "step2": {
+        "title": "Invitez vos amis",
+        "description": "Partagez le lien unique du groupe avec votre famille ou vos amis"
+      },
+      "step3": {
+        "title": "Ajoutez vos cadeaux",
+        "description": "Chaque membre ajoute les cadeaux qu'il souhaite à sa liste personnelle"
+      },
+      "step4": {
+        "title": "Achetez des cadeaux anonymes",
+        "description": "Voyez la liste mélangée du groupe et marquez ceux que vous allez acheter, sans que personne ne sache ce que vous avez acheté"
+      }
+    },
+    "footer": {
+      "termsOfService": "Conditions de Service",
+      "privacyPolicy": "Politique de Confidentialité",
+      "copyright": "© {{year}} Liste de Souhaits Secrète. Tous droits réservés."
+    }
+  },
+  "login": {
+    "title": "Liste de Souhaits Secrète",
+    "subtitle": "Connectez-vous pour continuer",
+    "email": "Email",
+    "password": "Mot de passe",
+    "submit": "Connexion",
+    "submitting": "Connexion en cours...",
+    "orContinueWith": "Ou continuez avec",
+    "google": "Google",
+    "instagram": "Instagram",
+    "noAccount": "Vous n'avez pas de compte ?",
+    "registerHere": "Inscrivez-vous ici",
+    "error": "Erreur de connexion"
+  },
+  "register": {
+    "title": "Liste de Souhaits Secrète",
+    "subtitle": "Créez votre compte",
+    "name": "Nom",
+    "email": "Email",
+    "password": "Mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "submit": "S'inscrire",
+    "submitting": "Inscription en cours...",
+    "orContinueWith": "Ou continuez avec",
+    "google": "Google",
+    "instagram": "Instagram",
+    "hasAccount": "Vous avez déjà un compte ?",
+    "loginHere": "Connectez-vous ici",
+    "error": "Erreur d'inscription",
+    "passwordsDontMatch": "Les mots de passe ne correspondent pas",
+    "verificationEmailSent": "Un email de vérification a été envoyé à votre adresse"
+  },
+  "groups": {
+    "title": "Mes Groupes",
+    "createGroup": "Créer un Groupe",
+    "archivedGroups": "Groupes Archivés",
+    "noGroups": "Vous n'avez pas encore de groupes",
+    "noGroupsDescription": "Créez un nouveau groupe ou attendez d'être invité à un groupe.",
+    "groupName": "Nom du Groupe",
+    "eventType": "Type d'Événement",
+    "eventDate": "Date de l'Événement",
+    "gameMode": "Mode de Jeu",
+    "members": "membres",
+    "gifts": "cadeaux",
+    "archived": "Archivé",
+    "active": "Actif",
+    "gameModes": {
+      "anonymous": "Liste de Souhaits Anonyme",
+      "secretSanta": "Père Noël Secret"
+    },
+    "eventTypes": {
+      "christmas": "Noël",
+      "birthday": "Anniversaire",
+      "anniversary": "Anniversaire de mariage",
+      "wedding": "Mariage",
+      "other": "Autre"
+    },
+    "errors": {
+      "fetchGroups": "Erreur lors du chargement des groupes",
+      "createGroup": "Erreur lors de la création du groupe"
+    }
+  },
+  "groupDetail": {
+    "members": "Membres",
+    "gifts": "Cadeaux",
+    "myGifts": "Mes Cadeaux",
+    "addGift": "Ajouter un Cadeau",
+    "inviteMembers": "Inviter des Membres",
+    "settings": "Paramètres",
+    "archive": "Archiver",
+    "unarchive": "Désarchiver",
+    "delete": "Supprimer",
+    "startSecretSanta": "Démarrer le Père Noël Secret",
+    "secretSantaActive": "Père Noël Secret Actif",
+    "yourRecipient": "Vous achetez pour",
+    "noGifts": "Pas encore de cadeaux",
+    "noGiftsDescription": "Soyez le premier à ajouter un cadeau à la liste.",
+    "giftName": "Nom du Cadeau",
+    "url": "URL (optionnel)",
+    "price": "Prix (optionnel)",
+    "notes": "Notes (optionnel)",
+    "imageUrl": "URL de l'image (optionnel)",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "edit": "Modifier",
+    "markAsPurchased": "Marquer comme Acheté",
+    "purchased": "Acheté",
+    "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce groupe ?",
+    "confirmArchive": "Êtes-vous sûr de vouloir archiver ce groupe ?",
+    "errors": {
+      "fetchGroup": "Erreur lors du chargement du groupe",
+      "addGift": "Erreur lors de l'ajout du cadeau",
+      "updateGift": "Erreur lors de la mise à jour du cadeau",
+      "deleteGift": "Erreur lors de la suppression du cadeau",
+      "purchaseGift": "Erreur lors du marquage du cadeau comme acheté"
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "markAllRead": "Tout marquer comme lu",
+    "noNotifications": "Vous n'avez aucune notification",
+    "types": {
+      "giftChanged": "Cadeau modifié",
+      "giftDeleted": "Cadeau supprimé",
+      "eventDate": "Date de l'événement",
+      "secretSantaMatch": "Appariement Père Noël Secret"
+    }
+  },
+  "emailVerification": {
+    "banner": "Veuillez vérifier votre email pour pouvoir ajouter des cadeaux",
+    "resend": "Renvoyer l'email",
+    "success": "Email vérifié avec succès",
+    "error": "Erreur lors de la vérification de l'email",
+    "resendSuccess": "Email de vérification renvoyé"
+  },
+  "invite": {
+    "title": "Invitation au Groupe",
+    "subtitle": "Vous avez été invité à rejoindre",
+    "join": "Rejoindre le Groupe",
+    "loginToJoin": "Connectez-vous pour rejoindre",
+    "registerToJoin": "Inscrivez-vous pour rejoindre",
+    "error": "Erreur lors de l'adhésion au groupe",
+    "invalidToken": "Lien d'invitation invalide ou expiré"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "close": "Fermer",
+    "confirm": "Confirmer",
+    "yes": "Oui",
+    "no": "Non"
+  }
+}
