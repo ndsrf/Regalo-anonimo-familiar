@@ -297,10 +297,10 @@ export default function Groups() {
         {/* Help Modal */}
         {showHelpModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6">
+            <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6 max-h-[calc(100vh-2rem)] flex flex-col">
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Modos de Juego</h2>
 
-              <div className="space-y-6">
+              <div className="space-y-6 overflow-y-auto flex-1">
                 {/* Lista de Deseos Anónimos */}
                 <div className="border-l-4 border-blue-500 pl-4">
                   <h3 className="text-xl font-semibold text-gray-900 mb-2 flex items-center">
