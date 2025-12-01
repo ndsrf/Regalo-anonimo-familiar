@@ -119,6 +119,34 @@
     "errors": {
       "fetchGroups": "Error al cargar los grupos",
       "createGroup": "Error al crear el grupo"
+    },
+    "helpModal": {
+      "title": "Modos de Juego",
+      "close": "Entendido",
+      "anonymous": {
+        "title": "Lista de Deseos Anónimos",
+        "description": "En este modo, los miembros del grupo pueden:",
+        "features": {
+          "feature1": "Crear su propia lista de regalos deseados",
+          "feature2": "Ver una lista anónima de todos los regalos del grupo",
+          "feature3": "Seleccionar qué regalos quieren comprar (sin revelar su identidad)",
+          "feature4": "La lista de deseos se hace visible en la fecha de inicio del evento"
+        },
+        "ideal": "Perfecto para eventos donde todos quieren sorprenderse mutuamente con regalos."
+      },
+      "secretSanta": {
+        "title": "Amigo Invisible",
+        "description": "El clásico juego del Amigo Invisible (Secret Santa):",
+        "features": {
+          "feature1": "Los miembros se unen al grupo hasta la fecha de inicio",
+          "feature2": "El creador del grupo realiza el sorteo en la fecha de inicio",
+          "feature3": "Cada persona es emparejada aleatoriamente con otra",
+          "feature4": "Cada participante solo puede ver a quién le tocó regalar",
+          "feature5": "Una vez hecho el sorteo, no se pueden unir más personas",
+          "feature6": "Todos reciben un email informando de su emparejamiento"
+        },
+        "ideal": "Ideal para eventos con presupuesto limitado donde cada persona solo regala a una persona específica."
+      }
     }
   },
   "groupDetail": {

@@ -298,26 +298,26 @@ export default function Groups() {
         {showHelpModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6 max-h-[calc(100vh-2rem)] flex flex-col">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Modos de Juego</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">{t('groups.helpModal.title')}</h2>
 
               <div className="space-y-6 overflow-y-auto flex-1">
                 {/* Lista de Deseos Anónimos */}
                 <div className="border-l-4 border-blue-500 pl-4">
                   <h3 className="text-xl font-semibold text-gray-900 mb-2 flex items-center">
                     <span className="mr-2">🎁</span>
-                    Lista de Deseos Anónimos
+                    {t('groups.helpModal.anonymous.title')}
                   </h3>
                   <p className="text-gray-700 mb-2">
-                    En este modo, los miembros del grupo pueden:
+                    {t('groups.helpModal.anonymous.description')}
                   </p>
                   <ul className="list-disc list-inside text-gray-600 space-y-1 ml-4">
-                    <li>Crear su propia lista de regalos deseados</li>
-                    <li>Ver una lista anónima de todos los regalos del grupo</li>
-                    <li>Seleccionar qué regalos quieren comprar (sin revelar su identidad)</li>
-                    <li>La lista de deseos se hace visible en la fecha de inicio del evento</li>
+                    <li>{t('groups.helpModal.anonymous.features.feature1')}</li>
+                    <li>{t('groups.helpModal.anonymous.features.feature2')}</li>
+                    <li>{t('groups.helpModal.anonymous.features.feature3')}</li>
+                    <li>{t('groups.helpModal.anonymous.features.feature4')}</li>
                   </ul>
                   <p className="text-gray-600 mt-2 italic">
-                    Perfecto para eventos donde todos quieren sorprenderse mutuamente con regalos.
+                    {t('groups.helpModal.anonymous.ideal')}
                   </p>
                 </div>
 
@@ -325,21 +325,21 @@ export default function Groups() {
                 <div className="border-l-4 border-purple-500 pl-4">
                   <h3 className="text-xl font-semibold text-gray-900 mb-2 flex items-center">
                     <span className="mr-2">🎭</span>
-                    Amigo Invisible
+                    {t('groups.helpModal.secretSanta.title')}
                   </h3>
                   <p className="text-gray-700 mb-2">
-                    El clásico juego del Amigo Invisible (Secret Santa):
+                    {t('groups.helpModal.secretSanta.description')}
                   </p>
                   <ul className="list-disc list-inside text-gray-600 space-y-1 ml-4">
-                    <li>Los miembros se unen al grupo hasta la fecha de inicio</li>
-                    <li>El creador del grupo realiza el sorteo en la fecha de inicio</li>
-                    <li>Cada persona es emparejada aleatoriamente con otra</li>
-                    <li>Cada participante solo puede ver a quién le tocó regalar</li>
-                    <li>Una vez hecho el sorteo, no se pueden unir más personas</li>
-                    <li>Todos reciben un email informando de su emparejamiento</li>
+                    <li>{t('groups.helpModal.secretSanta.features.feature1')}</li>
+                    <li>{t('groups.helpModal.secretSanta.features.feature2')}</li>
+                    <li>{t('groups.helpModal.secretSanta.features.feature3')}</li>
+                    <li>{t('groups.helpModal.secretSanta.features.feature4')}</li>
+                    <li>{t('groups.helpModal.secretSanta.features.feature5')}</li>
+                    <li>{t('groups.helpModal.secretSanta.features.feature6')}</li>
                   </ul>
                   <p className="text-gray-600 mt-2 italic">
-                    Ideal para eventos con presupuesto limitado donde cada persona solo regala a una persona específica.
+                    {t('groups.helpModal.secretSanta.ideal')}
                   </p>
                 </div>
               </div>
@@ -348,7 +348,7 @@ export default function Groups() {
                 onClick={() => setShowHelpModal(false)}
                 className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium"
               >
-                Entendido
+                {t('groups.helpModal.close')}
               </button>
             </div>
           </div>

@@ -119,6 +119,34 @@
     "errors": {
       "fetchGroups": "Fehler beim Laden der Gruppen",
       "createGroup": "Fehler beim Erstellen der Gruppe"
+    },
+    "helpModal": {
+      "title": "Spielmodi",
+      "close": "Verstanden",
+      "anonymous": {
+        "title": "Anonyme Wunschliste",
+        "description": "In diesem Modus können Gruppenmitglieder:",
+        "features": {
+          "feature1": "Ihre eigene Wunschliste mit gewünschten Geschenken erstellen",
+          "feature2": "Eine anonyme Liste aller Gruppengeschenke ansehen",
+          "feature3": "Auswählen, welche Geschenke sie kaufen möchten (ohne ihre Identität preiszugeben)",
+          "feature4": "Die Wunschliste wird am Startdatum der Veranstaltung sichtbar"
+        },
+        "ideal": "Perfekt für Veranstaltungen, bei denen sich alle gegenseitig mit Geschenken überraschen möchten."
+      },
+      "secretSanta": {
+        "title": "Wichteln",
+        "description": "Das klassische Wichtel-Spiel:",
+        "features": {
+          "feature1": "Mitglieder treten der Gruppe bis zum Startdatum bei",
+          "feature2": "Der Gruppenersteller führt die Auslosung am Startdatum durch",
+          "feature3": "Jede Person wird zufällig mit einer anderen gepaart",
+          "feature4": "Jeder Teilnehmer kann nur sehen, für wen er kauft",
+          "feature5": "Sobald die Auslosung erfolgt ist, können keine weiteren Personen mehr beitreten",
+          "feature6": "Jeder erhält eine E-Mail, die ihn über seine Zuordnung informiert"
+        },
+        "ideal": "Ideal für budgetbeschränkte Veranstaltungen, bei denen jede Person nur einer bestimmten Person schenkt."
+      }
     }
   },
   "groupDetail": {
