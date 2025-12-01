@@ -119,6 +119,34 @@
     "errors": {
       "fetchGroups": "Erreur lors du chargement des groupes",
       "createGroup": "Erreur lors de la création du groupe"
+    },
+    "helpModal": {
+      "title": "Modes de Jeu",
+      "close": "Compris",
+      "anonymous": {
+        "title": "Liste de Souhaits Anonyme",
+        "description": "Dans ce mode, les membres du groupe peuvent :",
+        "features": {
+          "feature1": "Créer leur propre liste de cadeaux souhaités",
+          "feature2": "Voir une liste anonyme de tous les cadeaux du groupe",
+          "feature3": "Sélectionner les cadeaux qu'ils veulent acheter (sans révéler leur identité)",
+          "feature4": "La liste de souhaits devient visible à la date de début de l'événement"
+        },
+        "ideal": "Parfait pour les événements où tout le monde veut se surprendre mutuellement avec des cadeaux."
+      },
+      "secretSanta": {
+        "title": "Père Noël Secret",
+        "description": "Le jeu classique du Père Noël Secret :",
+        "features": {
+          "feature1": "Les membres rejoignent le groupe jusqu'à la date de début",
+          "feature2": "Le créateur du groupe effectue le tirage au sort à la date de début",
+          "feature3": "Chaque personne est jumelée aléatoirement avec une autre",
+          "feature4": "Chaque participant ne peut voir que pour qui il achète",
+          "feature5": "Une fois le tirage effectué, plus personne ne peut rejoindre",
+          "feature6": "Tout le monde reçoit un email les informant de leur jumelage"
+        },
+        "ideal": "Idéal pour les événements à budget limité où chaque personne n'offre qu'à une personne spécifique."
+      }
     }
   },
   "groupDetail": {

@@ -119,6 +119,34 @@
     "errors": {
       "fetchGroups": "Error loading groups",
       "createGroup": "Error creating group"
+    },
+    "helpModal": {
+      "title": "Game Modes",
+      "close": "Got it",
+      "anonymous": {
+        "title": "Anonymous Wishlist",
+        "description": "In this mode, group members can:",
+        "features": {
+          "feature1": "Create their own wishlist of desired gifts",
+          "feature2": "View an anonymous list of all group gifts",
+          "feature3": "Select which gifts they want to buy (without revealing their identity)",
+          "feature4": "The wishlist becomes visible on the event start date"
+        },
+        "ideal": "Perfect for events where everyone wants to surprise each other with gifts."
+      },
+      "secretSanta": {
+        "title": "Secret Santa",
+        "description": "The classic Secret Santa game:",
+        "features": {
+          "feature1": "Members join the group until the start date",
+          "feature2": "The group creator performs the draw on the start date",
+          "feature3": "Each person is randomly paired with another",
+          "feature4": "Each participant can only see who they're buying for",
+          "feature5": "Once the draw is done, no more people can join",
+          "feature6": "Everyone receives an email informing them of their match"
+        },
+        "ideal": "Ideal for budget-limited events where each person only gifts to one specific person."
+      }
     }
   },
   "groupDetail": {
