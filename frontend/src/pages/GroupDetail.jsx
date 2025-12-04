@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { groupAPI, giftAPI } from '../services/api';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
@@ -7,8 +8,10 @@ import GiftCard from '../components/GiftCard';
 import ThemeDecorations from '../components/ThemeDecorations';
 import EmailVerificationBanner from '../components/EmailVerificationBanner';
 import EmailInviteModal from '../components/EmailInviteModal';
+import { TIPO_CELEBRACION_REVERSE_MAP } from '../constants/groupConstants';
 
 export default function GroupDetail() {
+  const { t } = useTranslation();
   const { codigoUrl } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -342,7 +345,7 @@ export default function GroupDetail() {
         <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8 text-center">
           <h1 className="text-3xl font-bold text-gray-900 mb-4">{group.nombre_grupo}</h1>
           <div className="mb-2">
-            <p className="text-gray-600">{group.tipo_celebracion}</p>
+            <p className="text-gray-600">{t(`groups.eventTypes.${TIPO_CELEBRACION_REVERSE_MAP[group.tipo_celebracion] || 'other'}`)}</p>
             <p className="text-purple-600 font-medium mt-1">
               {group.game_mode === 'Amigo Invisible' ? '🎭 Amigo Invisible' : '🎁 Lista de Deseos'}
             </p>
@@ -380,7 +383,7 @@ export default function GroupDetail() {
             <div>
               <h1 className="text-3xl font-bold text-gray-900 mb-2">{group.nombre_grupo}</h1>
               <div className="flex items-center gap-2 mb-1">
-                <p className="text-gray-600">{group.tipo_celebracion}</p>
+                <p className="text-gray-600">{t(`groups.eventTypes.${TIPO_CELEBRACION_REVERSE_MAP[group.tipo_celebracion] || 'other'}`)}</p>
                 <span className="text-gray-400">•</span>
                 <p className="text-purple-600 font-medium">
                   {group.game_mode === 'Amigo Invisible' ? '🎭 Amigo Invisible' : '🎁 Lista de Deseos'}
