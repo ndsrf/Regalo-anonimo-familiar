@@ -111,6 +111,7 @@
     },
     "eventTypes": {
       "christmas": "Weihnachten",
+      "reyesMagos": "Heilige Drei Könige",
       "birthday": "Geburtstag",
       "anniversary": "Jahrestag",
       "wedding": "Hochzeit",
