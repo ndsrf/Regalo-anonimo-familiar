@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { groupAPI } from '../services/api';
 import { useTheme } from '../context/ThemeContext';
+import { GAME_MODE_REVERSE_MAP, TIPO_CELEBRACION_REVERSE_MAP } from '../constants/groupConstants';
 
 export default function ArchivedGroups() {
   const { t } = useTranslation();
@@ -80,9 +81,9 @@ export default function ArchivedGroups() {
                   </span>
                 </div>
                 <div className="space-y-1 text-sm text-gray-600">
-                  <p>{t(`groups.eventTypes.${group.tipo_celebracion}`, group.tipo_celebracion)}</p>
+                  <p>{t(`groups.eventTypes.${TIPO_CELEBRACION_REVERSE_MAP[group.tipo_celebracion] || 'other'}`)}</p>
                   <p className="text-purple-600 font-medium">
-                    {group.game_mode === 'secretSanta' || group.game_mode === 'Amigo Invisible' ? `🎭 ${t('groups.gameModes.secretSanta')}` : `🎁 ${t('groups.gameModes.anonymous')}`}
+                    {group.game_mode === 'Amigo Invisible' ? `🎭 ${t('groups.gameModes.secretSanta')}` : `🎁 ${t('groups.gameModes.anonymous')}`}
                   </p>
                   <p>{t('groups.eventDate')}: {new Date(group.fecha_inicio).toLocaleDateString()}</p>
                   <p>{t('groups.members')}: {group.member_count}</p>

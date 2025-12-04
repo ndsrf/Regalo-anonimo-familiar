@@ -3,21 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { groupAPI } from '../services/api';
 import { useTheme } from '../context/ThemeContext';
-
-// Map frontend values to backend expected values
-const GAME_MODE_MAP = {
-  'anonymous': 'Lista de Deseos Anónimos',
-  'secretSanta': 'Amigo Invisible'
-};
-
-// Note: 'anniversary' maps to 'Otro' as there's no specific anniversary type in backend
-const TIPO_CELEBRACION_MAP = {
-  'christmas': 'Navidad',
-  'birthday': 'Cumpleaños',
-  'anniversary': 'Otro',
-  'wedding': 'Boda',
-  'other': 'Otro'
-};
+import { GAME_MODE_MAP, TIPO_CELEBRACION_MAP, TIPO_CELEBRACION_REVERSE_MAP } from '../constants/groupConstants';
 
 export default function Groups() {
   const { t } = useTranslation();
@@ -149,19 +135,14 @@ export default function Groups() {
                   <div className="flex items-center justify-between mb-2">
                     <h2 className="text-xl font-semibold text-gray-900">{group.nombre_grupo}</h2>
                     <span className={`text-2xl`}>
-                      {group.tipo_celebracion === 'christmas' && '🎄'}
                       {group.tipo_celebracion === 'Navidad' && '🎄'}
                       {group.tipo_celebracion === 'Reyes Magos' && '👑'}
-                      {group.tipo_celebracion === 'wedding' && '💒'}
                       {group.tipo_celebracion === 'Boda' && '💒'}
-                      {group.tipo_celebracion === 'birthday' && '🎂'}
                       {group.tipo_celebracion === 'Cumpleaños' && '🎂'}
-                      {group.tipo_celebracion === 'anniversary' && '💐'}
-                      {group.tipo_celebracion === 'other' && '🎁'}
                       {group.tipo_celebracion === 'Otro' && '🎁'}
                     </span>
                   </div>
-                  <p className="text-gray-600 text-sm mb-2">{t(`groups.eventTypes.${group.tipo_celebracion}`, group.tipo_celebracion)}</p>
+                  <p className="text-gray-600 text-sm mb-2">{t(`groups.eventTypes.${TIPO_CELEBRACION_REVERSE_MAP[group.tipo_celebracion] || 'other'}`)}</p>
                   <p className="text-gray-500 text-sm">
                     {t('groups.eventDate')}: {new Date(group.fecha_inicio).toLocaleDateString()}
                   </p>

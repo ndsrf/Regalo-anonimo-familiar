@@ -111,6 +111,7 @@
     },
     "eventTypes": {
       "christmas": "Noël",
+      "reyesMagos": "Jour des Rois",
       "birthday": "Anniversaire",
       "anniversary": "Anniversaire de mariage",
       "wedding": "Mariage",

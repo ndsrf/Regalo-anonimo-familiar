@@ -111,6 +111,7 @@
     },
     "eventTypes": {
       "christmas": "Christmas",
+      "reyesMagos": "Three Kings Day",
       "birthday": "Birthday",
       "anniversary": "Anniversary",
       "wedding": "Wedding",
