@@ -323,7 +323,7 @@ Regalo Anónimo Familiar
       subject = `${gameModeEmoji} Invitación para unirte al grupo: ${groupName}`;
 
       text = `
-Hola ${userName || 'amigo'},
+Hola${userName ? ' ' + userName : ''},
 
 ${inviterName} te ha invitado a unirte al grupo "${groupName}".
 
@@ -360,7 +360,7 @@ Regalo Anónimo Familiar
       <h1>${gameModeEmoji} ¡Te han invitado!</h1>
     </div>
     <div class="content">
-      <h2>Hola ${userName || 'amigo'},</h2>
+      <h2>Hola${userName ? ' ' + userName : ''},</h2>
       <p><strong>${inviterName}</strong> te ha invitado a unirte al grupo:</p>
       <div class="invitation-box">
         <h3 style="color: #667eea; margin: 0 0 10px 0;">${groupName}</h3>
