@@ -4,6 +4,21 @@ import { useTranslation } from 'react-i18next';
 import { groupAPI } from '../services/api';
 import { useTheme } from '../context/ThemeContext';
 
+// Map frontend values to backend expected values
+const GAME_MODE_MAP = {
+  'anonymous': 'Lista de Deseos Anónimos',
+  'secretSanta': 'Amigo Invisible'
+};
+
+// Note: 'anniversary' maps to 'Otro' as there's no specific anniversary type in backend
+const TIPO_CELEBRACION_MAP = {
+  'christmas': 'Navidad',
+  'birthday': 'Cumpleaños',
+  'anniversary': 'Otro',
+  'wedding': 'Boda',
+  'other': 'Otro'
+};
+
 export default function Groups() {
   const { t } = useTranslation();
   const [groups, setGroups] = useState([]);
@@ -57,28 +72,18 @@ export default function Groups() {
   const handleCreateGroup = async (e) => {
     e.preventDefault();
     try {
-      // Map frontend values to backend expected values
-      const gameModeMap = {
-        'anonymous': 'Lista de Deseos Anónimos',
-        'secretSanta': 'Amigo Invisible'
-      };
-      
-      // Note: 'anniversary' maps to 'Otro' as there's no specific anniversary type in backend
-      const tipoCelebracionMap = {
-        'christmas': 'Navidad',
-        'birthday': 'Cumpleaños',
-        'anniversary': 'Otro',
-        'wedding': 'Boda',
-        'other': 'Otro'
-      };
-      
-      const mappedGameMode = gameModeMap[formData.gameMode];
-      const mappedTipoCelebracion = tipoCelebracionMap[formData.tipoCelebracion];
+      const mappedGameMode = GAME_MODE_MAP[formData.gameMode];
+      const mappedTipoCelebracion = TIPO_CELEBRACION_MAP[formData.tipoCelebracion];
       
       // Validate mappings exist
-      if (!mappedGameMode || !mappedTipoCelebracion) {
-        console.error('Invalid form data:', formData);
-        alert(t('groups.errors.createGroup'));
+      if (!mappedGameMode) {
+        console.error('Invalid game mode:', formData.gameMode);
+        alert(t('groups.errors.createGroup') + ' - Invalid game mode');
+        return;
+      }
+      if (!mappedTipoCelebracion) {
+        console.error('Invalid celebration type:', formData.tipoCelebracion);
+        alert(t('groups.errors.createGroup') + ' - Invalid celebration type');
         return;
       }
       
