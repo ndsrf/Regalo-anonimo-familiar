@@ -75,15 +75,10 @@ export default function Groups() {
       const mappedGameMode = GAME_MODE_MAP[formData.gameMode];
       const mappedTipoCelebracion = TIPO_CELEBRACION_MAP[formData.tipoCelebracion];
       
-      // Validate mappings exist
-      if (!mappedGameMode) {
-        console.error('Invalid game mode:', formData.gameMode);
-        alert(t('groups.errors.createGroup') + ' - Invalid game mode');
-        return;
-      }
-      if (!mappedTipoCelebracion) {
-        console.error('Invalid celebration type:', formData.tipoCelebracion);
-        alert(t('groups.errors.createGroup') + ' - Invalid celebration type');
+      // Validate mappings exist (should not happen with normal form usage)
+      if (!mappedGameMode || !mappedTipoCelebracion) {
+        console.error('Invalid form data:', { gameMode: formData.gameMode, tipoCelebracion: formData.tipoCelebracion });
+        alert(t('groups.errors.createGroup'));
         return;
       }
       
