@@ -63,6 +63,7 @@ export default function Groups() {
         'secretSanta': 'Amigo Invisible'
       };
       
+      // Note: 'anniversary' maps to 'Otro' as there's no specific anniversary type in backend
       const tipoCelebracionMap = {
         'christmas': 'Navidad',
         'birthday': 'Cumpleaños',
@@ -71,10 +72,20 @@ export default function Groups() {
         'other': 'Otro'
       };
       
+      const mappedGameMode = gameModeMap[formData.gameMode];
+      const mappedTipoCelebracion = tipoCelebracionMap[formData.tipoCelebracion];
+      
+      // Validate mappings exist
+      if (!mappedGameMode || !mappedTipoCelebracion) {
+        console.error('Invalid form data:', formData);
+        alert(t('groups.errors.createGroup'));
+        return;
+      }
+      
       const backendData = {
         nombreGrupo: formData.nombreGrupo,
-        gameMode: gameModeMap[formData.gameMode],
-        tipoCelebracion: tipoCelebracionMap[formData.tipoCelebracion],
+        gameMode: mappedGameMode,
+        tipoCelebracion: mappedTipoCelebracion,
         fechaInicio: formData.fechaInicio
       };
       
