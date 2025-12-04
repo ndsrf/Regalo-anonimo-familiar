@@ -57,7 +57,28 @@ export default function Groups() {
   const handleCreateGroup = async (e) => {
     e.preventDefault();
     try {
-      await groupAPI.create(formData);
+      // Map frontend values to backend expected values
+      const gameModeMap = {
+        'anonymous': 'Lista de Deseos Anónimos',
+        'secretSanta': 'Amigo Invisible'
+      };
+      
+      const tipoCelebracionMap = {
+        'christmas': 'Navidad',
+        'birthday': 'Cumpleaños',
+        'anniversary': 'Otro',
+        'wedding': 'Boda',
+        'other': 'Otro'
+      };
+      
+      const backendData = {
+        nombreGrupo: formData.nombreGrupo,
+        gameMode: gameModeMap[formData.gameMode],
+        tipoCelebracion: tipoCelebracionMap[formData.tipoCelebracion],
+        fechaInicio: formData.fechaInicio
+      };
+      
+      await groupAPI.create(backendData);
       setShowCreateModal(false);
       setFormData({
         nombreGrupo: '',
