@@ -510,3 +510,167 @@ export async function joinGroupViaMagicLink(req, res) {
     res.status(500).json({ error: 'Error al unirse al grupo' });
   }
 }
+
+// Password Reset Functions
+
+export async function forgotPassword(req, res) {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ error: 'Email es requerido' });
+    }
+
+    // Find user by email
+    const userResult = await query(
+      'SELECT id, email, nombre, password_hash, preferred_language FROM users WHERE LOWER(email) = $1',
+      [email.toLowerCase()]
+    );
+
+    // Always return success even if user doesn't exist (security best practice)
+    // This prevents email enumeration attacks
+    if (userResult.rows.length === 0) {
+      return res.json({
+        success: true,
+        message: 'Si el email existe en nuestro sistema, recibirás un correo con instrucciones para restablecer tu contraseña.',
+      });
+    }
+
+    const user = userResult.rows[0];
+
+    // Check if user has a password (OAuth users don't have passwords)
+    if (!user.password_hash) {
+      return res.status(400).json({
+        error: 'Esta cuenta usa autenticación de Google/Meta. Por favor inicia sesión con ese proveedor.',
+      });
+    }
+
+    // Generate password reset token
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const resetExpires = new Date(Date.now() + 60 * 60 * 1000); // 1 hora
+
+    // Store token in database
+    await query(
+      'INSERT INTO password_reset_tokens (token, user_id, expires_at) VALUES ($1, $2, $3)',
+      [resetToken, user.id, resetExpires]
+    );
+
+    // Send password reset email (fire and forget)
+    emailService.sendPasswordResetEmail({
+      to: user.email,
+      name: user.nombre,
+      token: resetToken,
+      language: user.preferred_language || 'es',
+    }).catch(err => console.error('Error enviando email de reset de contraseña:', err));
+
+    res.json({
+      success: true,
+      message: 'Si el email existe en nuestro sistema, recibirás un correo con instrucciones para restablecer tu contraseña.',
+    });
+  } catch (error) {
+    console.error('Forgot password error:', error);
+    res.status(500).json({ error: 'Error al procesar solicitud de restablecimiento de contraseña' });
+  }
+}
+
+export async function resetPassword(req, res) {
+  try {
+    const { token, newPassword } = req.body;
+
+    if (!token || !newPassword) {
+      return res.status(400).json({ error: 'Token y nueva contraseña son requeridos' });
+    }
+
+    // Validate password length
+    if (newPassword.length < 6) {
+      return res.status(400).json({ error: 'La contraseña debe tener al menos 6 caracteres' });
+    }
+
+    // Find reset token
+    const tokenResult = await query(
+      `SELECT prt.*, u.id as user_id, u.email, u.nombre
+       FROM password_reset_tokens prt
+       JOIN users u ON prt.user_id = u.id
+       WHERE prt.token = $1 AND prt.used = FALSE`,
+      [token]
+    );
+
+    if (tokenResult.rows.length === 0) {
+      return res.status(400).json({ error: 'Token de restablecimiento inválido o ya utilizado' });
+    }
+
+    const resetData = tokenResult.rows[0];
+
+    // Check if token expired
+    if (new Date() > new Date(resetData.expires_at)) {
+      return res.status(400).json({ error: 'El token de restablecimiento ha expirado' });
+    }
+
+    // Hash new password
+    const newPasswordHash = await bcrypt.hash(newPassword, SALT_ROUNDS);
+
+    // Update user password
+    await query(
+      'UPDATE users SET password_hash = $1 WHERE id = $2',
+      [newPasswordHash, resetData.user_id]
+    );
+
+    // Mark token as used
+    await query(
+      'UPDATE password_reset_tokens SET used = TRUE, used_at = NOW() WHERE token = $1',
+      [token]
+    );
+
+    // Invalidate all other unused reset tokens for this user (security measure)
+    await query(
+      'UPDATE password_reset_tokens SET used = TRUE WHERE user_id = $1 AND used = FALSE AND token != $2',
+      [resetData.user_id, token]
+    );
+
+    res.json({
+      success: true,
+      message: 'Contraseña restablecida exitosamente. Ya puedes iniciar sesión con tu nueva contraseña.',
+    });
+  } catch (error) {
+    console.error('Reset password error:', error);
+    res.status(500).json({ error: 'Error al restablecer contraseña' });
+  }
+}
+
+export async function verifyResetToken(req, res) {
+  try {
+    const { token } = req.params;
+
+    if (!token) {
+      return res.status(400).json({ error: 'Token requerido' });
+    }
+
+    // Find reset token
+    const tokenResult = await query(
+      `SELECT prt.expires_at, u.email
+       FROM password_reset_tokens prt
+       JOIN users u ON prt.user_id = u.id
+       WHERE prt.token = $1 AND prt.used = FALSE`,
+      [token]
+    );
+
+    if (tokenResult.rows.length === 0) {
+      return res.status(400).json({ error: 'Token de restablecimiento inválido o ya utilizado', valid: false });
+    }
+
+    const resetData = tokenResult.rows[0];
+
+    // Check if token expired
+    if (new Date() > new Date(resetData.expires_at)) {
+      return res.status(400).json({ error: 'El token de restablecimiento ha expirado', valid: false });
+    }
+
+    res.json({
+      valid: true,
+      email: resetData.email,
+    });
+  } catch (error) {
+    console.error('Verify reset token error:', error);
+    res.status(500).json({ error: 'Error al verificar token' });
+  }
+}

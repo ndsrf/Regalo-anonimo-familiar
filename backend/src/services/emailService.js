@@ -459,6 +459,137 @@ Regalo Anónimo Familiar
 
     return await this.sendEmail({ to, subject, text, html });
   }
+
+  async sendPasswordResetEmail({ to, name, token, language = 'es' }) {
+    const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/reset-password?token=${token}`;
+
+    // Translations for password reset email
+    const translations = {
+      es: {
+        subject: '🔐 Recupera tu contraseña - Regalo Anónimo Familiar',
+        greeting: 'Hola',
+        title: '🔐 Recuperación de Contraseña',
+        intro: 'Hemos recibido una solicitud para restablecer tu contraseña en Regalo Anónimo Familiar.',
+        instruction: 'Haz clic en el botón de abajo para crear una nueva contraseña:',
+        button: 'Restablecer mi contraseña',
+        orCopy: 'O copia y pega este enlace en tu navegador:',
+        important: '⚠️ Importante:',
+        expiryNotice: 'Este enlace expirará en 1 hora por razones de seguridad.',
+        disclaimer: 'Si no solicitaste restablecer tu contraseña, puedes ignorar este correo de forma segura. Tu contraseña actual seguirá siendo válida.',
+        footer: 'Regalo Anónimo Familiar - Comparte la magia de dar',
+        regards: 'Saludos,',
+      },
+      en: {
+        subject: '🔐 Reset your password - Regalo Anónimo Familiar',
+        greeting: 'Hello',
+        title: '🔐 Password Recovery',
+        intro: 'We have received a request to reset your password for Regalo Anónimo Familiar.',
+        instruction: 'Click the button below to create a new password:',
+        button: 'Reset my password',
+        orCopy: 'Or copy and paste this link in your browser:',
+        important: '⚠️ Important:',
+        expiryNotice: 'This link will expire in 1 hour for security reasons.',
+        disclaimer: 'If you did not request a password reset, you can safely ignore this email. Your current password will remain valid.',
+        footer: 'Regalo Anónimo Familiar - Share the magic of giving',
+        regards: 'Best regards,',
+      },
+      fr: {
+        subject: '🔐 Réinitialisez votre mot de passe - Regalo Anónimo Familiar',
+        greeting: 'Bonjour',
+        title: '🔐 Récupération du mot de passe',
+        intro: 'Nous avons reçu une demande de réinitialisation de votre mot de passe pour Regalo Anónimo Familiar.',
+        instruction: 'Cliquez sur le bouton ci-dessous pour créer un nouveau mot de passe :',
+        button: 'Réinitialiser mon mot de passe',
+        orCopy: 'Ou copiez et collez ce lien dans votre navigateur :',
+        important: '⚠️ Important :',
+        expiryNotice: 'Ce lien expirera dans 1 heure pour des raisons de sécurité.',
+        disclaimer: 'Si vous n\'avez pas demandé de réinitialisation de mot de passe, vous pouvez ignorer cet e-mail en toute sécurité. Votre mot de passe actuel restera valide.',
+        footer: 'Regalo Anónimo Familiar - Partagez la magie de donner',
+        regards: 'Cordialement,',
+      },
+      de: {
+        subject: '🔐 Passwort zurücksetzen - Regalo Anónimo Familiar',
+        greeting: 'Hallo',
+        title: '🔐 Passwort-Wiederherstellung',
+        intro: 'Wir haben eine Anfrage zum Zurücksetzen Ihres Passworts für Regalo Anónimo Familiar erhalten.',
+        instruction: 'Klicken Sie auf die Schaltfläche unten, um ein neues Passwort zu erstellen:',
+        button: 'Mein Passwort zurücksetzen',
+        orCopy: 'Oder kopieren Sie diesen Link in Ihren Browser:',
+        important: '⚠️ Wichtig:',
+        expiryNotice: 'Dieser Link läuft aus Sicherheitsgründen in 1 Stunde ab.',
+        disclaimer: 'Wenn Sie keine Passwort-Zurücksetzung angefordert haben, können Sie diese E-Mail sicher ignorieren. Ihr aktuelles Passwort bleibt gültig.',
+        footer: 'Regalo Anónimo Familiar - Teilen Sie die Magie des Schenkens',
+        regards: 'Mit freundlichen Grüßen,',
+      },
+    };
+
+    const t = translations[language] || translations.es;
+
+    const subject = t.subject;
+
+    const text = `
+${t.greeting} ${name},
+
+${t.intro}
+
+${t.instruction}
+${resetUrl}
+
+${t.expiryNotice}
+
+${t.disclaimer}
+
+${t.regards}
+Regalo Anónimo Familiar
+    `.trim();
+
+    const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+    .header { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+    .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
+    .button { display: inline-block; padding: 12px 30px; background: #ef4444; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0; }
+    .security-notice { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px; margin: 20px 0; font-size: 14px; }
+    .footer { text-align: center; margin-top: 20px; font-size: 12px; color: #666; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>${t.title}</h1>
+    </div>
+    <div class="content">
+      <h2>${t.greeting} ${name},</h2>
+      <p>${t.intro}</p>
+      <p>${t.instruction}</p>
+      <div style="text-align: center;">
+        <a href="${resetUrl}" class="button">${t.button}</a>
+      </div>
+      <p style="font-size: 12px; color: #666; margin-top: 20px;">
+        ${t.orCopy}<br>
+        <a href="${resetUrl}">${resetUrl}</a>
+      </p>
+      <div class="security-notice">
+        <strong>${t.important}</strong> ${t.expiryNotice}
+      </div>
+      <p style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #666;">
+        ${t.disclaimer}
+      </p>
+    </div>
+    <div class="footer">
+      <p>${t.footer}</p>
+    </div>
+  </div>
+</body>
+</html>
+    `.trim();
+
+    return await this.sendEmail({ to, subject, text, html });
+  }
 }
 
 // Singleton instance
