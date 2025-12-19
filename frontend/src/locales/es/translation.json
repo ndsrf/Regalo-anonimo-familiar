@@ -71,7 +71,33 @@
     "instagram": "Instagram",
     "noAccount": "¿No tienes cuenta?",
     "registerHere": "Regístrate aquí",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
     "error": "Error al iniciar sesión"
+  },
+  "forgotPassword": {
+    "title": "Recuperar Contraseña",
+    "subtitle": "Te enviaremos un enlace para restablecer tu contraseña",
+    "email": "Email",
+    "submit": "Enviar Enlace de Recuperación",
+    "submitting": "Enviando...",
+    "success": "Si el email existe en nuestro sistema, recibirás un correo con instrucciones para restablecer tu contraseña.",
+    "backToLogin": "Volver a iniciar sesión",
+    "error": "Error al procesar la solicitud"
+  },
+  "resetPassword": {
+    "title": "Restablecer Contraseña",
+    "subtitle": "Ingresa tu nueva contraseña",
+    "newPassword": "Nueva Contraseña",
+    "confirmPassword": "Confirmar Contraseña",
+    "submit": "Restablecer Contraseña",
+    "submitting": "Restableciendo...",
+    "success": "¡Contraseña restablecida exitosamente! Ya puedes iniciar sesión con tu nueva contraseña.",
+    "invalidToken": "El enlace de restablecimiento es inválido o ha expirado.",
+    "expiredToken": "El enlace de restablecimiento ha expirado. Por favor solicita uno nuevo.",
+    "passwordsDontMatch": "Las contraseñas no coinciden",
+    "passwordTooShort": "La contraseña debe tener al menos 6 caracteres",
+    "backToLogin": "Volver a iniciar sesión",
+    "error": "Error al restablecer la contraseña"
   },
   "register": {
     "title": "Lista de Deseos Secreta",

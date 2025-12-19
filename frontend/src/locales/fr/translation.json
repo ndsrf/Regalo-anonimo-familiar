@@ -71,7 +71,33 @@
     "instagram": "Instagram",
     "noAccount": "Vous n'avez pas de compte ?",
     "registerHere": "Inscrivez-vous ici",
+    "forgotPassword": "Mot de passe oublié ?",
     "error": "Erreur de connexion"
+  },
+  "forgotPassword": {
+    "title": "Récupérer le Mot de Passe",
+    "subtitle": "Nous vous enverrons un lien pour réinitialiser votre mot de passe",
+    "email": "Email",
+    "submit": "Envoyer le Lien de Récupération",
+    "submitting": "Envoi en cours...",
+    "success": "Si l'email existe dans notre système, vous recevrez un email avec les instructions pour réinitialiser votre mot de passe.",
+    "backToLogin": "Retour à la connexion",
+    "error": "Erreur de traitement de la demande"
+  },
+  "resetPassword": {
+    "title": "Réinitialiser le Mot de Passe",
+    "subtitle": "Entrez votre nouveau mot de passe",
+    "newPassword": "Nouveau Mot de Passe",
+    "confirmPassword": "Confirmer le Mot de Passe",
+    "submit": "Réinitialiser le Mot de Passe",
+    "submitting": "Réinitialisation en cours...",
+    "success": "Mot de passe réinitialisé avec succès ! Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.",
+    "invalidToken": "Le lien de réinitialisation est invalide ou a expiré.",
+    "expiredToken": "Le lien de réinitialisation a expiré. Veuillez en demander un nouveau.",
+    "passwordsDontMatch": "Les mots de passe ne correspondent pas",
+    "passwordTooShort": "Le mot de passe doit contenir au moins 6 caractères",
+    "backToLogin": "Retour à la connexion",
+    "error": "Erreur de réinitialisation du mot de passe"
   },
   "register": {
     "title": "Liste de Souhaits Secrète",
