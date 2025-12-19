@@ -11,6 +11,9 @@ import {
   verifyMagicToken,
   registerViaMagicLink,
   joinGroupViaMagicLink,
+  forgotPassword,
+  resetPassword,
+  verifyResetToken,
 } from '../controllers/authController.js';
 import { requireAuth } from '../middleware/auth.js';
 
@@ -65,5 +68,10 @@ router.post('/resend-verification', requireAuth, resendVerificationEmail);
 router.get('/magic-link/:token', verifyMagicToken);
 router.post('/magic-link/:token/register', registerViaMagicLink);
 router.post('/magic-link/:token/join', joinGroupViaMagicLink);
+
+// Password reset routes
+router.post('/forgot-password', forgotPassword);
+router.post('/reset-password', resetPassword);
+router.get('/reset-token/:token', verifyResetToken);
 
 export default router;
