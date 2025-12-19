@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import axios from 'axios';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+import { authAPI } from '../services/api';
 
 export default function ResetPassword() {
   const { t } = useTranslation();
@@ -28,7 +26,7 @@ export default function ResetPassword() {
       }
 
       try {
-        await axios.get(`${API_URL}/auth/reset-token/${token}`);
+        await authAPI.verifyResetToken(token);
         setTokenValid(true);
       } catch (err) {
         if (err.response?.status === 400) {
@@ -62,10 +60,7 @@ export default function ResetPassword() {
     setLoading(true);
 
     try {
-      await axios.post(`${API_URL}/auth/reset-password`, {
-        token,
-        newPassword,
-      });
+      await authAPI.resetPassword(token, newPassword);
       setSuccess(true);
 
       // Redirigir al login después de 3 segundos
