@@ -71,7 +71,33 @@
     "instagram": "Instagram",
     "noAccount": "Haben Sie kein Konto?",
     "registerHere": "Hier registrieren",
+    "forgotPassword": "Passwort vergessen?",
     "error": "Anmeldefehler"
+  },
+  "forgotPassword": {
+    "title": "Passwort Wiederherstellen",
+    "subtitle": "Wir senden Ihnen einen Link zum Zurücksetzen Ihres Passworts",
+    "email": "E-Mail",
+    "submit": "Wiederherstellungslink Senden",
+    "submitting": "Wird gesendet...",
+    "success": "Wenn die E-Mail in unserem System existiert, erhalten Sie eine E-Mail mit Anweisungen zum Zurücksetzen Ihres Passworts.",
+    "backToLogin": "Zurück zur Anmeldung",
+    "error": "Fehler bei der Verarbeitung der Anfrage"
+  },
+  "resetPassword": {
+    "title": "Passwort Zurücksetzen",
+    "subtitle": "Geben Sie Ihr neues Passwort ein",
+    "newPassword": "Neues Passwort",
+    "confirmPassword": "Passwort Bestätigen",
+    "submit": "Passwort Zurücksetzen",
+    "submitting": "Wird zurückgesetzt...",
+    "success": "Passwort erfolgreich zurückgesetzt! Sie können sich jetzt mit Ihrem neuen Passwort anmelden.",
+    "invalidToken": "Der Zurücksetzungslink ist ungültig oder abgelaufen.",
+    "expiredToken": "Der Zurücksetzungslink ist abgelaufen. Bitte fordern Sie einen neuen an.",
+    "passwordsDontMatch": "Passwörter stimmen nicht überein",
+    "passwordTooShort": "Passwort muss mindestens 6 Zeichen lang sein",
+    "backToLogin": "Zurück zur Anmeldung",
+    "error": "Fehler beim Zurücksetzen des Passworts"
   },
   "register": {
     "title": "Geheime Wunschliste",

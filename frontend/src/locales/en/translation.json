@@ -71,7 +71,33 @@
     "instagram": "Instagram",
     "noAccount": "Don't have an account?",
     "registerHere": "Register here",
+    "forgotPassword": "Forgot your password?",
     "error": "Login error"
+  },
+  "forgotPassword": {
+    "title": "Recover Password",
+    "subtitle": "We'll send you a link to reset your password",
+    "email": "Email",
+    "submit": "Send Recovery Link",
+    "submitting": "Sending...",
+    "success": "If the email exists in our system, you will receive an email with instructions to reset your password.",
+    "backToLogin": "Back to login",
+    "error": "Error processing request"
+  },
+  "resetPassword": {
+    "title": "Reset Password",
+    "subtitle": "Enter your new password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password",
+    "submit": "Reset Password",
+    "submitting": "Resetting...",
+    "success": "Password reset successfully! You can now log in with your new password.",
+    "invalidToken": "The reset link is invalid or has expired.",
+    "expiredToken": "The reset link has expired. Please request a new one.",
+    "passwordsDontMatch": "Passwords don't match",
+    "passwordTooShort": "Password must be at least 6 characters",
+    "backToLogin": "Back to login",
+    "error": "Error resetting password"
   },
   "register": {
     "title": "Secret Wishlist",

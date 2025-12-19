@@ -7,6 +7,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import GoogleCallback from './pages/GoogleCallback';
 import MetaCallback from './pages/MetaCallback';
 import VerifyEmail from './pages/VerifyEmail';
@@ -29,6 +31,8 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/oauth-callback" element={<GoogleCallback />} />
               <Route path="/oauth-callback-meta" element={<MetaCallback />} />
               <Route path="/verify-email" element={<VerifyEmail />} />
