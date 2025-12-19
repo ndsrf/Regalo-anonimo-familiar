@@ -61,6 +61,10 @@ export const authAPI = {
   verifyMagicToken: (token) => api.get(`/auth/magic-link/${token}`),
   registerViaMagicLink: (token, data) => api.post(`/auth/magic-link/${token}/register`, data),
   joinGroupViaMagicLink: (token) => api.post(`/auth/magic-link/${token}/join`),
+  // Password reset endpoints
+  forgotPassword: (email) => api.post('/auth/forgot-password', { email }),
+  resetPassword: (token, newPassword) => api.post('/auth/reset-password', { token, newPassword }),
+  verifyResetToken: (token) => api.get(`/auth/reset-token/${token}`),
 };
 
 // Group endpoints
