@@ -19,6 +19,7 @@ export default function GroupDetail() {
   const [activeTab, setActiveTab] = useState('wishlist');
   const [myGifts, setMyGifts] = useState([]);
   const [wishlist, setWishlist] = useState([]);
+  const [wishlistFilter, setWishlistFilter] = useState('all');
   const [loading, setLoading] = useState(true);
   const [showAddGift, setShowAddGift] = useState(false);
   const [editingGift, setEditingGift] = useState(null);
@@ -321,6 +322,22 @@ export default function GroupDetail() {
     }
   };
 
+  const getFilteredWishlist = () => {
+    if (!wishlist || wishlist.length === 0) return [];
+
+    switch (wishlistFilter) {
+      case 'purchasedByMe':
+        return wishlist.filter(gift => gift.comprador_id === user?.id);
+      case 'available':
+        return wishlist.filter(gift => !gift.comprador_id);
+      case 'purchasedByOthers':
+        return wishlist.filter(gift => gift.comprador_id && gift.comprador_id !== user?.id);
+      case 'all':
+      default:
+        return wishlist;
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -562,11 +579,58 @@ export default function GroupDetail() {
                     {wishlistMessage}
                   </div>
                 )}
+
+                {/* Filter buttons */}
+                <div className="mb-6 flex flex-wrap gap-2">
+                  <button
+                    onClick={() => setWishlistFilter('all')}
+                    className={`px-4 py-2 rounded-md font-medium transition-colors ${
+                      wishlistFilter === 'all'
+                        ? `${theme.primary} text-white`
+                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    }`}
+                  >
+                    {t('groupDetail.filters.all')}
+                  </button>
+                  <button
+                    onClick={() => setWishlistFilter('purchasedByMe')}
+                    className={`px-4 py-2 rounded-md font-medium transition-colors ${
+                      wishlistFilter === 'purchasedByMe'
+                        ? `${theme.primary} text-white`
+                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    }`}
+                  >
+                    {t('groupDetail.filters.purchasedByMe')}
+                  </button>
+                  <button
+                    onClick={() => setWishlistFilter('available')}
+                    className={`px-4 py-2 rounded-md font-medium transition-colors ${
+                      wishlistFilter === 'available'
+                        ? `${theme.primary} text-white`
+                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    }`}
+                  >
+                    {t('groupDetail.filters.available')}
+                  </button>
+                  <button
+                    onClick={() => setWishlistFilter('purchasedByOthers')}
+                    className={`px-4 py-2 rounded-md font-medium transition-colors ${
+                      wishlistFilter === 'purchasedByOthers'
+                        ? `${theme.primary} text-white`
+                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    }`}
+                  >
+                    {t('groupDetail.filters.purchasedByOthers')}
+                  </button>
+                </div>
+
                 {wishlist.length === 0 ? (
                   <p className="text-gray-600">No hay regalos disponibles aún</p>
+                ) : getFilteredWishlist().length === 0 ? (
+                  <p className="text-gray-600">No hay regalos que coincidan con el filtro seleccionado</p>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {wishlist.map((gift) => (
+                    {getFilteredWishlist().map((gift) => (
                       <GiftCard
                         key={gift.id}
                         gift={gift}

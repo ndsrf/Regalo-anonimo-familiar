@@ -203,6 +203,12 @@
     "purchased": "Acheté",
     "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce groupe ?",
     "confirmArchive": "Êtes-vous sûr de vouloir archiver ce groupe ?",
+    "filters": {
+      "all": "Tous les cadeaux",
+      "purchasedByMe": "Achetés par moi",
+      "available": "Disponibles",
+      "purchasedByOthers": "Achetés par d'autres"
+    },
     "errors": {
       "fetchGroup": "Erreur lors du chargement du groupe",
       "addGift": "Erreur lors de l'ajout du cadeau",

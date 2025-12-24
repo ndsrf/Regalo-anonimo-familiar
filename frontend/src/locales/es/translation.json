@@ -203,6 +203,12 @@
     "purchased": "Comprado",
     "confirmDelete": "¿Estás seguro de que quieres eliminar este grupo?",
     "confirmArchive": "¿Estás seguro de que quieres archivar este grupo?",
+    "filters": {
+      "all": "Todos los regalos",
+      "purchasedByMe": "Comprados por mí",
+      "available": "Disponibles",
+      "purchasedByOthers": "Comprados por otros/as"
+    },
     "errors": {
       "fetchGroup": "Error al cargar el grupo",
       "addGift": "Error al añadir el regalo",

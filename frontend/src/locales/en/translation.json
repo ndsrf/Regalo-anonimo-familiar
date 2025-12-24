@@ -203,6 +203,12 @@
     "purchased": "Purchased",
     "confirmDelete": "Are you sure you want to delete this group?",
     "confirmArchive": "Are you sure you want to archive this group?",
+    "filters": {
+      "all": "All gifts",
+      "purchasedByMe": "Purchased by me",
+      "available": "Available",
+      "purchasedByOthers": "Purchased by others"
+    },
     "errors": {
       "fetchGroup": "Error loading group",
       "addGift": "Error adding gift",
