@@ -203,6 +203,12 @@
     "purchased": "Gekauft",
     "confirmDelete": "Sind Sie sicher, dass Sie diese Gruppe löschen möchten?",
     "confirmArchive": "Sind Sie sicher, dass Sie diese Gruppe archivieren möchten?",
+    "filters": {
+      "all": "Alle Geschenke",
+      "purchasedByMe": "Von mir gekauft",
+      "available": "Verfügbar",
+      "purchasedByOthers": "Von anderen gekauft"
+    },
     "errors": {
       "fetchGroup": "Fehler beim Laden der Gruppe",
       "addGift": "Fehler beim Hinzufügen des Geschenks",
