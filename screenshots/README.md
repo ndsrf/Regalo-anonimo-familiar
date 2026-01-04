@@ -2,22 +2,26 @@
 
 This directory contains screenshots of the Secret Wishlist application.
 
-## Recommended Screenshots
+## Current Screenshots
 
-To showcase the application, please add screenshots of:
+- **home.png** - Landing page with game mode selection (Anonymous Wishlist and Secret Santa)
+- **create-group.png** - Create group dialog with configuration options
+- **group-wishlist.png** - Group wishlist view showing gift items
 
-1. **home.png** - Home page / Landing page
-2. **login.png** - Login page with OAuth options
-3. **dashboard.png** - User dashboard with groups
-4. **group-wishlist.png** - Group wishlist view (anonymous mode)
-5. **secret-santa.png** - Secret Santa mode interface
-6. **add-gift.png** - Add/edit gift form
-7. **notifications.png** - Notifications panel
-8. **group-settings.png** - Group settings page
+## Additional Screenshots to Add
 
-## How to Add Screenshots
+To further showcase the application, consider adding:
+
+1. **login.png** - Login page with email/password and OAuth options (Google & Instagram)
+2. **dashboard.png** - User dashboard showing all groups
+3. **secret-santa.png** - Secret Santa mode interface with assignments
+4. **add-gift.png** - Add/edit gift form with image scraping feature
+5. **notifications.png** - Notifications panel (in-app and email)
+6. **group-settings.png** - Group settings and configuration page
+
+## How to Add More Screenshots
 
 1. Take screenshots of the running application
 2. Save them with descriptive names (as listed above)
 3. Place them in this directory
-4. The README.md will automatically reference them
+4. Update the main README.md to reference them

@@ -19,34 +19,17 @@ Uma aplicação web para gerenciar listas de desejos anônimas em grupos de fam�
 
 ## 📸 Screenshots
 
-### Home & Authentication
-![Login Page](screenshots/login.png)
-*Login page with email/password and OAuth options (Google & Instagram)*
+### Home Page
+![Home Page](screenshots/home.png)
+*Landing page showcasing the two game modes: Anonymous Wishlist and Secret Santa*
 
-### Dashboard & Groups
-![Dashboard](screenshots/dashboard.png)
-*User dashboard showing all groups and quick access*
+### Create Group
+![Create Group](screenshots/create-group.png)
+*Create group dialog with game mode selection, event type, and date configuration*
 
-### Wishlist Mode
+### Group Wishlist View
 ![Group Wishlist](screenshots/group-wishlist.png)
-*Anonymous wishlist view - see all gifts in the group*
-
-![Add Gift](screenshots/add-gift.png)
-*Add or edit gift with automatic image scraping*
-
-### Secret Santa Mode
-![Secret Santa](screenshots/secret-santa.png)
-*Secret Santa mode with random pairing and email notifications*
-
-### Notifications
-![Notifications](screenshots/notifications.png)
-*In-app notifications and email alerts*
-
-### Settings
-![Group Settings](screenshots/group-settings.png)
-*Group configuration with game modes and themes*
-
-> **Note:** Screenshots will be added soon. See [screenshots/README.md](screenshots/README.md) for details on what screenshots to add.
+*Group page showing anonymous wishlist with gift items and purchase status*
 
 ## Stack Tecnológico
 
