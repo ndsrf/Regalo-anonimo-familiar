@@ -191,6 +191,7 @@
     "yourRecipient": "Compras para",
     "noGifts": "No hay regalos todavía",
     "noGiftsDescription": "Sé el primero en añadir un regalo a la lista.",
+    "noGiftsMatchingFilter": "No hay regalos que coincidan con el filtro seleccionado",
     "giftName": "Nombre del Regalo",
     "url": "URL (opcional)",
     "price": "Precio (opcional)",

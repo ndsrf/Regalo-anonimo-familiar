@@ -191,6 +191,7 @@
     "yourRecipient": "You're buying for",
     "noGifts": "No gifts yet",
     "noGiftsDescription": "Be the first to add a gift to the list.",
+    "noGiftsMatchingFilter": "No gifts match the selected filter",
     "giftName": "Gift Name",
     "url": "URL (optional)",
     "price": "Price (optional)",
