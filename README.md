@@ -1,6 +1,52 @@
 # Secret Wishlist - Lista de Deseos Secreta
 
-Aplicación web para gestionar listas de deseos anónimas en grupos familiares o de amigos.
+## 🌍 About / Acerca de / À propos / Über / Sobre
+
+**🇪🇸 Español**
+Aplicación web para gestionar listas de deseos anónimas en grupos familiares o de amigos. Organiza intercambios de regalos con dos modos: lista de deseos anónima donde todos pueden ver qué regalar, o amigo invisible tradicional con emparejamiento secreto.
+
+**🇬🇧 English**
+A web application for managing anonymous wish lists in family or friend groups. Organize gift exchanges with two modes: anonymous wishlist where everyone can see what to gift, or traditional Secret Santa with secret pairing.
+
+**🇫🇷 Français**
+Une application web pour gérer des listes de souhaits anonymes dans des groupes familiaux ou d'amis. Organisez des échanges de cadeaux avec deux modes : liste de souhaits anonyme où tout le monde peut voir quoi offrir, ou Secret Santa traditionnel avec appariement secret.
+
+**🇩🇪 Deutsch**
+Eine Webanwendung zur Verwaltung anonymer Wunschlisten in Familien- oder Freundesgruppen. Organisieren Sie Geschenkaustausche mit zwei Modi: anonyme Wunschliste, wo jeder sehen kann, was zu schenken ist, oder traditionelles Wichteln mit geheimer Zuordnung.
+
+**🇵🇹 Português**
+Uma aplicação web para gerenciar listas de desejos anônimas em grupos de família ou amigos. Organize trocas de presentes com dois modos: lista de desejos anônima onde todos podem ver o que presentear, ou amigo secreto tradicional com emparelhamento secreto.
+
+## 📸 Screenshots
+
+### Home & Authentication
+![Login Page](screenshots/login.png)
+*Login page with email/password and OAuth options (Google & Instagram)*
+
+### Dashboard & Groups
+![Dashboard](screenshots/dashboard.png)
+*User dashboard showing all groups and quick access*
+
+### Wishlist Mode
+![Group Wishlist](screenshots/group-wishlist.png)
+*Anonymous wishlist view - see all gifts in the group*
+
+![Add Gift](screenshots/add-gift.png)
+*Add or edit gift with automatic image scraping*
+
+### Secret Santa Mode
+![Secret Santa](screenshots/secret-santa.png)
+*Secret Santa mode with random pairing and email notifications*
+
+### Notifications
+![Notifications](screenshots/notifications.png)
+*In-app notifications and email alerts*
+
+### Settings
+![Group Settings](screenshots/group-settings.png)
+*Group configuration with game modes and themes*
+
+> **Note:** Screenshots will be added soon. See [screenshots/README.md](screenshots/README.md) for details on what screenshots to add.
 
 ## Stack Tecnológico
 
