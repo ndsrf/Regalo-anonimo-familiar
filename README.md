@@ -1,6 +1,35 @@
 # Secret Wishlist - Lista de Deseos Secreta
 
-Aplicación web para gestionar listas de deseos anónimas en grupos familiares o de amigos.
+## 🌍 About / Acerca de / À propos / Über / Sobre
+
+**🇪🇸 Español**
+Aplicación web para gestionar listas de deseos anónimas en grupos familiares o de amigos. Organiza intercambios de regalos con dos modos: lista de deseos anónima donde todos pueden ver qué regalar, o amigo invisible tradicional con emparejamiento secreto.
+
+**🇬🇧 English**
+A web application for managing anonymous wish lists in family or friend groups. Organize gift exchanges with two modes: anonymous wishlist where everyone can see what to gift, or traditional Secret Santa with secret pairing.
+
+**🇫🇷 Français**
+Une application web pour gérer des listes de souhaits anonymes dans des groupes familiaux ou d'amis. Organisez des échanges de cadeaux avec deux modes : liste de souhaits anonyme où tout le monde peut voir quoi offrir, ou Secret Santa traditionnel avec appariement secret.
+
+**🇩🇪 Deutsch**
+Eine Webanwendung zur Verwaltung anonymer Wunschlisten in Familien- oder Freundesgruppen. Organisieren Sie Geschenkaustausche mit zwei Modi: anonyme Wunschliste, wo jeder sehen kann, was zu schenken ist, oder traditionelles Wichteln mit geheimer Zuordnung.
+
+**🇵🇹 Português**
+Uma aplicação web para gerenciar listas de desejos anônimas em grupos de família ou amigos. Organize trocas de presentes com dois modos: lista de desejos anônima onde todos podem ver o que presentear, ou amigo secreto tradicional com emparelhamento secreto.
+
+## 📸 Screenshots
+
+### Home Page
+![Home Page](screenshots/home.png)
+*Landing page showcasing the two game modes: Anonymous Wishlist and Secret Santa*
+
+### Create Group
+![Create Group](screenshots/create-group.png)
+*Create group dialog with game mode selection, event type, and date configuration*
+
+### Group Wishlist View
+![Group Wishlist](screenshots/group-wishlist.png)
+*Group page showing anonymous wishlist with gift items and purchase status*
 
 ## Stack Tecnológico
 
